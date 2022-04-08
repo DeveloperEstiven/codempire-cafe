@@ -1,5 +1,7 @@
 export enum ROUTES {
-  login = 'login',
-  admin = 'admin',
+  logIn = '/log-in',
+  forgot = '/forgot-password',
+  signUp = '/sign-up',
+  mainPage = '/main-page',
   default = '*',
 }

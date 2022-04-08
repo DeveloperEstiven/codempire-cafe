@@ -11,29 +11,29 @@ export class UserEntity {
   @PrimaryGeneratedColumn('uuid')
   public id: string;
 
-  @ApiProperty({ description: 'publicKey' })
-  @Column({ type: 'varchar', length: 30 })
+  @ApiProperty({ example: '$2b$06$AfdgGJEMzmOPZR0rFJXpu', description: 'publicKey' })
+  @Column()
   @Exclude()
   public publicKey: string;
 
-  @ApiProperty({ example: 'User', description: 'username' })
-  @Column({ type: 'varchar', length: 30 })
-  public username: string;
+  @ApiProperty({ example: 'User', description: 'user name' })
+  @Column()
+  public userName: string;
 
   @ApiProperty({ example: 'user@codempire.team', description: 'user email' })
-  @Column({ type: 'varchar', length: 30, unique: true })
+  @Column({ unique: true })
   public email: string;
 
   @ApiProperty({ example: 'password', description: 'user password' })
-  @Column({ type: 'varchar', length: 16 })
+  @Column()
   @Exclude()
   public password: string;
 
-  @ApiProperty({ example: '+3806525678', description: 'user phone number' })
-  @Column({ type: 'varchar', length: 10, unique: true })
+  @ApiProperty({ example: '+380 (95) 434 34 34', description: 'user phone number' })
+  @Column({ unique: true })
   public phoneNumber: string;
 
   @ApiProperty({ example: 'manager/user', description: 'role' })
-  @Column({ type: 'enum', enum: USER_ROLES })
+  @Column({ type: 'enum', enum: USER_ROLES, default: USER_ROLES.user })
   public role: USER_ROLES;
 }

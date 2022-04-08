@@ -1,27 +1,36 @@
 import { Route, Routes } from 'react-router-dom';
 
+import { Animation } from '@components/animation';
 import { Page404 } from '@components/page-404';
-import { Layout } from '@screens/layout';
-import { LoginPage } from '@screens/log-in';
-import { PrivateRoute } from './private-route';
+import { LogInPage } from '@screens/log-in';
+import { MainPage } from '@screens/main-page';
+import { SignUpPage } from '@screens/sign-up';
 
 import { ROUTES } from '@constants/routes';
 
 export const AppRouter: React.FC = () => {
   return (
     <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route index element={<LoginPage />} />
-        <Route path={ROUTES.login} element={<LoginPage />} />
-        <Route
-          path={ROUTES.admin}
-          element={
-            <PrivateRoute isAdmin={true}>
-              <div>private route</div>
-            </PrivateRoute>
-          }
-        />
-      </Route>
+      <Route index element={<LogInPage />} />
+      <Route
+        path={ROUTES.logIn}
+        element={
+          <>
+            <Animation />
+            <LogInPage />
+          </>
+        }
+      />
+      <Route
+        path={ROUTES.signUp}
+        element={
+          <>
+            <Animation />
+            <SignUpPage />
+          </>
+        }
+      />
+      <Route path={ROUTES.mainPage} element={<MainPage />} />
       <Route path={ROUTES.default} element={<Page404 />} />
     </Routes>
   );

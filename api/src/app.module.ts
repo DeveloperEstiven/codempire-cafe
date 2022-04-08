@@ -6,6 +6,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { config } from './constants/config';
 import { DatabaseConfig } from './shared/configs/database.config';
 import { HttpErrorFilter } from './shared/http-error.filter';
+import { UserAuthModule } from './user-auth/user-auth.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -23,6 +25,8 @@ import { HttpErrorFilter } from './shared/http-error.filter';
       imports: [ConfigModule],
       useClass: DatabaseConfig,
     }),
+    UserModule,
+    UserAuthModule,
   ],
   providers: [
     {
