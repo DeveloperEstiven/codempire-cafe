@@ -1,26 +1,11 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UserEntity } from './entities/user.entity';
+import { Controller } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
 
-@ApiTags('User')
-@Controller('user')
+import { USER_ROUTES } from './user.constants';
+
+@ApiTags(USER_ROUTES.main)
+@Controller(USER_ROUTES.main)
 export class UserController {
   constructor(private readonly userService: UserService) {}
-
-  @ApiOperation({ summary: 'get all users' })
-  @ApiResponse({ status: HttpStatus.OK, type: UserEntity })
-  @Get()
-  getAll() {
-    return this.userService.getAllUsers();
-  }
-
-  @ApiOperation({ summary: 'create new user' })
-  @ApiResponse({ status: HttpStatus.CREATED, type: [UserEntity], isArray: true })
-  @Post()
-  @HttpCode(HttpStatus.CREATED)
-  addUser(@Body() dto: CreateUserDto) {
-    return this.userService.createUser(dto);
-  }
 }

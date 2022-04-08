@@ -13,6 +13,8 @@ module.exports = {
           '@constants': './src/constants',
           '@components': './src/components',
           '@styles': './src/styles',
+          '@hooks': './src/hooks',
+          '@utils': './src/utils',
           '@assets': './src/assets',
           '@services': './src/services',
           '@store': './src/store',

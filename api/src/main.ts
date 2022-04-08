@@ -12,6 +12,7 @@ async function bootstrap() {
   app.enableCors();
 
   const config = new DocumentBuilder()
+    .addBearerAuth()
     .setTitle(swagger.title)
     .setDescription(swagger.description)
     .setVersion(swagger.version)

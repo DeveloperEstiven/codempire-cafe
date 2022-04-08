@@ -12,6 +12,12 @@
       "@styles/*": [
         "styles/*"
       ],
+      "@hooks/*": [
+        "hooks/*"
+      ],
+      "@utils/*": [
+        "utils/*"
+      ],
       "@assets/*": [
         "assets/*"
       ],
