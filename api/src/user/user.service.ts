@@ -18,7 +18,7 @@ export class UserService {
   async getUserByColumn(body: Partial<UserEntity>, relations?: string[]) {
     const user = await this.userRepository.findOne({ where: body, relations });
     if (!user) {
-      throw new HttpException(ERRORS.notFound, HttpStatus.NOT_FOUND);
+      throw new HttpException(ERRORS.validationError, HttpStatus.UNAUTHORIZED);
     }
     return user;
   }

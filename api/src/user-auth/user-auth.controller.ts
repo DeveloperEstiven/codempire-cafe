@@ -1,7 +1,9 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { UserWithTokenResponseDto } from 'src/dto/user-with-token.dto';
 import { ERRORS } from '../constants/errors';
+import { IdDto } from '../dto/id.dto';
+import { MessageSuccessDto } from '../dto/message-success.dto';
+import { UserWithTokenResponseDto } from '../dto/user-with-token.dto';
 import { AuthUserDto } from './dto/auth-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserAuthService } from './user-auth.service';
@@ -50,12 +52,14 @@ export class UserAuthController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: USER_AUTH_ROUTES.logOut,
+    type: MessageSuccessDto,
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
+    description: ERRORS.notFound,
   })
   @HttpCode(HttpStatus.CREATED)
-  logOut(@Body() body: { id: string }) {
+  logOut(@Body() body: IdDto) {
     if (body.id) {
       return this.userAuthService.logOut(body.id);
     }
