@@ -1,21 +1,20 @@
 import { Icon } from '@components/icon';
-
+import { ChipBox } from './chip.styles';
 import { IChipProps } from './chip.typings';
 
-import { ChipBox } from './chip.styles';
-
-export const Chip: React.FC<IChipProps> = ({ label, id, selected, setSelected }) => {
-  const handleDelete = (id: number) => {
+export const Chip: React.FC<IChipProps> = ({ label, value, selected, setSelected }) => {
+  const removeItem = (value: string) => {
     if (Array.isArray(selected)) {
-      const rest = selected.filter((el) => el.id !== id);
+      const rest = selected.filter((el) => el.value !== value);
       setSelected(rest);
     }
   };
 
+  const handleDelete = (value: string) => () => removeItem(value);
   return (
     <ChipBox>
       <span>{label}</span>
-      <div onClick={() => handleDelete(id)}>
+      <div onClick={handleDelete(value)}>
         <Icon type="removeItem" />
       </div>
     </ChipBox>

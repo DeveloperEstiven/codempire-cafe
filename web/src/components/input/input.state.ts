@@ -7,6 +7,7 @@ import { IUseInputProps } from './input.typings';
 export const useInput = (props: IUseInputProps) => {
   const [isPassword, setIsPassword] = useState(props.type === 'password');
   const [isFocus, setIsFocus] = useState(false);
+
   const [value, setValue] = useState('');
 
   const toggleIsPassword = () => setIsPassword((visible) => !visible);

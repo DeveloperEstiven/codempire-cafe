@@ -9,7 +9,7 @@ import { IInputProps } from './input.typings';
 import { StyledInput as Styled } from './input.styles';
 
 export const Input: React.FC<IInputProps> = (props) => {
-  const { type = 'text', name, value, onChange, title, placeholder, isPhoneNumber, isTextArea } = props;
+  const { type = 'text', name, value, onChange, title, placeholder, isPhoneNumber, isTextArea, isAutoFocus } = props;
   const { isFocus, handleFocus, onPhoneChange, isPassword, toggleIsPassword } = useInput({
     type,
     handlePhoneChange: onChange,
@@ -37,6 +37,7 @@ export const Input: React.FC<IInputProps> = (props) => {
           )}
           {!isTextArea && !isPhoneNumber && (
             <Styled.Input
+              autoFocus={isAutoFocus}
               onBlur={handleFocus}
               onFocus={handleFocus}
               name={name}

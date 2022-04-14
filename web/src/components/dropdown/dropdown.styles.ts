@@ -13,14 +13,8 @@ export const StyledDropdown = {
     gap: 8px;
     margin-bottom: 8px;
   `,
-
-  Icon: styled.span`
-    display: block;
-    width: 0;
-    height: 0;
-    border-style: solid;
-    border-width: 5px 5px 0 5px;
-    border-color: #5f6368 transparent transparent transparent;
+  Wrapper: styled.div`
+    width: 100%;
   `,
 };
 

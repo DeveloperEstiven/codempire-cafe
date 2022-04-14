@@ -1,0 +1,116 @@
+.product-image {
+  order: 0;
+  margin: 0 auto;
+}
+
+.product-title {
+  order: -1;
+  font-weight: 400;
+  font-size: 30px;
+  line-height: 36px;
+  padding-top: 16px;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.product-description {
+  font-size: 16px;
+  line-height: 24px;
+  overflow: hidden;
+  height: 100%;
+  letter-spacing: 0.15px;
+  color: rgba(0, 0, 0, 0.87);
+  text-align: left;
+}
+
+.product-description h3 {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 140%;
+  letter-spacing: 0.1px;
+  margin: 15px 0 0px;
+}
+
+.product-description span {
+  font-size: 14px;
+  line-height: 140%;
+  letter-spacing: 0.25px;
+}
+
+.product-text {
+  overflow: auto;
+  max-height: 150px;
+}
+
+.product-footer {
+  order: -2;
+  margin: 0;
+  justify-content: start;
+  padding: 1em 25.6px;
+  border-top: 0;
+  border-bottom: 1px solid #eee;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 140%;
+  letter-spacing: 0.1px;
+  color: rgba(0, 0, 0, 0.87);
+}
+.product-close {
+  position: absolute;
+  font-family: serif;
+  top: 0;
+  right: 0;
+}
+
+.product-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.product-actions div {
+  border-right: 1px solid rgba(33, 33, 33, 0.08);
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50%;
+  line-height: 24px;
+  letter-spacing: 0.18px;
+  padding: 0 15px;
+}
+
+.product-actions div:last-child {
+  border-right: 0;
+}
+
+.product-button-wrapper {
+  width: 100%;
+  padding: 0 25.6px;
+  margin-top: 0;
+}
+
+.product-button {
+  background-color: #000;
+  color: #fff;
+  width: 100%;
+  overflow: hidden;
+  height: 48px;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 1.25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+  margin-top: 10px;
+  padding: 0 16px;
+  white-space: nowrap;
+  border-radius: 4px;
+  transition: background-color 0.3s ease 0s, color 0.3s ease 0s;
+}
+
+.product-button:hover {
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #000;
+}

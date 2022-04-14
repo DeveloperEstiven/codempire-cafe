@@ -25,7 +25,9 @@ export const baseQueryWithInterceptors: BaseQueryFn<string | FetchArgs, unknown,
   const result = await baseQuery(args, api, extraOptions);
   if (result.error && result.error.status === 401) {
     const userId = (api.getState() as RootState).user.user.id;
-    api.dispatch(userApi.endpoints.logOut.initiate({ id: userId }));
+    if (userId) {
+      api.dispatch(userApi.endpoints.logOut.initiate({ id: userId }));
+    }
   }
   if (result.error && result.error.status === 'FETCH_ERROR') {
     handleError({ message: 'Internet error' });

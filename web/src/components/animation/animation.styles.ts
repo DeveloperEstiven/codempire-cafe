@@ -1,10 +1,9 @@
 import styled, { css } from 'styled-components';
 
 import { animationTime, delay } from './animation.constants';
+import { IAnimationStylesProps } from './animation.typings';
 
-import { IAnimationProps } from './animation.types';
-
-const animation = ({ delay, animationTime, animationName }: IAnimationProps) => css`
+const animation = ({ delay, animationTime, animationName }: IAnimationStylesProps) => css`
   animation-name: ${animationName};
   animation-fill-mode: forwards;
   animation-delay: ${delay + 's'};
@@ -22,7 +21,7 @@ export const StyledAnimation = styled.div`
     }
   }
 
-  @keyframes spanBlock {
+  @keyframes iBlock {
     to {
       height: 0px;
     }
@@ -36,9 +35,9 @@ export const StyledAnimation = styled.div`
   height: 100vh;
   background-color: ${(props) => props.theme.colors.bg};
 
-  span {
+  i {
     display: block;
-    ${animation({ animationName: 'spanBlock', animationTime, delay })};
+    ${animation({ animationName: 'iBlock', animationTime, delay })};
     height: calc(50vh - 120px);
   }
 

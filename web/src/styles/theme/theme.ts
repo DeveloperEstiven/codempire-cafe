@@ -2,6 +2,7 @@ export type ThemeType = typeof theme;
 
 export const theme = {
   maxWidthContainer: '1000px',
+  asideMenuWidth: '70px',
   borderRadius: '4px',
   transition: '.3s',
   font: 'Roboto',
