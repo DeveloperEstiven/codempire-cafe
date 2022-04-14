@@ -4,9 +4,10 @@ export type TInputType = 'text' | 'password';
 
 export interface IInputProps {
   type?: TInputType;
-  name: string;
+  name?: string;
   isPhoneNumber?: boolean;
   isTextArea?: boolean;
+  isAutoFocus?: boolean;
   placeholder?: string;
   onChange: (e: TInputEvent) => void;
   value: string;

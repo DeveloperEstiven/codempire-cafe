@@ -6,7 +6,6 @@
     "api/tsconfig.build.json",
     "api/package-lock.json",
     "api/nest-cli.json",
-    "api/.prettierrc",
     "api/.gitignore",
     "web/build",
     "web/package-lock.json",
@@ -14,15 +13,16 @@
     "web/public",
     "api/dist",
     "web/src/react-app-env.d.ts",
-    "web/node_modules",
     "web/.env",
     "api/package.json",
     "api/.env",
-    "web/.eslintrc.js",
     "web/craco.config.js",
     "web/package.json",
     "web/paths.json",
-    "web/tsconfig.json"
+    "web/tsconfig.json",
+    "api/.prettierrc",
+    "web/.eslintrc.js",
+    "web/node_modules"
   ],
   "files.exclude": {
     "**/.git": true,
@@ -42,7 +42,6 @@
     "api/tsconfig.build.json": true,
     "api/package-lock.json": true,
     "api/nest-cli.json": true,
-    "api/.prettierrc": true,
     "api/.gitignore": true,
     "web/build": true,
     "web/package-lock.json": true,
@@ -50,15 +49,16 @@
     "web/public": true,
     "api/dist": true,
     "web/src/react-app-env.d.ts": true,
-    "web/node_modules": true,
     "web/.env": true,
     "api/package.json": true,
     "api/.env": true,
-    "web/.eslintrc.js": true,
     "web/craco.config.js": true,
     "web/package.json": true,
     "web/paths.json": true,
-    "web/tsconfig.json": true
+    "web/tsconfig.json": true,
+    "api/.prettierrc": true,
+    "web/.eslintrc.js": true,
+    "web/node_modules": true
   },
   "todoist.projectId": 2263813029,
   "cSpell.ignoreWords": [
@@ -77,5 +77,8 @@
     "стор",
     "экстраредьюсеров",
     "этого"
-  ]
+  ],
+  "todo-tree.tree.scanMode": "workspace only",
+  "todo-tree.tree.disableCompactFolders": false,
+  "todo-tree.tree.showBadges": false
 }

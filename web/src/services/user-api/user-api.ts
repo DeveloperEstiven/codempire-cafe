@@ -1,5 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { baseQueryWithInterceptors } from './user-query';
+
+import { baseQueryWithInterceptors } from '@services/base-query-with-interceptors';
 
 import { IUserLogIn, IUserResponse, IUserSignUp } from './user-api.typings';
 
