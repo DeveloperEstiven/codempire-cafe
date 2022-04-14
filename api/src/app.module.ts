@@ -8,6 +8,9 @@ import { DatabaseConfig } from './shared/configs/database.config';
 import { HttpErrorFilter } from './shared/http-error.filter';
 import { UserAuthModule } from './user-auth/user-auth.module';
 import { UserModule } from './user/user.module';
+import { IngredientModule } from './ingredient/ingredient.module';
+import { ProductModule } from './product/product.module';
+import { MenuModule } from './menu/menu.module';
 
 @Module({
   imports: [
@@ -27,6 +30,9 @@ import { UserModule } from './user/user.module';
     }),
     UserModule,
     UserAuthModule,
+    IngredientModule,
+    ProductModule,
+    MenuModule,
   ],
   providers: [
     {

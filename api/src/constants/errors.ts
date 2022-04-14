@@ -1,6 +1,6 @@
 export const ERRORS = {
   invalidToken: 'Invalid token',
-  invalidPhoneNumber: 'Must be a valid number',
+  invalidPhoneNumber: 'Must be a valid phone number',
   invalidRole: 'Invalid role',
   tokenError: 'Token error',
   linkExpired: 'Link expired',

@@ -1,11 +1,11 @@
 import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 
-import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ERRORS } from 'src/constants/errors';
+import { ERRORS } from '../constants/errors';
 import { EXPIRE_JWT_TIME } from '../constants/etc';
 import { UserEntity } from '../user/entities/user.entity';
 import { UserService } from '../user/user.service';
@@ -92,6 +92,6 @@ export class UserAuthService {
     if (user && isPasswordsEqual) {
       return user;
     }
-    throw new UnauthorizedException({ message: ERRORS.validationError });
+    throw new HttpException(ERRORS.validationError, HttpStatus.BAD_REQUEST);
   }
 }

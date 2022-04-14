@@ -1,8 +1,8 @@
 import * as jwt from 'jsonwebtoken';
 
 import { HttpException, HttpStatus } from '@nestjs/common';
-import { ERRORS } from 'src/constants/errors';
-import { BEARER } from 'src/constants/etc';
+import { ERRORS } from '../../constants/errors';
+import { BEARER } from '../../constants/etc';
 
 export const validateToken = async (auth: string, roles?: string[]) => {
   const [bearer, token] = auth.split(' ');

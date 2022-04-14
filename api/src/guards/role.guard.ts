@@ -1,8 +1,8 @@
 import {
     CanActivate, ExecutionContext, HttpException, HttpStatus, Injectable
 } from '@nestjs/common';
-import { ERRORS } from 'src/constants/errors';
-import { validateToken } from 'src/shared/utils/validate-token';
+import { ERRORS } from '../constants/errors';
+import { validateToken } from '../shared/utils/validate-token';
 
 import { USER_ROLES } from '../user/user.constants';
 

@@ -3,7 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { EXPIRE_JWT_TIME } from 'src/constants/etc';
+import { EXPIRE_JWT_TIME } from '../constants/etc';
 import { UserEntity } from '../user/entities/user.entity';
 import { UserModule } from '../user/user.module';
 import { UserAuthController } from './user-auth.controller';

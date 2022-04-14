@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsPhoneNumber, IsString, MaxLength } from 'class-validator';
 
 import { ApiProperty } from '@nestjs/swagger';
-import { ERRORS } from 'src/constants/errors';
+import { ERRORS } from '../../constants/errors';
 import { AuthUserDto } from './auth-user.dto';
 
 export class CreateUserDto extends AuthUserDto {
