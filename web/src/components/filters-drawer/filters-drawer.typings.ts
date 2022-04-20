@@ -1,3 +1,5 @@
+
+
 export interface IFiltersDrawer {
   checkedState: string[];
   setCheckedState: React.Dispatch<React.SetStateAction<string[]>>;
@@ -5,8 +7,5 @@ export interface IFiltersDrawer {
 }
 
 export interface IFiltersDrawerProps extends IFiltersDrawer {
-  data: {
-    [key: string]: string[];
-  };
   isActive: boolean;
 }

@@ -30,7 +30,7 @@ export class UserAuthService {
   }
 
   private async createPublicKey() {
-    return await bcrypt.genSalt(6);
+    return bcrypt.genSalt(6);
   }
 
   private async createSecretString(publicKey: string) {
@@ -39,13 +39,13 @@ export class UserAuthService {
   }
 
   async signUp(userDto: CreateUserDto) {
-    const email = userDto.email.toLowerCase();
+    const { email, phoneNumber, password } = userDto;
     const candidateByEmail = await this.userRepository.findOne({ where: { email } });
-    const candidateByPhoneNumber = await this.userRepository.findOne({ where: { phoneNumber: userDto.phoneNumber } });
+    const candidateByPhoneNumber = await this.userRepository.findOne({ where: { phoneNumber } });
     if (candidateByEmail || candidateByPhoneNumber) {
       throw new HttpException(ERRORS.userAlreadyExist, HttpStatus.BAD_REQUEST);
     }
-    const hashPassword = await bcrypt.hash(userDto.password, 10);
+    const hashPassword = await bcrypt.hash(password, 10);
     const publicKey = await this.createPublicKey();
     const user = await this.userRepository.save({
       ...userDto,
@@ -85,10 +85,9 @@ export class UserAuthService {
   }
 
   private async validateUser(userDto: AuthUserDto) {
-    const email = userDto.email.toLowerCase();
+    const { email, password } = userDto;
     const user = await this.userService.getUserByColumn({ email });
-    const isPasswordsEqual = await bcrypt.compare(userDto.password, user.password);
-
+    const isPasswordsEqual = await bcrypt.compare(password, user.password);
     if (user && isPasswordsEqual) {
       return user;
     }

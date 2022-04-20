@@ -3,20 +3,17 @@ import { trackPromise } from 'react-promise-tracker';
 import { useNavigate } from 'react-router-dom';
 
 import { Logo } from '@components/logo';
-import { useAppSelector } from '@hooks/redux';
-import { SignUpForm } from './sign-up-form';
-
-import { useSignUpMutation } from '@services/user-api';
-
 import { PROMISES_AREA } from '@constants/promises-area';
 import { ROUTES } from '@constants/routes';
-
+import { useAppSelector } from '@hooks/redux';
+import { useSignUpMutation } from '@services/user-api';
+import { SignUpForm } from './sign-up-form';
 import { THandleSignUpSubmit } from './sign-up-form/sign-up-form.typings';
 
 export const SignUpPage: React.FC = () => {
   const [signUpUser] = useSignUpMutation();
   const navigate = useNavigate();
-  const token = useAppSelector((store) => store.user.token);
+  const { token } = useAppSelector((store) => store.user);
 
   useEffect(() => {
     if (token) {

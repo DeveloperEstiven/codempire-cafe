@@ -1,13 +1,16 @@
 import { SetStateAction } from 'react';
 import { StylesConfig } from 'react-select';
 
+import { TIcon } from '@components/icon';
+import { ISort } from 'typings/api';
+
 export interface IDropdownSelected {
-  selected: TDropdownData;
-  setSelected: React.Dispatch<SetStateAction<TDropdownData>>;
+  selected?: TDropdownData | ISort;
+  setSelected: React.Dispatch<SetStateAction<TDropdownData | ISort>>;
 }
 
 export interface IDropdownProps extends IDropdownSelected {
-  items: IDropdownData[];
+  items: IDropdownData[] | ISort[];
   placeholder?: string;
   isMulti?: boolean;
   isSearchable?: boolean;
@@ -17,6 +20,7 @@ export interface IDropdownProps extends IDropdownSelected {
 export interface IDropdownData {
   value: string;
   label: string;
+  icon?: TIcon;
 }
 
-export type TDropdownData = IDropdownData[] | IDropdownData | '';
+export type TDropdownData = IDropdownData[] | ISort | IDropdownData | '';

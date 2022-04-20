@@ -1,9 +1,12 @@
+import { GroupBase, StylesConfig } from 'react-select';
 import styled from 'styled-components';
+
+import { IDropdownData } from '@components/dropdown/dropdown.typings';
 
 export const StyledDataOrganizer = {
   FilterWrapper: styled.div`
-    margin: 0 auto;
     display: flex;
+    align-items: center;
     justify-content: center;
     margin: 10px 0px;
     gap: 20px;
@@ -17,7 +20,8 @@ export const StyledDataOrganizer = {
     justify-content: center;
     font-weight: 500;
     text-transform: uppercase;
-    width: 162px;
+    padding: 5px 10px;
+    height: 36px;
     position: relative;
     cursor: pointer;
     div {
@@ -26,7 +30,7 @@ export const StyledDataOrganizer = {
       color: ${(props) => props.theme.colors.textPrimary};
     }
     svg {
-      margin: 0 20px;
+      margin: 0 20px 0 0;
       fill: ${(props) => props.theme.colors.textPrimary};
       transition: fill ${(props) => props.theme.transition} ease 0s;
     }
@@ -35,8 +39,8 @@ export const StyledDataOrganizer = {
       &::before {
         content: '';
         position: absolute;
-        right: 15px;
-        top: 14px;
+        right: 5px;
+        top: 8px;
         width: 5px;
         height: 5px;
         border-radius: 50%;
@@ -57,4 +61,47 @@ export const StyledDataOrganizer = {
       }
     }
   `,
+};
+
+export const sortingStyles: StylesConfig<IDropdownData, boolean, GroupBase<IDropdownData>> = {
+  control: (base) => {
+    return {
+      ...base,
+      boxShadow: 'none',
+      border: '#fff',
+      cursor: 'pointer',
+      svg: {
+        height: '100%',
+        margin: '0 0 0 10px',
+      },
+    };
+  },
+  option: (base) => ({
+    ...base,
+    display: 'flex',
+    alignItems: 'center',
+    svg: {
+      width: '15px',
+      height: '100%',
+      margin: '0 10px 0 0',
+      padding: '0',
+    },
+  }),
+  menu: (base) => ({
+    ...base,
+    minWidth: '135px',
+  }),
+  dropdownIndicator: (base, state) => {
+    const changes = {
+      padding: '0',
+      svg: {
+        transition: 'all .2s ease',
+        transform: state.selectProps.menuIsOpen && 'rotate(180deg)',
+      },
+      span: {
+        borderColor: state.selectProps.menuIsOpen && '#000 transparent transparent transparent',
+      },
+    };
+    return Object.assign(base, changes);
+  },
 };

@@ -1,17 +1,16 @@
 import { FC, SetStateAction } from 'react';
-import Select, { components, DropdownIndicatorProps, MultiValue, SingleValue } from 'react-select';
+import Select, { MultiValue, SingleValue } from 'react-select';
 
 import { Chip } from '@components/chip';
-import { Icon } from '@components/icon';
-
-import { IDropdownData, IDropdownProps, TDropdownData } from './dropdown.typings';
-
+import { ISort } from 'typings/api';
+import { IconIndicator, IconOption } from './dropdown.constants';
 import { dropdownStyles, dropdownTheme, StyledDropdown as Styled } from './dropdown.styles';
+import { IDropdownData, IDropdownProps, TDropdownData } from './dropdown.typings';
 
 export const Dropdown: FC<IDropdownProps> = (props) => {
   const { isMulti, items, placeholder, selected, setSelected, isSearchable, stylesConfig: stylesObject } = props;
 
-  const handleChange = (newValue: MultiValue<IDropdownData> | SingleValue<IDropdownData>) => {
+  const handleChange = (newValue: MultiValue<IDropdownData | ISort> | SingleValue<IDropdownData | ISort>) => {
     setSelected(newValue as SetStateAction<TDropdownData>);
   };
 
@@ -27,11 +26,15 @@ export const Dropdown: FC<IDropdownProps> = (props) => {
       )}
 
       <Select
-        options={items}
+        options={items as ISort[]}
         onChange={handleChange}
-        value={selected || undefined}
+        value={selected as ISort}
         styles={stylesObject || dropdownStyles(isMulti)}
-        components={{ DropdownIndicator, IndicatorSeparator: () => null }}
+        components={{
+          Option: IconOption,
+          DropdownIndicator: IconIndicator,
+          IndicatorSeparator: () => null,
+        }}
         theme={dropdownTheme}
         placeholder={placeholder}
         controlShouldRenderValue={!isMulti}
@@ -41,13 +44,5 @@ export const Dropdown: FC<IDropdownProps> = (props) => {
         isMulti={isMulti}
       />
     </Styled.Wrapper>
-  );
-};
-
-const DropdownIndicator = (props: DropdownIndicatorProps<IDropdownData, boolean>) => {
-  return (
-    <components.DropdownIndicator {...props}>
-      <Icon type="sorting" />
-    </components.DropdownIndicator>
   );
 };

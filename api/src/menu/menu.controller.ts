@@ -1,19 +1,20 @@
 import { Repository } from 'typeorm';
 
 import {
-    Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, UseGuards
+    Body, Controller, Delete, HttpCode, HttpStatus, Param, Post, Put, Query, UseGuards
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { InjectRepository } from '@nestjs/typeorm';
+import { FilterDto } from '../dto/filter.dto';
 import { MessageSuccessDto } from '../dto/message-success.dto';
+import { PageOptionsDto } from '../dto/page-options.dto';
 import { RoleGuard } from '../guards/role.guard';
+import { USER_ROLES } from '../user/user.constants';
 import { CreateMenuDto } from './dto/create-menu.dto';
 import { UpdateMenuDto } from './dto/update-menu.dto';
 import { MenuEntity } from './entities/menu.entity';
-import { MenuService } from './menu.service';
-
-import { USER_ROLES } from '../user/user.constants';
 import { MENU_ERRORS, MENU_ROUTES } from './menu.constants';
+import { MenuService } from './menu.service';
 
 @ApiTags(MENU_ROUTES.main)
 @Controller(MENU_ROUTES.main)
@@ -38,7 +39,7 @@ export class MenuController {
     return this.menuService.addMenu(createMenuDto);
   }
 
-  @Put(MENU_ROUTES.updateMenu + '/:id')
+  @Put(MENU_ROUTES.updateMenu)
   @ApiOperation({ summary: MENU_ROUTES.updateMenu })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -51,8 +52,8 @@ export class MenuController {
   })
   @HttpCode(HttpStatus.OK)
   @UseGuards(new RoleGuard([USER_ROLES.manager]))
-  updateMenu(@Param('id') menuId: string, @Body() updateMenuDto: UpdateMenuDto) {
-    return this.menuService.updateMenu(menuId, updateMenuDto);
+  updateMenu(@Body() updateMenuDto: UpdateMenuDto) {
+    return this.menuService.updateMenu(updateMenuDto);
   }
 
   @Delete(MENU_ROUTES.removeMenu + '/:id')
@@ -72,15 +73,15 @@ export class MenuController {
     return this.menuService.removeMenu(menuId);
   }
 
-  @Get(MENU_ROUTES.getAllMenus)
-  @ApiOperation({ summary: MENU_ROUTES.getAllMenus })
+  @Post(MENU_ROUTES.getMenus)
+  @ApiOperation({ summary: MENU_ROUTES.getMenus })
   @ApiResponse({
     status: HttpStatus.OK,
-    description: MENU_ROUTES.getAllMenus,
+    description: MENU_ROUTES.getMenus,
     type: [MenuEntity],
   })
   @HttpCode(HttpStatus.OK)
-  async getAllMenus() {
-    return await this.menuRepository.find();
+  async getMenus(@Body() filter: FilterDto, @Query() pageOptionsDto: PageOptionsDto) {
+    return this.menuService.getMenus(pageOptionsDto, filter);
   }
 }

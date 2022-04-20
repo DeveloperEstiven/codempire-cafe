@@ -1,4 +1,4 @@
 export interface ILoaderProps {
-  area: string;
+  area?: string;
   isWithoutArea?: boolean;
 }

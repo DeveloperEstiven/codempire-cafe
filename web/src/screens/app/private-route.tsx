@@ -1,9 +1,8 @@
 import { FC } from 'react';
 import { Navigate } from 'react-router-dom';
 
-import { useAppSelector } from '../../hooks/redux';
-
 import { ROUTES } from '@constants/routes';
+import { useAppSelector } from '@hooks/redux';
 
 interface IPrivateRouteProps {
   redirectPath?: string;
@@ -13,5 +12,6 @@ interface IPrivateRouteProps {
 export const PrivateRoute: FC<IPrivateRouteProps> = (props) => {
   const { children, redirectPath } = props;
   const isToken = useAppSelector((store) => store.user.token);
+
   return isToken ? children : <Navigate to={redirectPath || ROUTES.logIn} />;
 };

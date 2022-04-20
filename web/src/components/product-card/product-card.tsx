@@ -2,17 +2,15 @@ import { useEffect } from 'react';
 import Swal from 'sweetalert2';
 
 import { Button } from '@styles/components/button';
-
 import { ProductCardConfig } from './product-card.constants';
-
-import { IProductCardProps } from './product-card.typings';
-
 import { StyledCard as Styled } from './product-card.styles';
 import './product-card.styles.css';
+import { IProductCardProps } from './product-card.typings';
 
 export const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
-  const { name, description, price, image /* , ingredients */ } = product;
+  const { name, description, price, image } = product;
 
+  const weight = 'weight' in product ? product.weight : null;
   const onExpandCard = () => Swal.fire(ProductCardConfig(product));
 
   useEffect(() => () => Swal.close(), []);
@@ -23,16 +21,19 @@ export const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
         <Styled.ImageBox onClick={onExpandCard}>
           <img src={image} alt="product-card" />
         </Styled.ImageBox>
-        <div>
+        <>
           <Styled.Description>
             <h4 onClick={onExpandCard}>{name}</h4>
             <p>{description}</p>
           </Styled.Description>
           <Styled.Footer>
-            <span>{price}</span>
+            <Styled.FooterBox>
+              {weight && <span>{weight}</span>}
+              <span>{price}uah</span>
+            </Styled.FooterBox>
             <Button color="black">to cart</Button>
           </Styled.Footer>
-        </div>
+        </>
       </Styled.Card>
     </Styled.Wrapper>
   );

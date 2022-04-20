@@ -2,7 +2,7 @@ import { Icon } from '@components/icon';
 import { ChipBox } from './chip.styles';
 import { IChipProps } from './chip.typings';
 
-export const Chip: React.FC<IChipProps> = ({ label, value, selected, setSelected }) => {
+export const Chip: React.FC<IChipProps> = ({ value, selected, setSelected }) => {
   const removeItem = (value: string) => {
     if (Array.isArray(selected)) {
       const rest = selected.filter((el) => el.value !== value);
@@ -13,7 +13,7 @@ export const Chip: React.FC<IChipProps> = ({ label, value, selected, setSelected
   const handleDelete = (value: string) => () => removeItem(value);
   return (
     <ChipBox>
-      <span>{label}</span>
+      <span>{value}</span>
       <div onClick={handleDelete(value)}>
         <Icon type="removeItem" />
       </div>

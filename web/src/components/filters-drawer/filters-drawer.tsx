@@ -2,19 +2,17 @@ import SimpleBar from 'simplebar-react';
 
 import { FilterGroup } from '@components/filter-group';
 import { Icon } from '@components/icon';
+import { Loader } from '@components/loader';
+import { useGetProductCategoriesQuery } from '@services/main-page-api';
 import { Button } from '@styles/components/button';
 import { capitalize } from '@utils/capitalize';
-
-import { useFiltersDrawerState } from './filters-drawer.state';
-
-import { IFiltersDrawerProps } from './filters-drawer.typings';
-
 import 'react-modern-drawer/dist/index.css';
 import 'simplebar/dist/simplebar.min.css';
+import { useFiltersDrawerState } from './filters-drawer.state';
 import { StyledFiltersDrawer as Styled } from './filters-drawer.styles';
+import { IFiltersDrawerProps } from './filters-drawer.typings';
 
 export const FiltersDrawer: React.FC<IFiltersDrawerProps> = ({
-  data,
   isActive,
   setIsActive,
   checkedState,
@@ -26,26 +24,31 @@ export const FiltersDrawer: React.FC<IFiltersDrawerProps> = ({
     setCheckedState,
   });
 
+  const { data: categories } = useGetProductCategoriesQuery();
+
   return (
     <Styled.Drawer open={isActive} duration={200} onClose={onCloseDrawer} direction="right">
       <Styled.Wrapper>
         <SimpleBar style={{ height: '89%' }}>
-          <div>
+          <>
             <Styled.Header>
               <Icon type="filter" />
               Filters
             </Styled.Header>
 
-            {Object.keys(data).map((group) => (
-              <FilterGroup
-                key={group}
-                name={capitalize(group)}
-                data={data[group]}
-                handleCheck={handleCheck}
-                checkedState={checkedState}
-              />
-            ))}
-          </div>
+            {!categories && <Loader />}
+
+            {categories &&
+              Object.keys(categories).map((group) => (
+                <FilterGroup
+                  key={group}
+                  name={capitalize(group)}
+                  data={categories[group]}
+                  handleCheck={handleCheck}
+                  checkedState={checkedState}
+                />
+              ))}
+          </>
         </SimpleBar>
         <Button color="black" onClick={onFiltersApply}>
           Apply

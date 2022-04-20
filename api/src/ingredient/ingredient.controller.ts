@@ -7,12 +7,11 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MessageSuccessDto } from '../dto/message-success.dto';
 import { RoleGuard } from '../guards/role.guard';
+import { USER_ROLES } from '../user/user.constants';
 import { CreateIngredientDto } from './dto/create-ingredient.dto';
 import { IngredientEntity } from './entities/ingredient.entity';
-import { IngredientService } from './ingredient.service';
-
-import { USER_ROLES } from '../user/user.constants';
 import { INGREDIENT_ERRORS, INGREDIENT_ROUTES } from './ingredient.constants';
+import { IngredientService } from './ingredient.service';
 
 @ApiTags(INGREDIENT_ROUTES.main)
 @Controller(INGREDIENT_ROUTES.main)
@@ -63,6 +62,6 @@ export class IngredientController {
   })
   @HttpCode(HttpStatus.OK)
   async getAllIngredients() {
-    return await this.ingredientRepository.find();
+    return this.ingredientRepository.find();
   }
 }

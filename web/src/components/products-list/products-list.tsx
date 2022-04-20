@@ -1,16 +1,31 @@
+import InfiniteScroll from 'react-infinite-scroll-component';
+
+import { Loader } from '@components/loader';
 import { ProductCard } from '@components/product-card';
+import { StyledProductsList as Styled } from '@styles/components/products-list';
+import { useProductsListState } from './products-list.state';
 
-import { IProductsListProps } from './products-list.typings';
+export const ProductsList: React.FC = () => {
+  const { isLoading, products, hasMore, fetchMore } = useProductsListState();
 
-import { StyledProductsList as Styled } from './products-list.styles';
-
-export const ProductsList: React.FC<IProductsListProps> = ({ selectedType, menus, products }) => {
   return (
-    <Styled.List>
-      {selectedType === 'menu' && menus.map((menu) => <ProductCard key={menu.id} product={menu} />)}
-      {!menus.length && selectedType === 'menu' && <Styled.NotFound>Menus not found</Styled.NotFound>}
-      {selectedType === 'product' && products.map((product) => <ProductCard key={product.id} product={product} />)}
-      {!products.length && selectedType === 'product' && <Styled.NotFound>Products not found</Styled.NotFound>}
-    </Styled.List>
+    <InfiniteScroll
+      dataLength={products.length}
+      style={{ overflow: 'initial' }}
+      next={fetchMore}
+      hasMore={hasMore}
+      loader={<></>}
+    >
+      <Styled.List>
+        {products.map((menu) => (
+          <ProductCard key={menu.id} product={menu} />
+        ))}
+      </Styled.List>
+      {isLoading && (
+        <Styled.LoaderBox>
+          <Loader isWithoutArea />
+        </Styled.LoaderBox>
+      )}
+    </InfiniteScroll>
   );
 };

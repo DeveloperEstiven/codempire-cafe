@@ -69,7 +69,6 @@ export const StyledCard = {
       overflow: hidden;
       text-overflow: ellipsis;
       letter-spacing: 0.25px;
-
       &::after {
         content: '';
         position: absolute;
@@ -97,6 +96,16 @@ export const StyledCard = {
     button {
       height: 40px;
       margin-top: 10px;
+    }
+  `,
+  FooterBox: styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    span {
+      display: block;
+      width: 50%;
     }
   `,
 };

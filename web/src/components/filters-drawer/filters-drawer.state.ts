@@ -1,9 +1,7 @@
 import { useAppDispatch } from '@hooks/redux';
-import { setIsFilterApplied } from '@store/reducers/main-page';
+import { setActiveFilter, setIsFilterApplied } from '@store/reducers/main-page';
 import { showScrollBar } from '@utils/scrollbar';
-
 import { TInputEvent } from 'typings/api';
-
 import { IFiltersDrawer } from './filters-drawer.typings';
 
 export const useFiltersDrawerState = (props: IFiltersDrawer) => {
@@ -30,6 +28,7 @@ export const useFiltersDrawerState = (props: IFiltersDrawer) => {
     dispatch(setIsFilterApplied(!!checkedState.length));
     showScrollBar();
     setIsActive(false);
+    dispatch(setActiveFilter(checkedState));
   };
 
   return {

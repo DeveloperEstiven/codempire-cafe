@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const StyledAsideMenu = {
   Aside: styled.aside`
+    z-index: 1059;
     padding: 20px 10px;
     min-height: 100vh;
     position: sticky;
@@ -46,6 +47,7 @@ export const StyledAsideMenu = {
 
   Search: styled.div<{ isActive: boolean }>`
     position: relative;
+    background-color: #fff;
     input {
       transform: translate(${(props) => (props.isActive ? '0' : '-200%')}, 0%);
       transition: transform ${(props) => props.theme.transition} ease;

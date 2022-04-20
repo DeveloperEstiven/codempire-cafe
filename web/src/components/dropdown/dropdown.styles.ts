@@ -2,7 +2,6 @@ import { StylesConfig, Theme } from 'react-select';
 import styled from 'styled-components';
 
 import { theme } from '@styles/theme';
-
 import { IDropdownData } from './dropdown.typings';
 
 export const StyledDropdown = {
