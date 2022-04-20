@@ -1,3 +1,5 @@
+import { ReactComponent as arrowBottom } from '@assets/icons/arrow-down.svg';
+import { ReactComponent as arrowUp } from '@assets/icons/arrow-up.svg';
 import { ReactComponent as borderedStar } from '@assets/icons/bordered-star.svg';
 import { ReactComponent as cart } from '@assets/icons/cart.svg';
 import { ReactComponent as filledStar } from '@assets/icons/filled-star.svg';
@@ -32,6 +34,8 @@ const ICONS = {
   search,
   filter,
   sorting,
+  arrowUp,
+  arrowBottom,
 };
 
 export type TIcon = keyof typeof ICONS;

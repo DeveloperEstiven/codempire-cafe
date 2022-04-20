@@ -1,7 +1,8 @@
-import { IsBase64, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import {
+    IsBase64, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString, IsUUID
+} from 'class-validator';
 
 import { ApiProperty } from '@nestjs/swagger';
-
 import { PRODUCT_CATEGORY } from '../product.constants';
 
 export class CreateProductDto {
@@ -32,8 +33,14 @@ export class CreateProductDto {
 
   @ApiProperty({ example: '150uah', description: 'Product price' })
   @IsNotEmpty()
-  public price: string;
+  @IsNumber()
+  @IsPositive()
+  public price: number;
 
   @ApiProperty({ example: '300g', description: 'Product weight' })
   public weight: string;
+
+  @ApiProperty({ example: '[id, id, ..]', description: 'ingredient ids' })
+  @IsUUID('all', { each: true })
+  public ingredientIds: string[];
 }

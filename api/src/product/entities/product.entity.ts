@@ -3,7 +3,6 @@ import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from 't
 import { ApiProperty } from '@nestjs/swagger';
 import { IngredientEntity } from '../../ingredient/entities/ingredient.entity';
 import { MenuEntity } from '../../menu/entities/menu.entity';
-
 import { PRODUCT_CATEGORY, PRODUCT_ROUTES } from '../product.constants';
 
 @Entity({ name: PRODUCT_ROUTES.main })
@@ -28,7 +27,7 @@ export class ProductEntity {
   @Column()
   public image: string;
 
-  @ApiProperty({ example: 'drink', description: 'Product category' })
+  @ApiProperty({ example: 'drink', description: 'Product category', enum: PRODUCT_CATEGORY })
   @Column({ type: 'enum', enum: PRODUCT_CATEGORY })
   public category: PRODUCT_CATEGORY;
 
@@ -36,18 +35,19 @@ export class ProductEntity {
   @Column()
   public subcategory: string;
 
-  @ApiProperty({ example: '150uah', description: 'Product price' })
+  @ApiProperty({ example: '150', description: 'Product price' })
   @Column()
-  public price: string;
+  public price: number;
 
   @ApiProperty({ example: '300g', description: 'Product weight' })
   @Column()
   public weight: string;
 
+  @ApiProperty({ type: IngredientEntity, description: 'ingredients', isArray: true })
   @ManyToMany(() => IngredientEntity, (ingredient) => ingredient.products)
   @JoinTable()
   public ingredients: IngredientEntity[];
 
-  @ManyToMany(() => MenuEntity, (menu: MenuEntity) => menu.products)
+  @ManyToMany(() => MenuEntity, (menu) => menu.products)
   public menus: MenuEntity[];
 }

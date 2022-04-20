@@ -1,5 +1,5 @@
-import { IMenuResponse, IProductResponse } from 'typings/api';
+import { IMenu, IProduct } from 'typings/api';
 
 export interface IProductCardProps {
-  product: IMenuResponse | IProductResponse;
+  product: IMenu | IProduct;
 }

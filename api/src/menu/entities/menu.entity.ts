@@ -2,7 +2,6 @@ import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from 't
 
 import { ApiProperty } from '@nestjs/swagger';
 import { ProductEntity } from '../../product/entities/product.entity';
-
 import { MENU_ROUTES } from '../menu.constants';
 
 @Entity(MENU_ROUTES.main)
@@ -26,10 +25,11 @@ export class MenuEntity {
   @Column()
   public image: string;
 
-  @ApiProperty({ example: '1200uah', description: 'Menu price' })
+  @ApiProperty({ example: '1200', description: 'Menu price' })
   @Column()
-  public price: string;
+  public price: number;
 
+  @ApiProperty({ type: ProductEntity, description: 'products', isArray: true })
   @JoinTable()
   @ManyToMany(() => ProductEntity, (product: ProductEntity) => product.menus)
   public products: ProductEntity[];

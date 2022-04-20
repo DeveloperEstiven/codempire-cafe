@@ -1,19 +1,20 @@
 import { Repository } from 'typeorm';
 
 import {
-    Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, UseGuards
+    Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query, UseGuards
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { InjectRepository } from '@nestjs/typeorm';
+import { FilterDto } from '../dto/filter.dto';
 import { MessageSuccessDto } from '../dto/message-success.dto';
+import { PageOptionsDto } from '../dto/page-options.dto';
 import { RoleGuard } from '../guards/role.guard';
+import { USER_ROLES } from '../user/user.constants';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ProductEntity } from './entities/product.entity';
-import { ProductService } from './product.service';
-
-import { USER_ROLES } from '../user/user.constants';
 import { PRODUCT_ERRORS, PRODUCT_ROUTES } from './product.constants';
+import { ProductService } from './product.service';
 
 @ApiTags(PRODUCT_ROUTES.main)
 @Controller(PRODUCT_ROUTES.main)
@@ -38,7 +39,7 @@ export class ProductController {
     return this.productService.addProduct(createProductDto);
   }
 
-  @Put(PRODUCT_ROUTES.updateProduct + '/:id')
+  @Put(PRODUCT_ROUTES.updateProduct)
   @ApiOperation({ summary: PRODUCT_ROUTES.updateProduct })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -51,8 +52,8 @@ export class ProductController {
   })
   @HttpCode(HttpStatus.OK)
   @UseGuards(new RoleGuard([USER_ROLES.manager]))
-  updateProduct(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
-    return this.productService.updateProduct(id, updateProductDto);
+  updateProduct(@Body() updateProductDto: UpdateProductDto) {
+    return this.productService.updateProduct(updateProductDto);
   }
 
   @Delete(PRODUCT_ROUTES.removeProduct + '/:id')
@@ -72,15 +73,26 @@ export class ProductController {
     return this.productService.removeProduct(id);
   }
 
-  @Get(PRODUCT_ROUTES.getAllProducts)
-  @ApiOperation({ summary: PRODUCT_ROUTES.getAllProducts })
+  @Post(PRODUCT_ROUTES.getProducts)
+  @ApiOperation({ summary: PRODUCT_ROUTES.getProducts })
   @ApiResponse({
     status: HttpStatus.OK,
-    description: PRODUCT_ROUTES.getAllProducts,
+    description: PRODUCT_ROUTES.getProducts,
     type: [ProductEntity],
   })
   @HttpCode(HttpStatus.OK)
-  async getAllProducts() {
-    return await this.productRepository.find();
+  async getProducts(@Body() filter: FilterDto, @Query() pageOptionsDto: PageOptionsDto) {
+    return this.productService.getProducts(pageOptionsDto, filter);
+  }
+
+  @Get(PRODUCT_ROUTES.getProductCategories)
+  @ApiOperation({ summary: PRODUCT_ROUTES.getProductCategories })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: PRODUCT_ROUTES.getProductCategories,
+  })
+  @HttpCode(HttpStatus.OK)
+  async getProductCategories() {
+    return this.productService.getProductCategories();
   }
 }

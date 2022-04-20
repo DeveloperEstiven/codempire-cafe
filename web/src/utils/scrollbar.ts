@@ -8,3 +8,7 @@ export const showScrollBar = () => {
   document.body.style.overflow = '';
   document.body.style.width = 'auto';
 };
+
+export const hideScrollBarBox = () => {
+  document.body.style.overflowY = 'scroll';
+};

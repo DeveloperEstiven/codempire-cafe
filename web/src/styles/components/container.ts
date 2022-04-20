@@ -5,7 +5,6 @@ import { media } from '@styles/media';
 export const ContainerWrapper = styled.div`
   height: 100%;
   display: flex;
-  /* margin-left: ${(props) => props.theme.asideMenuWidth}; */
 `;
 
 export const Container = styled.div`

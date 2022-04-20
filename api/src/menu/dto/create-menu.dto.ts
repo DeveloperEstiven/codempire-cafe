@@ -1,4 +1,4 @@
-import { IsBase64, IsNotEmpty, IsString } from 'class-validator';
+import { IsBase64, IsNotEmpty, IsNumber, IsPositive, IsString, IsUUID } from 'class-validator';
 
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -21,5 +21,11 @@ export class CreateMenuDto {
 
   @ApiProperty({ example: '1200uah', description: 'Menu price' })
   @IsNotEmpty()
-  public price: string;
+  @IsNumber()
+  @IsPositive()
+  public price: number;
+
+  @ApiProperty({ example: '[id, id, ..]', description: 'products ids' })
+  @IsUUID('all', { each: true })
+  public productIds: string[];
 }

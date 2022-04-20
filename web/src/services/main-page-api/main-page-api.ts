@@ -1,26 +1,38 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-
 import { baseQueryWithInterceptors } from '@services/base-query-with-interceptors';
-import { IMenuResponse, IProductResponse } from 'typings/api';
+import { transformImage } from '@utils/transform-response';
+import { ICategories, IPaginateBody, TMenuResponse, TProductResponse } from 'typings/api';
 
 export const mainPageApi = createApi({
   reducerPath: 'mainPageApi',
   baseQuery: baseQueryWithInterceptors,
-
+  tagTypes: ['menu', 'product'],
   endpoints: (builder) => ({
-    getAllMenus: builder.query<IMenuResponse[], void>({
-      query: () => ({
-        url: '/menu/get-all-menus',
-        method: 'GET',
+    getMenus: builder.mutation<TMenuResponse, IPaginateBody>({
+      query: (body) => ({
+        url: `/menu/get-menus?page=${body.queries.page}&limit=${body.queries.limit || 10}`,
+        method: 'POST',
+        body: body.filter,
       }),
+      transformResponse: (response: TMenuResponse) => transformImage(response),
+      invalidatesTags: ['menu'],
     }),
-    getAllProducts: builder.query<IProductResponse[], void>({
-      query: () => ({
-        url: '/product/get-all-products',
-        method: 'GET',
+    getProducts: builder.mutation<TProductResponse, IPaginateBody>({
+      query: (body) => ({
+        url: `/product/get-products?page=${body.queries.page}&limit=${body.queries.limit || 10}`,
+        method: 'POST',
+        body: body.filter,
       }),
+      transformResponse: (response: TProductResponse) => transformImage(response),
+      invalidatesTags: ['product'],
+    }),
+    getProductCategories: builder.query<ICategories, void>({
+      query: () => ({
+        url: `/product/get-product-categories`,
+      }),
+      providesTags: ['product'],
     }),
   }),
 });
 
-export const { useGetAllMenusQuery, useLazyGetAllProductsQuery } = mainPageApi;
+export const { useGetMenusMutation, useGetProductsMutation, useGetProductCategoriesQuery } = mainPageApi;

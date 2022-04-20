@@ -2,7 +2,6 @@ import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 import { ApiProperty } from '@nestjs/swagger';
 import { ProductEntity } from '../../product/entities/product.entity';
-
 import { INGREDIENT_ROUTES } from '../ingredient.constants';
 
 @Entity({ name: INGREDIENT_ROUTES.main })

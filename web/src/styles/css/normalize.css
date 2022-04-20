@@ -90,11 +90,10 @@ input:-internal-autofill-selected {
   width: 7px;
 }
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: #fff;
 }
 ::-webkit-scrollbar-thumb {
   border-radius: 30px;
-
   background: #808080;
 }
 ::-webkit-scrollbar-thumb:hover {

@@ -1,20 +1,25 @@
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+
 import { Dropdown } from '@components/dropdown';
+import { TDropdownData } from '@components/dropdown/dropdown.typings';
 import { Icon } from '@components/icon';
 import { useAppSelector } from '@hooks/redux';
-
-import { sortingStyles } from './data-organizer.constants';
-
+import { setSort } from '@store/reducers/main-page';
+import { ISort } from 'typings/api';
+import { useAppDispatch } from '../../hooks/redux';
+import { sortItems } from './data-organizer.constants';
+import { sortingStyles, StyledDataOrganizer as Styled } from './data-organizer.styles';
 import { IDataOrganizerProps } from './data-organizer.typings';
 
-import { StyledDataOrganizer as Styled } from './data-organizer.styles';
+export const DataOrganizer: React.FC<IDataOrganizerProps> = ({ onFilterClick }) => {
+  const { isFilterApplied } = useAppSelector((store) => store.mainPage);
+  const [selectedSort, setSelectedSort] = useState<ISort>();
+  const dispatch = useAppDispatch();
 
-export const DataOrganizer: React.FC<IDataOrganizerProps> = ({
-  onFilterClick,
-  sortItems,
-  selectedSort,
-  setSelectedSort,
-}) => {
-  const isFilterApplied = useAppSelector((store) => store.mainPage.isFilterApplied);
+  useEffect(() => {
+    dispatch(setSort(selectedSort as ISort));
+  }, [selectedSort]);
+
   return (
     <Styled.FilterWrapper>
       <Styled.FilterItem onClick={onFilterClick} isFilterApplied={isFilterApplied}>
@@ -27,7 +32,7 @@ export const DataOrganizer: React.FC<IDataOrganizerProps> = ({
           placeholder="sorting by"
           stylesConfig={sortingStyles}
           selected={selectedSort}
-          setSelected={setSelectedSort}
+          setSelected={setSelectedSort as Dispatch<SetStateAction<TDropdownData>>}
           items={sortItems}
         />
       </Styled.FilterItem>

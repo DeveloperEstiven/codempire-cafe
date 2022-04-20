@@ -1,29 +1,20 @@
-
-
 import { DataOrganizer } from '@components/data-organizer';
 import { FiltersDrawer } from '@components/filters-drawer';
+import { MenusList } from '@components/menus-list';
 import { ProductsList } from '@components/products-list';
-
 import { useMainPage } from './main-page.state';
-
 import { StyledMainPage as Styled } from './main-page.styles';
 
 export const MainPage: React.FC = () => {
   const {
     selectedType,
-    selectedSort,
-    searchedMenus,
-    searchedProducts,
     onProductTypeClick,
     onMenuTypeClick,
     setIsFilterActive,
-    setSelectedSort,
     onFilterClick,
     isFilterActive,
     checkedFilterState,
     setCheckedFilterState,
-    filterData,
-    sortItems,
   } = useMainPage();
 
   return (
@@ -31,7 +22,6 @@ export const MainPage: React.FC = () => {
       <FiltersDrawer
         checkedState={checkedFilterState}
         setCheckedState={setCheckedFilterState}
-        data={filterData}
         isActive={isFilterActive}
         setIsActive={setIsFilterActive}
       />
@@ -45,14 +35,9 @@ export const MainPage: React.FC = () => {
         </Styled.ProductTypeItem>
       </Styled.ProductType>
 
-      <DataOrganizer
-        onFilterClick={onFilterClick}
-        sortItems={sortItems}
-        selectedSort={selectedSort}
-        setSelectedSort={setSelectedSort}
-      />
+      <DataOrganizer onFilterClick={onFilterClick} />
 
-      <ProductsList selectedType={selectedType} menus={searchedMenus} products={searchedProducts} />
+      {selectedType === 'menu' ? <MenusList /> : <ProductsList />}
     </Styled.MainPage>
   );
 };
