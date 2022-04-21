@@ -1,30 +1,33 @@
 import { useFormik } from 'formik';
+import { useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 
 import { FormInput } from '@components/form-input';
 import { Loader } from '@components/loader';
+import { PROMISES_AREA } from '@constants/promises-area';
+import { ROUTES } from '@constants/routes';
+import { IUserLogIn } from '@services/user-api/user-api.typings';
 import { Button } from '@styles/components/button';
 import { Form, FormButtonsWrapper, FormLinks } from '@styles/components/form';
 import { Space } from '@styles/components/space';
 import { capitalize } from '@utils/capitalize';
-
-import { IUserLogIn } from '@services/user-api/user-api.typings';
-
-import { PROMISES_AREA } from '@constants/promises-area';
-import { ROUTES } from '@constants/routes';
 import {
     logInFieldNames, logInInitialValues, logInValidationSchema
 } from './log-in-form.constants';
-
 import { ILogInFormProps } from './log-in-form.typings';
 
 export const LogInForm: React.FC<ILogInFormProps> = ({ onLogIn }) => {
   const navigate = useNavigate();
-  const { handleSubmit, handleChange, values, errors, touched } = useFormik<IUserLogIn>({
-    initialValues: logInInitialValues,
-    validationSchema: logInValidationSchema,
-    onSubmit: onLogIn,
-  });
+  const { handleSubmit, handleChange, values, errors, touched, isValid, handleBlur, validateForm } =
+    useFormik<IUserLogIn>({
+      initialValues: logInInitialValues,
+      validationSchema: logInValidationSchema,
+      onSubmit: onLogIn,
+    });
+
+  useEffect(() => {
+    (() => validateForm())();
+  }, []);
 
   const onSkip = () => navigate(ROUTES.mainPage);
 
@@ -35,6 +38,7 @@ export const LogInForm: React.FC<ILogInFormProps> = ({ onLogIn }) => {
           <FormInput
             key={name}
             value={values[name]}
+            onBlur={handleBlur}
             onChange={handleChange}
             field={{ touched: touched[name], errorMessage: errors[name] }}
             name={name}
@@ -51,7 +55,7 @@ export const LogInForm: React.FC<ILogInFormProps> = ({ onLogIn }) => {
 
       <FormButtonsWrapper>
         <Loader area={PROMISES_AREA.logIn}>
-          <Button color="black" type="submit">
+          <Button color="black" type="submit" disabled={!isValid}>
             next
           </Button>
         </Loader>

@@ -9,7 +9,9 @@ export interface IInputProps {
   isTextArea?: boolean;
   isAutoFocus?: boolean;
   placeholder?: string;
+  onKeyDown?: React.KeyboardEventHandler<HTMLInputElement>;
   onChange: (e: TInputEvent) => void;
+  onBlur?: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   value: string;
   title?: string;
 }
