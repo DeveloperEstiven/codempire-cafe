@@ -3,7 +3,7 @@ import Swal, { SweetAlertOptions } from 'sweetalert2';
 import { TUserActionsNames } from '@services/user-api';
 import { IError } from 'typings/api';
 
-const errorMixin = (options: SweetAlertOptions) =>
+export const errorMixin = (options: SweetAlertOptions) =>
   Swal.mixin({
     ...options,
     icon: 'error',
@@ -11,7 +11,7 @@ const errorMixin = (options: SweetAlertOptions) =>
     showConfirmButton: true,
   });
 
-const authMixin = (options: SweetAlertOptions) =>
+export const successMixin = (options: SweetAlertOptions) =>
   Swal.mixin({
     ...options,
     toast: true,
@@ -31,9 +31,9 @@ const error = (m?: string) => ({
 });
 
 const auth = {
-  logIn: authMixin({ title: 'Successfully logged' }),
-  signUp: authMixin({ title: 'Signed in successfully' }),
-  logOut: authMixin({ title: 'Logout successful' }),
+  logIn: successMixin({ title: 'Successfully logged' }),
+  signUp: successMixin({ title: 'Signed in successfully' }),
+  logOut: successMixin({ title: 'Logout successful' }),
 };
 
 type TPopUpError = keyof ReturnType<typeof error>;

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
 import { TInputEvent } from 'typings/api';
-
 import { IUseInputProps } from './input.typings';
 
 export const useInput = (props: IUseInputProps) => {

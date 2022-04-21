@@ -10,7 +10,7 @@ export const Form = styled.form`
 `;
 
 export const FormButtonsWrapper = styled.div`
-  margin-top: 90px;
+  margin: 90px 0 30px;
   width: 100%;
   display: flex;
   flex-direction: column;

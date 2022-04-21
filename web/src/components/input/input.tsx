@@ -1,26 +1,40 @@
 import PhoneInput from 'react-phone-input-2';
 
 import { Icon } from '@components/icon';
-
 import { useInput } from './input.state';
-
+import { StyledInput as Styled } from './input.styles';
 import { IInputProps } from './input.typings';
 
-import { StyledInput as Styled } from './input.styles';
-
 export const Input: React.FC<IInputProps> = (props) => {
-  const { type = 'text', name, value, onChange, title, placeholder, isPhoneNumber, isTextArea, isAutoFocus } = props;
+  const {
+    type = 'text',
+    name,
+    value,
+    onChange,
+    title,
+    placeholder,
+    isPhoneNumber,
+    isTextArea,
+    isAutoFocus,
+    onBlur,
+    onKeyDown,
+  } = props;
   const { isFocus, handleFocus, onPhoneChange, isPassword, toggleIsPassword } = useInput({
     type,
     handlePhoneChange: onChange,
   });
+
+  const handleBlur = (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    onBlur && onBlur(event);
+    handleFocus();
+  };
 
   return (
     <>
       {title && <Styled.Title>{title}</Styled.Title>}
       <Styled.Wrapper>
         <Styled.Block>
-          {isTextArea && <Styled.TextArea onBlur={handleFocus} onFocus={handleFocus} />}
+          {isTextArea && <Styled.TextArea onBlur={handleBlur} onFocus={handleFocus} />}
           {isPhoneNumber && (
             <PhoneInput
               inputProps={{
@@ -29,7 +43,7 @@ export const Input: React.FC<IInputProps> = (props) => {
               specialLabel={''}
               countryCodeEditable={false}
               country={'ua'}
-              onBlur={handleFocus}
+              onBlur={handleBlur}
               onFocus={handleFocus}
               onChange={onPhoneChange}
               value={value}
@@ -37,8 +51,9 @@ export const Input: React.FC<IInputProps> = (props) => {
           )}
           {!isTextArea && !isPhoneNumber && (
             <Styled.Input
+              onKeyDown={onKeyDown}
               autoFocus={isAutoFocus}
-              onBlur={handleFocus}
+              onBlur={handleBlur}
               onFocus={handleFocus}
               name={name}
               value={value}

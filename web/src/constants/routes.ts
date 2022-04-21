@@ -5,7 +5,12 @@ export const ROUTES = {
   signUp: '/sign-up',
   mainPage: '/main-page',
   ordersPage: '/orders-page',
-  ProfilePage: '/profile-page',
+  profilePage: '/profile-page',
+  editProfile: '/edit-profile',
+  changePassword: '/change-password',
+  privacyPolicy: '/privacy-policy',
+  deleteAccount: '/delete-account',
+  addAddresses: '/add-addresses',
   default: '*',
 } as const;
 

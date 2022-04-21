@@ -1,32 +1,34 @@
 import { useFormik } from 'formik';
+import { useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import 'yup-phone';
 
 import { FormInput } from '@components/form-input';
 import { Loader } from '@components/loader';
+import { PROMISES_AREA } from '@constants/promises-area';
+import { ROUTES } from '@constants/routes';
+import { IUserSignUp } from '@services/user-api/user-api.typings';
 import { Button } from '@styles/components/button';
 import { Form, FormButtonsWrapper, FormLinks } from '@styles/components/form';
 import { Space } from '@styles/components/space';
 import { splitCapitalize } from '@utils/capitalize';
-
-import { IUserSignUp } from '@services/user-api/user-api.typings';
-
-import { PROMISES_AREA } from '@constants/promises-area';
-import { ROUTES } from '@constants/routes';
 import {
     signUpFieldNames, signUpInitialValues, signUpValidationSchema
 } from './sign-up-form.constants';
-
 import { SignUpFormProps } from './sign-up-form.typings';
 
 export const SignUpForm: React.FC<SignUpFormProps> = ({ onSignUp }) => {
   const navigate = useNavigate();
 
-  const { handleSubmit, handleChange, values, errors, touched } = useFormik<IUserSignUp>({
-    initialValues: signUpInitialValues,
-    validationSchema: signUpValidationSchema,
-    onSubmit: onSignUp,
-  });
+  const { handleSubmit, handleChange, values, errors, touched, isValid, handleBlur, validateForm } =
+    useFormik<IUserSignUp>({
+      initialValues: signUpInitialValues,
+      validationSchema: signUpValidationSchema,
+      onSubmit: onSignUp,
+    });
+
+  useEffect(() => {
+    (() => validateForm())();
+  }, []);
 
   const onSkip = () => navigate(ROUTES.mainPage);
 
@@ -38,6 +40,7 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({ onSignUp }) => {
             key={name}
             value={values[name]}
             onChange={handleChange}
+            onBlur={handleBlur}
             field={{ touched: touched[name], errorMessage: errors[name] }}
             name={name}
             isPhoneNumber={name === 'phoneNumber'}
@@ -53,7 +56,7 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({ onSignUp }) => {
 
       <FormButtonsWrapper>
         <Loader area={PROMISES_AREA.signUp}>
-          <Button color="black" type="submit">
+          <Button color="black" type="submit" disabled={!isValid}>
             create
           </Button>
         </Loader>
