@@ -45,6 +45,30 @@ export const StyledAsideMenu = {
     }
   `,
 
+  Cart: styled.div<{ count: number }>`
+    position: relative;
+
+    &::after {
+      transition: opacity 0.3s linear;
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      content: '${(props) => props.count}';
+      width: 12px;
+      height: 12px;
+      letter-spacing: 0;
+      font-size: 8px;
+      font-weight: 500;
+      border-radius: 50%;
+      display: flex;
+      opacity: ${(props) => (props.count ? 1 : 0)};
+      align-items: center;
+      justify-content: center;
+      background-color: ${(props) => props.theme.colors.textPrimary};
+      color: #fff;
+    }
+  `,
+
   Search: styled.div<{ isActive: boolean }>`
     position: relative;
     background-color: #fff;

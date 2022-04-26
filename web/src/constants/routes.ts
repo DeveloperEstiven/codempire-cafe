@@ -11,6 +11,7 @@ export const ROUTES = {
   privacyPolicy: '/privacy-policy',
   deleteAccount: '/delete-account',
   addAddresses: '/add-addresses',
+  cart: '/cart',
   default: '*',
 } as const;
 

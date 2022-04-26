@@ -16,6 +16,7 @@ export const AsideMenu: React.FC = () => {
     isSearchActive,
     inputRef,
     searchTerm,
+    totalItems,
   } = useAsideMenu();
 
   const onPageItemClick = (name: TPage) => () => onItemClick(name);
@@ -35,7 +36,9 @@ export const AsideMenu: React.FC = () => {
           <Icon type="notification" />
         </Styled.Item>
         <Styled.Item onClick={onCartClick}>
-          <Icon type="cart" />
+          <Styled.Cart count={totalItems}>
+            <Icon type="cart" />
+          </Styled.Cart>
         </Styled.Item>
         <Styled.Item>
           <Styled.SearchButton onClick={onSearchClick} isSearchValue={!!searchTerm.length}>

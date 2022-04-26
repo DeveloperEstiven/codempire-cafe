@@ -5,6 +5,7 @@ import { Animation } from '@components/animation';
 import { Layout } from '@components/layout';
 import { Page404 } from '@components/page-404';
 import { hideAsideMenuPaths, ROUTES } from '@constants/routes';
+import { Cart } from '@screens/cart';
 import { ChangePassword } from '@screens/change-password';
 import { EditProfile } from '@screens/edit-profile';
 import { LogInPage } from '@screens/log-in';
@@ -51,7 +52,7 @@ export const AppRouter: React.FC = () => {
         <Route
           path={ROUTES.ordersPage}
           element={
-            <PrivateRoute redirectPath={ROUTES.mainPage}>
+            <PrivateRoute>
               <OrdersPage />
             </PrivateRoute>
           }
@@ -64,6 +65,7 @@ export const AppRouter: React.FC = () => {
             </PrivateRoute>
           }
         />
+        <Route path={ROUTES.cart} element={<Cart />} />
         <Route path={ROUTES.default} element={<Page404 />} />
       </Route>
     </Routes>
