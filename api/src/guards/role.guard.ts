@@ -3,7 +3,6 @@ import {
 } from '@nestjs/common';
 import { ERRORS } from '../constants/errors';
 import { validateToken } from '../shared/utils/validate-token';
-
 import { USER_ROLES } from '../user/user.constants';
 
 type TRoles = keyof typeof USER_ROLES;

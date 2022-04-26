@@ -1,10 +1,12 @@
 import { useState } from 'react';
 
+import { useAppSelector } from '@hooks/redux';
 import { hideScrollBar } from '@utils/scrollbar';
 import { TSelectedType } from './main-page.typings';
 
 export const useMainPage = (defaultSelected: TSelectedType = 'menu') => {
-  const [checkedFilterState, setCheckedFilterState] = useState<string[]>([]);
+  const { activeFilters } = useAppSelector((store) => store.mainPage);
+  const [checkedFilterState, setCheckedFilterState] = useState<string[]>(activeFilters);
   const [selectedType, setSelectedType] = useState<TSelectedType>(defaultSelected);
   const [isFilterActive, setIsFilterActive] = useState(false);
 

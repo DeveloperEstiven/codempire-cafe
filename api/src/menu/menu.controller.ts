@@ -1,10 +1,8 @@
-import { Repository } from 'typeorm';
-
 import {
     Body, Controller, Delete, HttpCode, HttpStatus, Param, Post, Put, Query, UseGuards
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { InjectRepository } from '@nestjs/typeorm';
+import JwtAuthenticationGuard from 'src/guards/auth.guard';
 import { FilterDto } from '../dto/filter.dto';
 import { MessageSuccessDto } from '../dto/message-success.dto';
 import { PageOptionsDto } from '../dto/page-options.dto';
@@ -19,7 +17,6 @@ import { MenuService } from './menu.service';
 @ApiTags(MENU_ROUTES.main)
 @Controller(MENU_ROUTES.main)
 export class MenuController {
-  @InjectRepository(MenuEntity) private readonly menuRepository: Repository<MenuEntity>;
   constructor(private readonly menuService: MenuService) {}
 
   @Post(MENU_ROUTES.addMenu)
@@ -34,7 +31,7 @@ export class MenuController {
     description: MENU_ERRORS.alreadyExist,
   })
   @HttpCode(HttpStatus.CREATED)
-  @UseGuards(new RoleGuard([USER_ROLES.manager]))
+  @UseGuards(JwtAuthenticationGuard, new RoleGuard([USER_ROLES.manager]))
   addMenu(@Body() createMenuDto: CreateMenuDto) {
     return this.menuService.addMenu(createMenuDto);
   }
@@ -51,7 +48,7 @@ export class MenuController {
     description: MENU_ERRORS.notFound,
   })
   @HttpCode(HttpStatus.OK)
-  @UseGuards(new RoleGuard([USER_ROLES.manager]))
+  @UseGuards(JwtAuthenticationGuard, new RoleGuard([USER_ROLES.manager]))
   updateMenu(@Body() updateMenuDto: UpdateMenuDto) {
     return this.menuService.updateMenu(updateMenuDto);
   }
@@ -68,7 +65,7 @@ export class MenuController {
     description: MENU_ERRORS.notFound,
   })
   @HttpCode(HttpStatus.OK)
-  @UseGuards(new RoleGuard([USER_ROLES.manager]))
+  @UseGuards(JwtAuthenticationGuard, new RoleGuard([USER_ROLES.manager]))
   removeMenu(@Param('id') menuId: string) {
     return this.menuService.removeMenu(menuId);
   }

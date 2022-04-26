@@ -29,6 +29,7 @@ export class CreateProductDto {
   public category: PRODUCT_CATEGORY;
 
   @ApiProperty({ example: 'pizza', description: 'Product type (subcategory)' })
+  @IsString()
   public subcategory: string;
 
   @ApiProperty({ example: '150uah', description: 'Product price' })
@@ -38,6 +39,7 @@ export class CreateProductDto {
   public price: number;
 
   @ApiProperty({ example: '300g', description: 'Product weight' })
+  @IsString()
   public weight: string;
 
   @ApiProperty({ example: '[id, id, ..]', description: 'ingredient ids' })

@@ -11,6 +11,8 @@ import { DatabaseConfig } from './shared/configs/database.config';
 import { HttpErrorFilter } from './shared/http-error.filter';
 import { UserAuthModule } from './user-auth/user-auth.module';
 import { UserModule } from './user/user.module';
+import { OrderModule } from './order/order.module';
+import { AddressModule } from './address/address.module';
 
 @Module({
   imports: [
@@ -33,6 +35,8 @@ import { UserModule } from './user/user.module';
     IngredientModule,
     ProductModule,
     MenuModule,
+    OrderModule,
+    AddressModule,
   ],
   providers: [
     {

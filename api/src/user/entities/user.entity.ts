@@ -1,12 +1,13 @@
 import { Exclude } from 'class-transformer';
 import { IsBase64, IsOptional } from 'class-validator';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { AddressEntity } from 'src/address/entities/address.entity';
+import { OrderEntity } from 'src/order/entities/order.entity';
+import { USER_ROLES, USER_ROUTES } from '../user.constants';
 
-import { USER_ROLES } from '../user.constants';
-
-@Entity({ name: 'user' })
+@Entity(USER_ROUTES.main)
 export class UserEntity {
   @ApiProperty({ description: 'id' })
   @PrimaryGeneratedColumn('uuid')
@@ -38,9 +39,18 @@ export class UserEntity {
   @Column({ type: 'enum', enum: USER_ROLES, default: USER_ROLES.user })
   public role: USER_ROLES;
 
-  @ApiProperty({ example: 'base64 string', description: 'Menu image base64', default: null, nullable: true })
-  @Column({ nullable: true, default: null })
+  @OneToMany(() => AddressEntity, (address) => address.user, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  public addresses: AddressEntity[];
+
+  @OneToMany(() => OrderEntity, (order) => order.user)
+  public orders: OrderEntity[];
+
+  @ApiPropertyOptional({ example: 'b64 img', description: 'user logo' })
   @IsOptional()
   @IsBase64()
-  public image: string;
+  @Column({ nullable: true, default: null })
+  public logo: string;
 }
