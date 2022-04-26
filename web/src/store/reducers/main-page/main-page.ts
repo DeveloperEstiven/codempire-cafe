@@ -10,9 +10,11 @@ export const mainPageSlice = createSlice({
       store.searchTerm = action.payload;
     },
     setIsFilterApplied(store, action: PayloadAction<boolean>) {
+      localStorage.setItem('isFilterApplied', JSON.stringify(action.payload));
       store.isFilterApplied = action.payload;
     },
     setActiveFilter(store, action: PayloadAction<string[]>) {
+      localStorage.setItem('activeFilters', JSON.stringify(action.payload));
       store.activeFilters = action.payload;
     },
     setSort(store, action: PayloadAction<ISort>) {

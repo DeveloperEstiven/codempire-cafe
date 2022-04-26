@@ -1,6 +1,7 @@
-import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 import { ApiProperty } from '@nestjs/swagger';
+import { ProductsOrdersEntity } from 'src/order/entities/products-orders.entity';
 import { IngredientEntity } from '../../ingredient/entities/ingredient.entity';
 import { MenuEntity } from '../../menu/entities/menu.entity';
 import { PRODUCT_CATEGORY, PRODUCT_ROUTES } from '../product.constants';
@@ -43,7 +44,9 @@ export class ProductEntity {
   @Column()
   public weight: string;
 
-  @ApiProperty({ type: IngredientEntity, description: 'ingredients', isArray: true })
+  @ManyToOne(() => ProductsOrdersEntity, (productsOrders) => productsOrders.products)
+  public productsOrders: ProductsOrdersEntity;
+
   @ManyToMany(() => IngredientEntity, (ingredient) => ingredient.products)
   @JoinTable()
   public ingredients: IngredientEntity[];

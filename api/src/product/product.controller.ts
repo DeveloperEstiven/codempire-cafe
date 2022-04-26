@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { InjectRepository } from '@nestjs/typeorm';
+import JwtAuthenticationGuard from 'src/guards/auth.guard';
 import { FilterDto } from '../dto/filter.dto';
 import { MessageSuccessDto } from '../dto/message-success.dto';
 import { PageOptionsDto } from '../dto/page-options.dto';
@@ -34,7 +35,7 @@ export class ProductController {
     description: PRODUCT_ERRORS.alreadyExist,
   })
   @HttpCode(HttpStatus.CREATED)
-  @UseGuards(new RoleGuard([USER_ROLES.manager]))
+  @UseGuards(JwtAuthenticationGuard, new RoleGuard([USER_ROLES.manager]))
   addProduct(@Body() createProductDto: CreateProductDto) {
     return this.productService.addProduct(createProductDto);
   }
@@ -51,7 +52,7 @@ export class ProductController {
     description: PRODUCT_ERRORS.notFound,
   })
   @HttpCode(HttpStatus.OK)
-  @UseGuards(new RoleGuard([USER_ROLES.manager]))
+  @UseGuards(JwtAuthenticationGuard, new RoleGuard([USER_ROLES.manager]))
   updateProduct(@Body() updateProductDto: UpdateProductDto) {
     return this.productService.updateProduct(updateProductDto);
   }
@@ -68,7 +69,7 @@ export class ProductController {
     description: PRODUCT_ERRORS.notFound,
   })
   @HttpCode(HttpStatus.OK)
-  @UseGuards(new RoleGuard([USER_ROLES.manager]))
+  @UseGuards(JwtAuthenticationGuard, new RoleGuard([USER_ROLES.manager]))
   removeProduct(@Param('id') id: string) {
     return this.productService.removeProduct(id);
   }

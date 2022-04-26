@@ -1,22 +1,18 @@
 import { useFormik } from 'formik';
 import { NavLink, useNavigate } from 'react-router-dom';
-import 'yup-phone';
 
 import { FormInput } from '@components/form-input';
 import { Loader } from '@components/loader';
+import { PROMISES_AREA } from '@constants/promises-area';
+import { ROUTES } from '@constants/routes';
+import { IUserSignUp } from '@services/user-api/user-api.typings';
 import { Button } from '@styles/components/button';
 import { Form, FormButtonsWrapper, FormLinks } from '@styles/components/form';
 import { Space } from '@styles/components/space';
 import { splitCapitalize } from '@utils/capitalize';
-
-import { IUserSignUp } from '@services/user-api/user-api.typings';
-
-import { PROMISES_AREA } from '@constants/promises-area';
-import { ROUTES } from '@constants/routes';
 import {
     signUpFieldNames, signUpInitialValues, signUpValidationSchema
 } from './sign-up-form.constants';
-
 import { SignUpFormProps } from './sign-up-form.typings';
 
 export const SignUpForm: React.FC<SignUpFormProps> = ({ onSignUp }) => {

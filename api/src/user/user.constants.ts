@@ -5,9 +5,12 @@ export enum USER_ROLES {
 
 export const USER_ROUTES = {
   main: 'user',
-  updateUserImage: 'update-user-image',
+  updateUser: 'update-user',
+  changePassword: 'change-password',
 };
 
 export const USER_ERRORS = {
   notFound: 'This user was not found.',
+  alreadyExists: 'User with the same data already exists.',
+  invalidOldPassword: 'Invalid old password.',
 };

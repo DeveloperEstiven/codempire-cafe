@@ -14,7 +14,7 @@ export const validateToken = async (auth: string, roles?: string[]) => {
   try {
     const resp: any = jwt.decode(token);
 
-    if (resp.role && !roles?.includes(resp.role)) {
+    if (roles && !roles?.includes(resp.role)) {
       throw new HttpException(ERRORS.invalidRole, HttpStatus.FORBIDDEN);
     }
     if (!resp.expiresIn || Date.now() > resp.expiresIn) {

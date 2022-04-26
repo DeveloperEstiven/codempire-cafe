@@ -24,7 +24,7 @@ export class UserAuthService {
 
   private async createToken(user: UserEntity) {
     const expiresIn = EXPIRE_JWT_TIME + Date.now();
-    const data = { id: user.id, expiresIn };
+    const data = { id: user.id, expiresIn, role: user.role };
     const secret = await this.createSecretString(user.publicKey);
     return this.jwtService.sign(data, { secret });
   }
@@ -73,7 +73,7 @@ export class UserAuthService {
   }
 
   async logOut(id: string) {
-    const user = await this.userService.getUserByColumn({ id });
+    const user = await this.userService.getUserByColumnOrFail({ id });
     const newPublicKey = await this.createPublicKey();
     await this.userRepository.save({
       ...user,
@@ -86,11 +86,11 @@ export class UserAuthService {
 
   private async validateUser(userDto: AuthUserDto) {
     const { email, password } = userDto;
-    const user = await this.userService.getUserByColumn({ email });
+    const user = await this.userService.getUserByColumnOrFail({ email });
     const isPasswordsEqual = await bcrypt.compare(password, user.password);
-    if (user && isPasswordsEqual) {
-      return user;
+    if (!isPasswordsEqual) {
+      throw new HttpException(ERRORS.validationError, HttpStatus.BAD_REQUEST);
     }
-    throw new HttpException(ERRORS.validationError, HttpStatus.BAD_REQUEST);
+    return user;
   }
 }

@@ -5,9 +5,10 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { InjectRepository } from '@nestjs/typeorm';
+import JwtAuthenticationGuard from 'src/guards/auth.guard';
+import { USER_ROLES } from 'src/user/user.constants';
 import { MessageSuccessDto } from '../dto/message-success.dto';
 import { RoleGuard } from '../guards/role.guard';
-import { USER_ROLES } from '../user/user.constants';
 import { CreateIngredientDto } from './dto/create-ingredient.dto';
 import { IngredientEntity } from './entities/ingredient.entity';
 import { INGREDIENT_ERRORS, INGREDIENT_ROUTES } from './ingredient.constants';
@@ -31,7 +32,7 @@ export class IngredientController {
     description: INGREDIENT_ERRORS.alreadyExist,
   })
   @HttpCode(HttpStatus.CREATED)
-  @UseGuards(new RoleGuard([USER_ROLES.manager]))
+  @UseGuards(JwtAuthenticationGuard, new RoleGuard([USER_ROLES.manager]))
   addIngredient(@Body() createIngredientDto: CreateIngredientDto) {
     return this.ingredientService.addIngredient(createIngredientDto);
   }
@@ -48,7 +49,7 @@ export class IngredientController {
     description: INGREDIENT_ERRORS.notFound,
   })
   @HttpCode(HttpStatus.OK)
-  @UseGuards(new RoleGuard([USER_ROLES.manager]))
+  @UseGuards(JwtAuthenticationGuard, new RoleGuard([USER_ROLES.manager]))
   removeIngredient(@Param('id') id: string) {
     return this.ingredientService.removeIngredient(id);
   }
