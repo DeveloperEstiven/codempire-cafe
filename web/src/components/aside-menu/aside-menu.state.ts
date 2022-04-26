@@ -1,15 +1,15 @@
 import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useAppDispatch } from '@hooks/redux';
+import { ROUTES } from '@constants/routes';
+import { useAppDispatch, useAppSelector } from '@hooks/redux';
 import { searchTermReceived } from '@store/reducers/main-page';
-
 import { TInputEvent } from 'typings/api';
-
 import { TPage } from './aside-menu.typings';
 
 export const useAsideMenu = () => {
   const dispatch = useAppDispatch();
+  const { totalItems } = useAppSelector((store) => store.cart);
   const [selected, setSelected] = useState<TPage>('main');
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -26,7 +26,7 @@ export const useAsideMenu = () => {
   };
 
   const onCartClick = () => {
-    console.log('onCartClick');
+    navigate(ROUTES.cart);
   };
 
   const onSearchClick = () => {
@@ -50,6 +50,7 @@ export const useAsideMenu = () => {
     onSearchClick,
     onSearchBlur,
     onChangeSearch,
+    totalItems,
     inputRef,
     selected,
     isSearchActive,
