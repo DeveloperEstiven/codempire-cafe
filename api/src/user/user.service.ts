@@ -31,7 +31,7 @@ export class UserService {
   }
 
   async updateUser(body: UpdateUserDto, userTokenId: string) {
-    const { email, phoneNumber, addressIds } = body;
+    const { email, phoneNumber } = body;
     const user = await this.getUserByColumnOrFail({ id: userTokenId });
 
     const candidateByEmail = await this.userRepository.findOne({ email });
@@ -44,8 +44,7 @@ export class UserService {
       throw new HttpException(USER_ERRORS.alreadyExists, HttpStatus.CONFLICT);
     }
 
-    const addresses = await this.addressesRepository.findByIds(addressIds);
-    const updatedUser = this.userSerializer({ ...user, ...body, id: userTokenId, addresses });
+    const updatedUser = this.userSerializer({ ...user, ...body, id: userTokenId });
     return this.userRepository.save(updatedUser);
   }
 
@@ -56,11 +55,13 @@ export class UserService {
       throw new HttpException(USER_ERRORS.invalidOldPassword, HttpStatus.CONFLICT);
     }
     const hashPassword = await bcrypt.hash(body.newPassword, 10);
-    const updatedUser = await this.userRepository.save({
+    await this.userRepository.save({
       ...user,
       id: userTokenId,
       password: hashPassword,
     });
-    return this.userSerializer(updatedUser);
+    return {
+      message: 'success',
+    };
   }
 }

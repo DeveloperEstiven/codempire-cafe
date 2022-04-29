@@ -1,29 +1,33 @@
 import { useNavigate } from 'react-router-dom';
 
 import { ROUTES } from '@constants/routes';
-import { List } from '@screens/profile-page/profile-page.styles';
+import { useAppSelector } from '@hooks/redux';
 import { StyledAddresses as Styled } from './addresses.styles';
-
-//TODO from store
-export const addresses = ['2464 Royal Ln. Mesa, New Jersey 45463', '2464 Royal Ln. Mesa, New Jersey 45462'];
 
 export const Addresses: React.FC = () => {
   const navigate = useNavigate();
+  const { addresses } = useAppSelector((store) => store.user.user);
 
   const onAddAddresses = () => {
     navigate(ROUTES.addAddresses);
   };
+
+  const activeAddresses = addresses.filter((address) => address.isActive) || [];
   return (
     <>
       <Styled.Header>
         <h4>Addresses</h4>
         <i onClick={onAddAddresses} />
       </Styled.Header>
-      <List>
-        {addresses.map((address) => (
-          <li key={address}>{address}</li>
+      <Styled.List>
+        {activeAddresses.map((address) => (
+          <li key={address.address}>
+            <span>{address.address}</span>
+          </li>
         ))}
-      </List>
+        {!!addresses.length && !activeAddresses.length && <li>Addresses available for activation</li>}
+        {!addresses.length && <li>Add your first address</li>}
+      </Styled.List>
     </>
   );
 };

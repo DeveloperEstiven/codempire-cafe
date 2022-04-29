@@ -8,7 +8,7 @@ import { useAddressesForm } from './addresses-from.state';
 import { StyledAddressesForm as Styled } from './addresses-from.styles';
 
 export const AddressesForm: React.FC = () => {
-  const { handleCheck, checkedState, value, addresses, onChange, onAddNewAddress, onApply } = useAddressesForm();
+  const { handleCheck, value, addresses, onChange, onAddNewAddress, onApply } = useAddressesForm();
 
   return (
     <Styled.Wrapper>
@@ -16,14 +16,13 @@ export const AddressesForm: React.FC = () => {
 
       <Space direction="vertical" gapSize={22}>
         <Styled.AddressesList>
-          {addresses.map((el) => (
-            <li key={el}>
-              <Checkbox id={el} value={el} checkHandler={handleCheck} isChecked={checkedState.includes(el)} />
+          {addresses.map(({ address, isActive }) => (
+            <li key={address}>
+              <Checkbox id={address} value={address} checkHandler={handleCheck} isChecked={isActive} />
             </li>
           ))}
         </Styled.AddressesList>
 
-        {/* TODO: PROMISES_AREA.addAddresses  */}
         <Loader area={PROMISES_AREA.addAddresses}>
           <Button onClick={onApply} color="black">
             apply

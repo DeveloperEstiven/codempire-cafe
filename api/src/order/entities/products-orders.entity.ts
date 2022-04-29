@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 import { ApiProperty } from '@nestjs/swagger';
 import { ProductEntity } from '../../product/entities/product.entity';
@@ -14,8 +14,8 @@ export class ProductsOrdersEntity {
   @Column()
   public count: number;
 
-  @OneToMany(() => ProductEntity, (product) => product.productsOrders)
-  public products: ProductEntity[];
+  @ManyToOne(() => ProductEntity, (product) => product.productsOrders, { eager: true })
+  public product: ProductEntity;
 
   @ManyToOne(() => OrderEntity, (order: OrderEntity) => order.productsOrders, {
     onDelete: 'CASCADE',

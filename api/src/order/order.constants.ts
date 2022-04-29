@@ -10,6 +10,7 @@ export const ORDER_ROUTES = {
   addOrder: 'add-order',
   updateOrder: 'update-order',
   cancelOrder: 'cancel-order',
+  getOrders: 'get-orders',
 };
 
 export const ORDER_ERRORS = {

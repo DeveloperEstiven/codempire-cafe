@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 
 import { Addresses } from '@components/addresses';
+import { IMAGES } from '@constants/images';
 import { ROUTES } from '@constants/routes';
 import { Button } from '@styles/components/button';
 import { settings } from './profile-page.constants';
@@ -8,21 +9,18 @@ import { useProfilePage } from './profile-page.state';
 import { SectionHeader, StyledProfilePage as Styled } from './profile-page.styles';
 
 export const ProfilePage: React.FC = () => {
-  const { isAuthorized, userName, phoneNumber, role, onLogOutClick, onLogInClick } = useProfilePage();
+  const { isAuthorized, userName, phoneNumber, role, logo, onLogOutClick, onLogInClick } = useProfilePage();
 
   return (
     <Styled.Page>
       <Styled.Section>
         <Styled.Header>
           <Styled.Logo>
-            <img
-              src={isAuthorized ? 'https://via.placeholder.com/70/92c952' : 'https://via.placeholder.com/70'}
-              alt="User Logo"
-            />
+            <img src={logo || IMAGES.unauthorisedUser} alt="User Logo" />
           </Styled.Logo>
           <Styled.Info>
-            <h2>{isAuthorized ? 'name' : 'Unauthorised'}</h2>
-            <p>{isAuthorized ? 'number' : 'Phone number'}</p>
+            <h2>{userName || 'Unauthorised'}</h2>
+            <p>{phoneNumber || 'Phone number'}</p>
           </Styled.Info>
           <span>{role}</span>
         </Styled.Header>

@@ -2,15 +2,32 @@ import { IDropdownData } from '@components/dropdown/dropdown.typings';
 import { TIcon } from '@components/icon';
 import { IUserPublic } from '@services/user-api/user-api.typings';
 
-export interface IUser extends IUserPublic {
+export interface IEditProfile extends IUserPublic {
+  logo: string;
+}
+
+export interface IAddAddresses {
+  addresses: IAddress[];
+}
+
+export interface IUser extends IEditProfile {
   id: string;
   publicKey: string;
   role: TRole;
+  addresses: IAddress[];
 }
 
+interface IAddress {
+  address: string;
+  isActive: boolean;
+}
 export interface IError {
   message?: string;
   code?: number;
+}
+export interface IResponseError {
+  status: number;
+  data: IError;
 }
 
 export type TInputEvent = React.ChangeEvent<HTMLInputElement>;
@@ -75,6 +92,49 @@ export interface ISort extends IDropdownData {
   field: string;
   order: 'ASC' | 'DESC';
   icon?: TIcon;
+}
+
+export interface IChangePassword {
+  oldPassword: string;
+  newPassword: string;
+}
+
+export interface IOrder {
+  id: string;
+  count: number;
+}
+
+export interface IProductOrder extends IOrder {
+  product: Omit<IProduct, 'ingredients'>;
+}
+export interface IMenuOrder extends IOrder {
+  menu: IMenuProductCommon;
+}
+
+export type TDeliveryStatus = 'created' | 'ready' | 'on way' | 'delivered';
+export interface IUserOrderResponse {
+  id: string;
+  orderNumber: number;
+  date: string;
+  wantedDeliveryDate: string;
+  status: TDeliveryStatus;
+  price: number;
+  comment: string | null;
+  description: string;
+}
+export interface IUserDetailOrder extends IUserOrderResponse {
+  productsOrders?: IProductOrder[];
+  menusOrders?: IMenuOrder[];
+}
+
+export interface IGroupOrders {
+  waitingOrders?: IOrderGroup[];
+  completedOrders?: IOrderGroup[];
+}
+
+export interface IOrderGroup {
+  date: string;
+  orders: IUserOrderResponse[];
 }
 
 export type TProductResponse = IResponse<IProduct>;

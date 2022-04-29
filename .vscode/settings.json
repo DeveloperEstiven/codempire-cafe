@@ -9,7 +9,6 @@
     "api/.gitignore",
     "web/package-lock.json",
     "web/.gitignore",
-    "web/src/react-app-env.d.ts",
     "web/craco.config.js",
     "web/paths.json",
     "api/.prettierrc",
@@ -18,11 +17,12 @@
     "api/.eslintrc.js",
     "web/public",
     "web/.env",
-    "web/tsconfig.json",
     "web/build",
     "api/dist",
     "api/.env",
-    "api/package.json"
+    "api/package.json",
+    "web/src/react-app-env.d.ts",
+    "web/tsconfig.json"
   ],
   "files.exclude": {
     "**/.git": true,
@@ -45,7 +45,6 @@
     "api/.gitignore": true,
     "web/package-lock.json": true,
     "web/.gitignore": true,
-    "web/src/react-app-env.d.ts": true,
     "web/craco.config.js": true,
     "web/paths.json": true,
     "api/.prettierrc": true,
@@ -54,11 +53,12 @@
     "api/.eslintrc.js": true,
     "web/public": true,
     "web/.env": true,
-    "web/tsconfig.json": true,
     "web/build": true,
     "api/dist": true,
     "api/.env": true,
-    "api/package.json": true
+    "api/package.json": true,
+    "web/src/react-app-env.d.ts": true,
+    "web/tsconfig.json": true
   },
   "todoist.projectId": 2263813029,
   "cSpell.ignoreWords": [

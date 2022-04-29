@@ -21,6 +21,7 @@ export const useFiltersDrawerState = (props: IFiltersDrawer) => {
 
   const onCloseDrawer = () => {
     showScrollBar();
+    onFiltersApply();
     setIsActive(false);
   };
 

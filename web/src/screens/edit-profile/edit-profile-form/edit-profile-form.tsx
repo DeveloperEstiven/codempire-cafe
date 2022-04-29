@@ -1,5 +1,6 @@
 import { FormInput } from '@components/form-input';
 import { Loader } from '@components/loader';
+import { IMAGES } from '@constants/images';
 import { PROMISES_AREA } from '@constants/promises-area';
 import { Button } from '@styles/components/button';
 import { Form } from '@styles/components/form';
@@ -17,7 +18,7 @@ export const EditProfileForm: React.FC<IEditProfileFormProps> = ({ onSave }) => 
   return (
     <Form onSubmit={handleSubmit}>
       <Logo onClick={onChangeLogo}>
-        <img src={img} alt="User Logo" />
+        <img src={img || IMAGES.unauthorisedUser} alt="User Logo" />
       </Logo>
 
       <Space direction="vertical" gapSize={22}>
@@ -34,7 +35,6 @@ export const EditProfileForm: React.FC<IEditProfileFormProps> = ({ onSave }) => 
           />
         ))}
 
-        {/* TODO: PROMISES_AREA.editProfile  */}
         <Loader area={PROMISES_AREA.editProfile}>
           <Button color="black" type="submit">
             save

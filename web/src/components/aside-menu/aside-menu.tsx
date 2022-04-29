@@ -12,21 +12,22 @@ export const AsideMenu: React.FC = () => {
     onSearchClick,
     onSearchBlur,
     onChangeSearch,
-    selected,
+    selectedPage,
     isSearchActive,
     inputRef,
     searchTerm,
     totalItems,
+    storeSearchTerm,
   } = useAsideMenu();
 
-  const onPageItemClick = (name: TPage) => () => onItemClick(name);
+  const onPageItemClick = (page: TPage) => () => onItemClick(page);
 
   return (
     <Styled.Aside>
       <Styled.Group>
-        {pages.map((item) => (
-          <Styled.Item key={item.name} isActive={selected === item.name} onClick={onPageItemClick(item.name)}>
-            {item.element}
+        {pages.map(({ page, icon }) => (
+          <Styled.Item key={page} isActive={selectedPage === page} onClick={onPageItemClick(page)}>
+            <Icon type={icon} />
           </Styled.Item>
         ))}
       </Styled.Group>
@@ -41,7 +42,7 @@ export const AsideMenu: React.FC = () => {
           </Styled.Cart>
         </Styled.Item>
         <Styled.Item>
-          <Styled.SearchButton onClick={onSearchClick} isSearchValue={!!searchTerm.length}>
+          <Styled.SearchButton onClick={onSearchClick} isSearchValue={!!storeSearchTerm}>
             <Icon type="search" />
           </Styled.SearchButton>
           <Styled.Search isActive={isSearchActive}>

@@ -1,56 +1,59 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { trackPromise } from 'react-promise-tracker';
 import { useNavigate } from 'react-router-dom';
 
+import { errorMixin, successMixin } from '@constants/pop-up-messages';
+import { PROMISES_AREA } from '@constants/promises-area';
 import { ROUTES } from '@constants/routes';
-import { TInputEvent } from 'typings/api';
-
-export const mockData = [
-  '2118 Thornridge Cir. Syracuse, Connect...',
-  '2118 Thornridge Cir. Syracuse, Connect 2...',
-  '2118 Thornridge Cir. Syracuse, Connect 3...',
-  '2118 Thornridge Cir. Syracuse, Connect 4...',
-  '2118 Thornridge Cir. Syracuse, Connect 5...',
-]; //FIXME
+import { useAppSelector } from '@hooks/redux';
+import { useAddAddressesMutation } from '@services/profile-page-api';
+import { IAddress, IResponseError, TInputEvent } from 'typings/api';
 
 export const useAddressesForm = () => {
-  const [checkedState, setCheckedState] = useState<string[]>([]);
+  const { addresses: userAddresses } = useAppSelector((store) => store.user.user);
   const [value, setValue] = useState('');
-  const [addresses, setAddresses] = useState(mockData);
+  const [addresses, setAddresses] = useState<IAddress[]>(userAddresses);
+  const [addAddresses, { error }] = useAddAddressesMutation();
   const navigate = useNavigate();
-
-  const setChecked = (value: string) => {
-    let newState;
-    if (checkedState.includes(value)) {
-      newState = checkedState.filter((title) => title !== value);
-    } else {
-      newState = [...checkedState, value];
-    }
-    return newState;
-  };
-
-  const handleCheck = (e: TInputEvent) => {
-    const value = e.target.value;
-    const newState = setChecked(value);
-    setCheckedState(newState);
-  };
 
   const onChange = (e: TInputEvent) => {
     setValue(e.target.value);
   };
 
+  const handleCheck = (e: TInputEvent) => {
+    setAddresses((s) => [
+      ...s.map((option) => {
+        if (option.address === e.target.value) {
+          return {
+            ...option,
+            isActive: !option.isActive,
+          };
+        }
+        return option;
+      }),
+    ]);
+  };
+
   const onAddNewAddress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      setAddresses([...addresses, value]);
-      const checked = setChecked(value);
-      setCheckedState(checked);
+      const newAddress = { address: value, isActive: true };
+      setAddresses([...addresses, newAddress]);
       setValue('');
     }
   };
 
-  const onApply = () => {
-    //TODO to server
+  useEffect(() => {
+    if (error) {
+      const err = error as IResponseError;
+      errorMixin({ title: err.data.message }).fire();
+    }
+  }, [error]);
+
+  const onApply = async () => {
+    await trackPromise(addAddresses({ addresses }).unwrap(), PROMISES_AREA.addAddresses);
+    successMixin({ title: 'Addresses added successfully' }).fire();
     navigate(ROUTES.profilePage);
   };
 
-  return { handleCheck, checkedState, value, addresses, onChange, onAddNewAddress, onApply };
+  return { handleCheck, value, addresses, onChange, onAddNewAddress, onApply };
 };

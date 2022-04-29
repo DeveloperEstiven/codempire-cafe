@@ -1,102 +1,42 @@
+import { useMemo, useState } from 'react';
+
 import { DailyOrder } from '@components/daily-order';
+import { Loader } from '@components/loader';
 import { TypeSelector } from '@components/type-selector';
-import { useOrdersPage } from './orders-page.state';
-
-//FIXME
-const days = [
-  {
-    timestamp: 312342131231,
-    orders: [
-      {
-        orderNumber: 1843,
-        time: '10:05',
-        description: 'Some salad, some soup and other in two lines..',
-      },
-      {
-        orderNumber: 1842,
-        time: '10:04',
-        description: 'Some salad, some soup and other in two linesSome salad, some soup and other in two lines..',
-      },
-      {
-        orderNumber: 1841,
-        time: '10:03',
-        description:
-          'Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur rerum, accusantium accusamus pariatur nulla ea consequuntur amet aliquid cumque! Animi odit quidem sequi neque temporibus nulla dolorum sunt doloremque voluptatum.',
-      },
-    ],
-  },
-  {
-    timestamp: 31234213123132,
-    orders: [
-      {
-        orderNumber: 1840,
-        time: '10:05',
-        description: 'Some salad, some soup and other in two lines..',
-      },
-      {
-        orderNumber: 1839,
-        time: '10:04',
-        description: 'Some salad, some soup and other in two linesSome salad, some soup and other in two lines..',
-      },
-      {
-        orderNumber: 1838,
-        time: '10:03',
-        description:
-          'Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur rerum, accusantium accusamus pariatur nulla ea consequuntur amet aliquid cumque! Animi odit quidem sequi neque temporibus nulla dolorum sunt doloremque voluptatum.',
-      },
-      {
-        orderNumber: 1837,
-        time: '10:03',
-        description:
-          'Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur rerum, accusantium accusamus pariatur nulla ea consequuntur amet aliquid cumque! Animi odit quidem sequi neque temporibus nulla dolorum sunt doloremque voluptatum.',
-      },
-    ],
-  },
-];
-
-//FIXME
-const expectedOrders = [
-  {
-    timestamp: 31234213123132,
-    orders: [
-      {
-        orderNumber: 1840,
-        time: '10:05',
-        description: 'Some salad, some soup and other in two lines..',
-      },
-      {
-        orderNumber: 1839,
-        time: '10:04',
-        description: 'Some salad, some soup and other in two linesSome salad, some soup and other in two lines..',
-      },
-      {
-        orderNumber: 1838,
-        time: '10:03',
-        description:
-          'Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur rerum, accusantium accusamus pariatur nulla ea consequuntur amet aliquid cumque! Animi odit quidem sequi neque temporibus nulla dolorum sunt doloremque voluptatum.',
-      },
-      {
-        orderNumber: 1837,
-        time: '10:03',
-        description:
-          'Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur rerum, accusantium accusamus pariatur nulla ea consequuntur amet aliquid cumque! Animi odit quidem sequi neque temporibus nulla dolorum sunt doloremque voluptatum.',
-      },
-    ],
-  },
-];
+import { errorMixin } from '@constants/pop-up-messages';
+import { useGetOrdersQuery } from '@services/profile-page-api';
+import { IResponseError } from 'typings/api';
+import { getGroupOrders } from './orders-page.constants';
+import { TSelectedType } from './orders-page.typings';
 
 export const OrdersPage: React.FC = () => {
-  const { selectedType, onTypeSelect } = useOrdersPage();
+  const [selectedType, setSelectedType] = useState<TSelectedType>('waiting');
+  const { data: orders, error, isLoading } = useGetOrdersQuery();
+  const { waitingOrders, completedOrders } = useMemo(() => getGroupOrders(orders), [orders]);
+
+  const onTypeSelect = (type: string) => {
+    setSelectedType(type as TSelectedType);
+  };
+
+  if (isLoading) {
+    return <Loader isWithoutArea />;
+  }
+
+  if (error) {
+    const err = error as IResponseError;
+    errorMixin({ title: err.data.message }).fire();
+  }
 
   return (
     <>
-      <TypeSelector titles={['waiting', 'complete']} onTypeSelect={onTypeSelect} selectedType={selectedType} />
+      {(!!waitingOrders?.length || !!completedOrders?.length) && (
+        <TypeSelector titles={['waiting', 'complete']} onTypeSelect={onTypeSelect} selectedType={selectedType} />
+      )}
 
-      {selectedType === 'complete' &&
-        days.map((day) => <DailyOrder key={day.timestamp} day={day.timestamp} orders={day.orders} />)}
-
-      {selectedType === 'waiting' &&
-        expectedOrders.map((day) => <DailyOrder key={day.timestamp} day={day.timestamp} orders={day.orders} />)}
+      <DailyOrder
+        selectedType={selectedType}
+        orderGroup={selectedType === 'waiting' ? waitingOrders : completedOrders}
+      />
     </>
   );
 };

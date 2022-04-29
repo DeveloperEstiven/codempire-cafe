@@ -2,7 +2,7 @@ import { Repository } from 'typeorm';
 
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { IdDto } from 'src/dto/id.dto';
+import { ERRORS } from 'src/constants/errors';
 import { MenuEntity } from 'src/menu/entities/menu.entity';
 import { MenusOrdersEntity } from 'src/order/entities/menus-orders.entity';
 import { OrderEntity } from 'src/order/entities/order.entity';
@@ -26,6 +26,38 @@ export class OrderService {
     @InjectRepository(ProductsOrdersEntity) private readonly productsOrdersRepository: Repository<ProductsOrdersEntity>
   ) {}
 
+  async getOrders(userTokenId: string) {
+    const orders = await this.orderRepository.find({
+      where: { user: userTokenId },
+      relations: ['productsOrders', 'menusOrders'],
+      order: {
+        orderNumber: 'DESC',
+      },
+    });
+
+    const ordersWithDescriptions = orders.map((order) => {
+      const newOrder = {
+        ...order,
+        description:
+          order.productsOrders.map((productOrder) => productOrder?.product.description).join(', ') +
+          ', ' +
+          order.menusOrders.map((menuOrder) => menuOrder?.menu.description).join(', '),
+      };
+      delete newOrder.productsOrders;
+      delete newOrder.menusOrders;
+      return newOrder;
+    });
+
+    return ordersWithDescriptions;
+  }
+
+  async getDetailOrder(userTokenId: string, orderNumber: number) {
+    return this.orderRepository.findOne({
+      where: { user: userTokenId, orderNumber },
+      relations: ['productsOrders', 'menusOrders'],
+    });
+  }
+
   async updateOrder(updateOrderDto: UpdateOrderDto) {
     const order = await this.orderRepository.findOne({ id: updateOrderDto.id });
     if (!order) {
@@ -37,27 +69,34 @@ export class OrderService {
     });
   }
 
-  async cancelOrder({ id }: IdDto) {
-    const order = await this.orderRepository.findOne({ id });
-
+  async cancelOrder(orderId: string, userTokenId: string) {
+    const order = await this.orderRepository.findOne({ id: orderId });
     if (!order) {
       throw new HttpException(ORDER_ERRORS.notFound, HttpStatus.NOT_FOUND);
     }
-    await this.orderRepository.delete({ id });
+    const userOrder = await this.orderRepository.findOne({ where: { user: userTokenId } });
+    if (!userOrder) {
+      throw new HttpException(ERRORS.tokenError, HttpStatus.FORBIDDEN);
+    }
+    await this.orderRepository.delete({ id: orderId });
     return {
       message: 'success',
     };
   }
 
-  async addOrder(body: CreateOrderDto) {
-    const user = await this.userRepository.findOne({ id: body.user });
+  async addOrder(body: CreateOrderDto, userTokenId: string) {
+    const user = await this.userRepository.findOne({ id: userTokenId });
 
     const productsOrders = await this.getProductsWithCount(body.productsOrders);
     const menusOrders = await this.getMenusWithCount(body.menusOrders);
 
+    const menusTotalPrice = menusOrders.reduce((prev, curr) => prev + curr.count * curr.menu.price, 0);
+    const productsTotalPrice = productsOrders.reduce((prev, curr) => prev + curr.count * curr.product.price, 0);
+
     return this.orderRepository.save({
       ...body,
       user,
+      price: menusTotalPrice + productsTotalPrice,
       menusOrders,
       productsOrders,
     });
