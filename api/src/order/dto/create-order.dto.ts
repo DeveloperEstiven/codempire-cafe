@@ -1,6 +1,4 @@
-import {
-    IsArray, IsDateString, IsEnum, IsOptional, IsPositive, IsString, IsUUID
-} from 'class-validator';
+import { IsArray, IsDateString, IsEnum, IsOptional, IsString } from 'class-validator';
 
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { DELIVERY_STATUS } from '../order.constants';
@@ -17,18 +15,10 @@ export class CreateOrderDto {
   @IsOptional()
   public wantedDeliveryDate: Date;
 
-  @ApiProperty({ example: 1200, description: 'order price' })
-  @IsPositive()
-  public price: number;
-
   @ApiPropertyOptional({ example: 'without sugar', description: 'order comment' })
   @IsString()
   @IsOptional()
   public comment: string;
-
-  @ApiProperty({ example: 'user id', description: 'user id' })
-  @IsUUID()
-  public user: string;
 
   @ApiProperty({ type: [CreateProductsOrdersDto], description: 'ordered products' })
   @IsArray()

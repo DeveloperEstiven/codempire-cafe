@@ -14,18 +14,17 @@ import {
 } from './change-password-form.constants';
 import { StyledChangePasswordForm as Styled } from './change-password-form.styles';
 import {
-    IChangePassword, IChangePasswordFormProps, THandleChangePasswordSubmit
+    IChangePasswordForm, IChangePasswordFormProps, THandleChangePasswordSubmit
 } from './change-password-form.typings';
 
 export const ChangePasswordForm: React.FC<IChangePasswordFormProps> = ({ onSave }) => {
-  const onSubmitClick: THandleChangePasswordSubmit = (values, actions) => {
-    //TODO request to server
+  const onSubmitClick: THandleChangePasswordSubmit = ({ newPassword, oldPassword }, actions) => {
     actions.setSubmitting(false);
-    return onSave(values, actions);
+    return onSave({ newPassword, oldPassword });
   };
 
   const { handleSubmit, values, handleChange, errors, touched, isValid, handleBlur, validateForm } =
-    useFormik<IChangePassword>({
+    useFormik<IChangePasswordForm>({
       initialValues: changePasswordInitialValues,
       validationSchema: changePasswordValidationSchema,
       onSubmit: onSubmitClick,
@@ -62,9 +61,9 @@ export const ChangePasswordForm: React.FC<IChangePasswordFormProps> = ({ onSave 
         <FormInput
           value={values.approvedPassword}
           onChange={handleChange}
+          onBlur={handleBlur}
           field={{ touched: touched.approvedPassword, errorMessage: errors.approvedPassword }}
           name={'approvedPassword'}
-          onBlur={handleBlur}
           type="password"
           title="Approve"
         />
@@ -73,7 +72,6 @@ export const ChangePasswordForm: React.FC<IChangePasswordFormProps> = ({ onSave 
           <Link to={ROUTES.forgot}>Forgot password?</Link>
         </FormLinks>
 
-        {/* TODO: PROMISES_AREA.changePassword  */}
         <Loader area={PROMISES_AREA.changePassword}>
           <Button color="black" type="submit" disabled={!isValid}>
             save

@@ -1,7 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-
 import { baseQueryWithInterceptors } from '@services/base-query-with-interceptors';
-
+import { transformUserResponse } from '@utils/transform-response';
 import { IUserLogIn, IUserResponse, IUserSignUp } from './user-api.typings';
 
 export const userApi = createApi({
@@ -22,6 +21,10 @@ export const userApi = createApi({
         url: '/user-auth/log-in',
         method: 'POST',
         body,
+      }),
+      transformResponse: (response: IUserResponse) => ({
+        token: response.token,
+        user: transformUserResponse(response.user),
       }),
     }),
 

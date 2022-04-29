@@ -1,4 +1,4 @@
-import { Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 import { ApiProperty } from '@nestjs/swagger';
 import { MenusOrdersEntity } from 'src/order/entities/menus-orders.entity';
@@ -30,8 +30,8 @@ export class MenuEntity {
   @Column()
   public price: number;
 
-  @ManyToOne(() => MenusOrdersEntity, (menusOrders) => menusOrders.menus)
-  public menusOrders: MenusOrdersEntity;
+  @OneToMany(() => MenusOrdersEntity, (menusOrders) => menusOrders.menu)
+  public menusOrders: MenusOrdersEntity[];
 
   @ManyToMany(() => ProductEntity, (product) => product.menus)
   @JoinTable()

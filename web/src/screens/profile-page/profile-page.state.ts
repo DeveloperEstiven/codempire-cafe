@@ -7,12 +7,14 @@ import { useLogOutMutation } from '@services/user-api';
 
 export const useProfilePage = () => {
   const {
-    user: { id, userName, phoneNumber, role },
+    token,
+    user: { id, userName, phoneNumber, role, logo },
   } = useAppSelector((store) => store.user);
+
   const navigate = useNavigate();
   const [logOut] = useLogOutMutation();
 
-  const isAuthorized = true; //!!token; //FIXME
+  const isAuthorized = !!token;
 
   useEffect(() => {
     document.body.style.backgroundColor = '#ededf8';
@@ -34,6 +36,7 @@ export const useProfilePage = () => {
     userName,
     phoneNumber,
     role,
+    logo,
     onLogOutClick,
     onLogInClick,
   };

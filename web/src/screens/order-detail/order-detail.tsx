@@ -1,39 +1,93 @@
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 
+import { Loader } from '@components/loader';
 import { Range } from '@components/range';
 import { StarRating } from '@components/star-rating';
+import { errorMixin } from '@constants/pop-up-messages';
+import { useAppSelector } from '@hooks/redux';
+import { useGetDetailOrderQuery } from '@services/profile-page-api';
 import { Button } from '@styles/components/button';
+import { getDate, getTime } from '@utils/date';
+import { IResponseError } from 'typings/api';
 import { StyledOrderDetail as Styled } from './order-detail.styles';
 
 export const OrderDetail: React.FC = () => {
-  const isDelivered = false; //FIXME
-  const status = ['created', 'ready']; //FIXME
+  const { orderNumber } = useParams();
+  const { data: order, isLoading, error } = useGetDetailOrderQuery(orderNumber!);
+  const isDelivered = order?.status === 'delivered';
+  const { user } = useAppSelector((store) => store.user);
   const [rate, setRate] = useState(3);
 
   const onRate = (value: number) => {
     setRate(value);
   };
 
+  if (isLoading) {
+    return <Loader isWithoutArea />;
+  }
+
+  if (error) {
+    const err = error as IResponseError;
+    errorMixin({ title: err.data.message }).fire();
+  }
+
   return (
     <Styled.Page>
-      <Styled.InformationBox>
-        <h2>{'User information'}</h2>
-        <h4>{'Name'}</h4>
-        <span>{'Jane Cooper'}</span>
-        <h4>{'Phone'}</h4>
-        <span>{'(603) 555-0123'}</span>
-        <h4>{'Address'}</h4>
-        <span>{'2464 Royal Ln. Mesa, New Jersey 45463'}</span>
-      </Styled.InformationBox>
-      <Styled.InformationBox>
-        <h2>{'Delivery information'}</h2>
-        <h4>{'Date'}</h4>
-        <span>{'10/05/2021'}</span>
-        <h4>{'Order'}</h4>
-        <span>{'Some salad, some soup and other in two lines..'}</span>
-      </Styled.InformationBox>
-      {isDelivered && (
-        <>
+      <Styled.Wrapper>
+        <Styled.Box>
+          <h2>User information</h2>
+          <h4>Name</h4>
+          <span>{user.userName}</span>
+          <h4>Phone</h4>
+          <span>{user.phoneNumber}</span>
+          <h4>Address</h4>
+          <span>{user?.addresses[0]?.address}</span>
+        </Styled.Box>
+        <Styled.Box>
+          <h2>Delivery information</h2>
+          <h4>Date</h4>
+          <span>{getDate(order!.date)}</span>
+          <h4>Time</h4>
+          <span>{getTime(order!.date)}</span>
+          <h4>Comment</h4>
+          <span>{order?.comment || '-'}</span>
+        </Styled.Box>
+        <Styled.Box>
+          <h2>Order {orderNumber}</h2>
+          <Styled.Products>
+            {order?.productsOrders?.map(({ id, product, count }) => (
+              <li key={id}>
+                <div>
+                  <h4>
+                    {product.name} {count > 1 && <i>&times; {count}</i>}
+                  </h4>
+                  <span>{product.description}</span>
+                </div>
+                <span>{product.price * count} uah</span>
+              </li>
+            ))}
+            {order?.menusOrders?.map(({ id, menu, count }) => (
+              <li key={id}>
+                <div>
+                  <h4>
+                    {menu.name} {count > 1 && <i>&times; {count}</i>}{' '}
+                  </h4>
+                  <span>{menu.description}</span>
+                </div>
+                <span>{menu.price * count} uah</span>
+              </li>
+            ))}
+          </Styled.Products>
+          <Styled.TotalPrice>
+            <h4>total</h4>
+            <h4>{order?.price} uah</h4>
+          </Styled.TotalPrice>
+        </Styled.Box>
+      </Styled.Wrapper>
+
+      {isDelivered ? (
+        <Styled.Footer>
           <Styled.Delivered>
             <div>
               <span>Your mark:</span>
@@ -45,20 +99,18 @@ export const OrderDetail: React.FC = () => {
             </div>
           </Styled.Delivered>
           <Button color="black">order again</Button>
-        </>
-      )}
-
-      {!isDelivered && (
-        <>
+        </Styled.Footer>
+      ) : (
+        <Styled.Footer>
           <Styled.Status>
             <div>
               <span>Delivery expected on:</span>
-              <h4>15:28</h4>
+              <h4>{getTime(order!.wantedDeliveryDate)}</h4>
             </div>
-            <Range status={status} />
+            <Range status={order!.status} />
           </Styled.Status>
           <Button color="black">cancel</Button>
-        </>
+        </Styled.Footer>
       )}
     </Styled.Page>
   );

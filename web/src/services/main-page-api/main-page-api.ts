@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { baseQueryWithInterceptors } from '@services/base-query-with-interceptors';
-import { transformImage } from '@utils/transform-response';
+import { transformProductsResponse } from '@utils/transform-response';
 import { ICategories, IPaginateBody, TMenuResponse, TProductResponse } from 'typings/api';
 
 export const mainPageApi = createApi({
@@ -14,7 +14,7 @@ export const mainPageApi = createApi({
         method: 'POST',
         body: body.filter,
       }),
-      transformResponse: (response: TMenuResponse) => transformImage(response),
+      transformResponse: (response: TMenuResponse) => transformProductsResponse(response),
       invalidatesTags: ['menu'],
     }),
     getProducts: builder.mutation<TProductResponse, IPaginateBody>({
@@ -23,7 +23,7 @@ export const mainPageApi = createApi({
         method: 'POST',
         body: body.filter,
       }),
-      transformResponse: (response: TProductResponse) => transformImage(response),
+      transformResponse: (response: TProductResponse) => transformProductsResponse(response),
       invalidatesTags: ['product'],
     }),
     getProductCategories: builder.query<ICategories, void>({

@@ -15,7 +15,6 @@ export const cartSlice = createSlice({
       successMixin({ title: `${action.payload.name} added to cart` }).fire();
       state.totalItems += 1;
       state.totalPrice += action.payload.price;
-      localStorage.setItem('cart', JSON.stringify(state));
     },
 
     removeItem: (state, action: PayloadAction<{ id: string }>) => {
@@ -27,7 +26,6 @@ export const cartSlice = createSlice({
         state.totalItems -= count;
         state.totalPrice -= product.price * count;
       });
-      localStorage.setItem('cart', JSON.stringify(state));
       return state;
     },
 
@@ -40,7 +38,6 @@ export const cartSlice = createSlice({
       });
       state.cart[itemIndex].count += 1;
       state.totalItems += 1;
-      localStorage.setItem('cart', JSON.stringify(state));
     },
 
     decrement: (state, action: PayloadAction<{ id: string }>) => {
@@ -52,7 +49,6 @@ export const cartSlice = createSlice({
       });
       state.cart[itemIndex].count -= 1;
       state.totalItems -= 1;
-      localStorage.setItem('cart', JSON.stringify(state));
     },
   },
 });

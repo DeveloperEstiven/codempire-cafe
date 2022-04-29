@@ -10,12 +10,8 @@ export const useMainPage = (defaultSelected: TSelectedType = 'menu') => {
   const [selectedType, setSelectedType] = useState<TSelectedType>(defaultSelected);
   const [isFilterActive, setIsFilterActive] = useState(false);
 
-  const onProductTypeClick = () => {
-    setSelectedType('product');
-  };
-
-  const onMenuTypeClick = () => {
-    setSelectedType('menu');
+  const onTypeSelect = (type: string) => {
+    setSelectedType(type as TSelectedType);
   };
 
   const onFilterClick = () => {
@@ -26,11 +22,10 @@ export const useMainPage = (defaultSelected: TSelectedType = 'menu') => {
   return {
     selectedType,
     isFilterActive,
-    onProductTypeClick,
-    onMenuTypeClick,
     setIsFilterActive,
     onFilterClick,
     checkedFilterState,
     setCheckedFilterState,
+    onTypeSelect,
   };
 };

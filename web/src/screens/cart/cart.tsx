@@ -1,8 +1,6 @@
-import { Link } from 'react-router-dom';
 import SimpleBar from 'simplebar-react';
 
-import { Logo } from '@components/logo';
-import { ROUTES } from '@constants/routes';
+import { NotFound } from '@components/not-found';
 import { useAppDispatch, useAppSelector } from '@hooks/redux';
 import { decrement, increment, removeItem } from '@store/reducers/cart';
 import { Button } from '@styles/components/button';
@@ -60,13 +58,7 @@ export const Cart: React.FC = () => {
         </>
       )}
 
-      {!products.length && (
-        <Styled.NoProducts>
-          <Logo />
-          <div>Your cart is currently empty</div>
-          <Link to={ROUTES.mainPage}>Start Shopping</Link>
-        </Styled.NoProducts>
-      )}
+      {!products.length && <NotFound title="Your cart is currently empty" />}
     </Styled.Cart>
   );
 };

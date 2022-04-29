@@ -3,7 +3,8 @@ import { IMainPageInitialState } from './main-page.typings';
 
 export const mainPageInitialState: IMainPageInitialState = {
   searchTerm: '',
-  isFilterApplied: JSON.parse(localStorage.getItem('isFilterApplied') || 'false'),
-  activeFilters: JSON.parse(localStorage.getItem('activeFilters') || 'false') || [],
+  isFilterApplied: false,
+  activeFilters: [],
   sort: {} as Omit<ISort, 'label' | 'value'>,
+  selectedPage: 'main',
 };

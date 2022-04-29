@@ -1,8 +1,6 @@
+import { handleError, handleSuccess } from '@constants/pop-up-messages';
 import { TUserActionsNames, userApi } from '@services/user-api';
 import { IError } from 'typings/api';
-
-import { handleError, handleSuccess } from '@constants/pop-up-messages';
-
 import { IUserInitialState, TBuilder } from './user.typings';
 
 export const userInitialState: IUserInitialState = {
@@ -13,6 +11,8 @@ export const userInitialState: IUserInitialState = {
     userName: '',
     phoneNumber: '',
     publicKey: '',
+    logo: '',
+    addresses: [],
     role: 'user',
   },
 };
@@ -23,7 +23,8 @@ export const handleAuthDataFulfilled = (builder: TBuilder, api: TUserActionsName
     state.user = payload.user;
     handleSuccess(api);
     if (api === 'logOut') {
-      state = userInitialState;
+      state.token = userInitialState.token;
+      state.user = userInitialState.user;
     }
   });
 

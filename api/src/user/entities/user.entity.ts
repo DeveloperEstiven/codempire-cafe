@@ -40,8 +40,7 @@ export class UserEntity {
   public role: USER_ROLES;
 
   @OneToMany(() => AddressEntity, (address) => address.user, {
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
+    eager: true,
   })
   public addresses: AddressEntity[];
 

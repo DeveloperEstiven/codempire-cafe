@@ -18,6 +18,6 @@ export class AddressEntity {
   @Column()
   public isActive: boolean;
 
-  @ManyToOne(() => UserEntity, (user) => user.addresses)
+  @ManyToOne(() => UserEntity, (user) => user.addresses, { onDelete: 'CASCADE' })
   public user: UserEntity;
 }

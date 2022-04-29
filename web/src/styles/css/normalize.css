@@ -99,3 +99,6 @@ input:-internal-autofill-selected {
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+.swal2-popup {
+  margin-left: 70px;
+}

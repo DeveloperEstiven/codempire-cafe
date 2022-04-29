@@ -1,4 +1,4 @@
-import { Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 import { ApiProperty } from '@nestjs/swagger';
 import { ProductsOrdersEntity } from 'src/order/entities/products-orders.entity';
@@ -44,8 +44,8 @@ export class ProductEntity {
   @Column()
   public weight: string;
 
-  @ManyToOne(() => ProductsOrdersEntity, (productsOrders) => productsOrders.products)
-  public productsOrders: ProductsOrdersEntity;
+  @OneToMany(() => ProductsOrdersEntity, (productsOrders) => productsOrders.product)
+  public productsOrders: ProductsOrdersEntity[];
 
   @ManyToMany(() => IngredientEntity, (ingredient) => ingredient.products)
   @JoinTable()

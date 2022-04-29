@@ -3,22 +3,22 @@ import { useNavigate } from 'react-router-dom';
 
 import { ROUTES } from '@constants/routes';
 import { useAppDispatch, useAppSelector } from '@hooks/redux';
-import { searchTermReceived } from '@store/reducers/main-page';
+import { searchTermReceived, selectedPageReceived } from '@store/reducers/main-page';
 import { TInputEvent } from 'typings/api';
 import { TPage } from './aside-menu.typings';
 
 export const useAsideMenu = () => {
   const dispatch = useAppDispatch();
   const { totalItems } = useAppSelector((store) => store.cart);
-  const [selected, setSelected] = useState<TPage>('main');
+  const { searchTerm: storeSearchTerm, selectedPage } = useAppSelector((store) => store.mainPage);
   const [isSearchActive, setIsSearchActive] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState(storeSearchTerm);
   const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const onItemClick = (name: TPage) => {
-    setSelected(name);
-    navigate(name);
+  const onItemClick = (page: TPage) => {
+    dispatch(selectedPageReceived(page));
+    navigate(page);
   };
 
   const onNotificationClick = () => {
@@ -52,8 +52,9 @@ export const useAsideMenu = () => {
     onChangeSearch,
     totalItems,
     inputRef,
-    selected,
+    selectedPage,
     isSearchActive,
     searchTerm,
+    storeSearchTerm,
   };
 };

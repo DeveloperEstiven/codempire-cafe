@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, HttpStatus, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post, Put, UseGuards } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from 'src/decorators/user';
 import JwtAuthenticationGuard from 'src/guards/auth.guard';
@@ -30,7 +30,7 @@ export class UserController {
     return this.userService.updateUser(updateUserDto, userTokenId);
   }
 
-  @Put(USER_ROUTES.changePassword)
+  @Post(USER_ROUTES.changePassword)
   @ApiOperation({ summary: USER_ROUTES.changePassword })
   @ApiResponse({
     status: HttpStatus.OK,

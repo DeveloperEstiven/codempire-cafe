@@ -3,5 +3,5 @@ export interface IRangeStatus {
 }
 
 export interface IRangeProps {
-  status: string[];
+  status: string;
 }

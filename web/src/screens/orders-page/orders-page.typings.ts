@@ -1,1 +1,4 @@
-export type TSelectedTypes = 'waiting' | 'complete';
+import { IUserOrderResponse } from 'typings/api';
+
+export type TSelectedType = 'waiting' | 'complete';
+export type TRawGroups = { [k: string]: IUserOrderResponse[] };
