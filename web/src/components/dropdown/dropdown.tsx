@@ -1,17 +1,36 @@
-import { FC, SetStateAction } from 'react';
+import { FC } from 'react';
 import Select, { MultiValue, SingleValue } from 'react-select';
 
 import { Chip } from '@components/chip';
+import { IconIndicator, IconOption } from '@components/dropdown/dropdown.constants';
 import { ISort } from 'typings/api';
-import { IconIndicator, IconOption } from './dropdown.constants';
 import { dropdownStyles, dropdownTheme, StyledDropdown as Styled } from './dropdown.styles';
-import { IDropdownData, IDropdownProps, TDropdownData } from './dropdown.typings';
+import { IDropdownData, IDropdownProps } from './dropdown.typings';
 
 export const Dropdown: FC<IDropdownProps> = (props) => {
-  const { isMulti, items, placeholder, selected, setSelected, isSearchable, stylesConfig: stylesObject } = props;
+  const {
+    name,
+    onBlur,
+    isMulti,
+    items,
+    placeholder,
+    selected,
+    setSelected,
+    isSearchable,
+    stylesConfig: stylesObject,
+  } = props;
 
-  const handleChange = (newValue: MultiValue<IDropdownData | ISort> | SingleValue<IDropdownData | ISort>) => {
-    setSelected(newValue as SetStateAction<TDropdownData>);
+  const handleChange = (
+    newValue: MultiValue<IDropdownData | ISort | string> | SingleValue<IDropdownData | ISort | string>
+  ) => {
+    setSelected(newValue);
+  };
+
+  const getValue = () => {
+    if (typeof selected === 'string' || selected instanceof String) {
+      return items.find((items) => items.value === selected) || '';
+    }
+    return selected;
   };
 
   return (
@@ -26,9 +45,11 @@ export const Dropdown: FC<IDropdownProps> = (props) => {
       )}
 
       <Select
+        name={name}
+        onBlur={onBlur}
         options={items as ISort[]}
         onChange={handleChange}
-        value={selected as ISort}
+        value={getValue()}
         styles={stylesObject || dropdownStyles(isMulti)}
         components={{
           Option: IconOption,

@@ -1,4 +1,4 @@
-import { StylesConfig, Theme } from 'react-select';
+import { GroupBase, StylesConfig, Theme } from 'react-select';
 import styled from 'styled-components';
 
 import { theme } from '@styles/theme';
@@ -17,7 +17,9 @@ export const StyledDropdown = {
   `,
 };
 
-export const dropdownStyles = (isMulti?: boolean): StylesConfig<IDropdownData, boolean> => ({
+export const dropdownStyles = (
+  isMulti?: boolean
+): StylesConfig<string | IDropdownData, boolean, GroupBase<IDropdownData>> => ({
   menuList: (base) => ({
     ...base,
     padding: '0px',
