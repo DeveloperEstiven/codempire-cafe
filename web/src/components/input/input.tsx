@@ -34,7 +34,9 @@ export const Input: React.FC<IInputProps> = (props) => {
       {title && <Styled.Title>{title}</Styled.Title>}
       <Styled.Wrapper>
         <Styled.Block>
-          {isTextArea && <Styled.TextArea onBlur={handleBlur} onFocus={handleFocus} />}
+          {isTextArea && (
+            <Styled.TextArea value={value} onChange={onChange} name={name} onBlur={handleBlur} onFocus={handleFocus} />
+          )}
           {isPhoneNumber && (
             <PhoneInput
               inputProps={{

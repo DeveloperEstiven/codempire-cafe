@@ -1,0 +1,20 @@
+.MuiCalendarPicker-root {
+  max-height: 290px !important;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 24px;
+  letter-spacing: 0.1px;
+  color: rgba(0, 0, 0, 0.6);
+}
+.MuiCalendarPicker-root .Mui-selected {
+  background-color: #6200ee !important;
+}
+.PrivatePickersFadeTransitionGroup-root {
+  overflow-y: hidden !important;
+}
+.MuiButton-root {
+  color: #6200ee !important;
+}
+.MuiPaper-root {
+  margin-left: 100px !important;
+}

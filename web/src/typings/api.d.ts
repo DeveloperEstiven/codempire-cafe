@@ -30,7 +30,7 @@ export interface IResponseError {
   data: IError;
 }
 
-export type TInputEvent = React.ChangeEvent<HTMLInputElement>;
+export type TInputEvent = React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
 
 export type TRole = 'user' | 'manager';
 

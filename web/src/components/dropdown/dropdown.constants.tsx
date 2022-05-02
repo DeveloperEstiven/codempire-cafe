@@ -5,7 +5,10 @@ import { IDropdownData } from './dropdown.typings';
 
 const { Option, DropdownIndicator } = components;
 
-export const IconIndicator = (props: DropdownIndicatorProps<IDropdownData, boolean>) => {
+export const IconIndicator:
+  | React.ComponentType<DropdownIndicatorProps<string | IDropdownData, boolean, GroupBase<IDropdownData>>>
+  | null
+  | undefined = (props) => {
   return (
     <DropdownIndicator {...props}>
       <Icon type="sorting" />
@@ -13,11 +16,13 @@ export const IconIndicator = (props: DropdownIndicatorProps<IDropdownData, boole
   );
 };
 
-export const IconOption = (props: OptionProps<IDropdownData, boolean, GroupBase<IDropdownData>>) => {
+export const IconOption = (props: OptionProps<IDropdownData | string, boolean, GroupBase<IDropdownData>>) => {
+  const data = props.data as IDropdownData;
+
   return (
     <Option {...props}>
-      {props.data.icon && <Icon type={props.data.icon} />}
-      {props.data.label}
+      {data.icon && <Icon type={data.icon} />}
+      {data.label}
     </Option>
   );
 };

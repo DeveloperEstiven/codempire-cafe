@@ -63,7 +63,7 @@ export const StyledDataOrganizer = {
   `,
 };
 
-export const sortingStyles: StylesConfig<IDropdownData, boolean, GroupBase<IDropdownData>> = {
+export const sortingStyles: StylesConfig<string | IDropdownData, boolean, GroupBase<IDropdownData>> = {
   control: (base) => {
     return {
       ...base,

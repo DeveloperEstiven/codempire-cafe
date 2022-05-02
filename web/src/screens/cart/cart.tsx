@@ -1,6 +1,8 @@
+import { useNavigate } from 'react-router-dom';
 import SimpleBar from 'simplebar-react';
 
 import { NotFound } from '@components/not-found';
+import { ROUTES } from '@constants/routes';
 import { useAppDispatch, useAppSelector } from '@hooks/redux';
 import { decrement, increment, removeItem } from '@store/reducers/cart';
 import { Button } from '@styles/components/button';
@@ -9,12 +11,16 @@ import { StyledCart as Styled } from './cart.styles';
 export const Cart: React.FC = () => {
   const { cart: products, totalPrice } = useAppSelector((store) => store.cart);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const onDecrementClick = (id: string) => () => dispatch(decrement({ id }));
   const onIncrementClick = (id: string) => () => dispatch(increment({ id }));
 
   const onRemove = (id: string) => () => dispatch(removeItem({ id }));
 
+  const onMakeOrder = () => {
+    navigate(ROUTES.orderPage);
+  };
   return (
     <Styled.Cart>
       {!!products.length && (
@@ -53,7 +59,9 @@ export const Cart: React.FC = () => {
               <p>Total</p>
               <span>{totalPrice}uah</span>
             </div>
-            <Button color="black">order</Button>
+            <Button color="black" onClick={onMakeOrder}>
+              order
+            </Button>
           </Styled.Footer>
         </>
       )}

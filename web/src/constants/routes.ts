@@ -12,6 +12,7 @@ export const ROUTES = {
   deleteAccount: '/delete-account',
   addAddresses: '/add-addresses',
   cart: '/cart',
+  orderPage: '/order-page',
   default: '*',
 } as const;
 

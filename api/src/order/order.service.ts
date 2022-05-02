@@ -34,14 +34,15 @@ export class OrderService {
         orderNumber: 'DESC',
       },
     });
+    console.log('🛑 ~ OrderService ~ orders', orders);
 
     const ordersWithDescriptions = orders.map((order) => {
       const newOrder = {
         ...order,
         description:
-          order.productsOrders.map((productOrder) => productOrder?.product.description).join(', ') +
+          order.productsOrders.map((productOrder) => productOrder?.product?.description).join(', ') +
           ', ' +
-          order.menusOrders.map((menuOrder) => menuOrder?.menu.description).join(', '),
+          order.menusOrders.map((menuOrder) => menuOrder?.menu?.description).join(', '),
       };
       delete newOrder.productsOrders;
       delete newOrder.menusOrders;

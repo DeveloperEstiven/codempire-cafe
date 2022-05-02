@@ -5,6 +5,9 @@ export const StyledRadio = {
     &[type='radio'] {
       display: none;
     }
+    &[type='radio'] + label::before {
+      border-color: #000;
+    }
     &[type='radio']:checked + label::before {
       border-color: #000;
     }

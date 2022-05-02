@@ -11,6 +11,7 @@ import { EditProfile } from '@screens/edit-profile';
 import { LogInPage } from '@screens/log-in';
 import { MainPage } from '@screens/main-page';
 import { OrderDetail } from '@screens/order-detail';
+import { OrderPage } from '@screens/order-page/order-page';
 import { OrdersPage } from '@screens/orders-page';
 import { ProfilePage } from '@screens/profile-page';
 import { SignUpPage } from '@screens/sign-up';
@@ -62,6 +63,14 @@ export const AppRouter: React.FC = () => {
           element={
             <PrivateRoute>
               <OrderDetail />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path={ROUTES.orderPage}
+          element={
+            <PrivateRoute>
+              <OrderPage />
             </PrivateRoute>
           }
         />
