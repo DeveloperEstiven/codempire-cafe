@@ -1,6 +1,6 @@
 import { IMenu, IProduct } from 'typings/api';
 
-export const ProductCardConfig = (product: IMenu | IProduct) => {
+export const itemCardConfig = (product: IMenu | IProduct) => {
   const isProduct = 'weight' in product;
   const { name, image } = product;
 
@@ -10,30 +10,30 @@ export const ProductCardConfig = (product: IMenu | IProduct) => {
     imageHeight: `140px`,
     imageAlt: 'Product',
     footer: `${isProduct ? 'Product' : 'Menu'} information`,
-    html: isProduct ? ProductConfig(product) : MenuConfig(product),
+    html: isProduct ? productConfig(product) : menuConfig(product),
     showCloseButton: true,
     focusConfirm: true,
     buttonsStyling: false,
     customClass: {
-      title: 'product-title',
-      closeButton: 'product-close',
-      image: 'product-image',
-      htmlContainer: 'product-description',
-      actions: 'product-button-wrapper',
-      confirmButton: 'product-button',
-      footer: 'product-footer',
+      title: 'item-title',
+      closeButton: 'item-close',
+      image: 'item-image',
+      htmlContainer: 'item-description',
+      actions: 'item-button-wrapper',
+      confirmButton: 'item-button',
+      footer: 'item-footer',
     },
     confirmButtonText: 'order',
   };
 };
 
-export const MenuConfig = (product: IMenu) => {
+export const menuConfig = (product: IMenu) => {
   const { description, price, products } = product;
-  const productNames = products.map((product) => product.name).join(', ');
+  const productNames = products!.map((product) => product.name).join(', ');
 
   const allergenNames: string[] = [];
-  products.forEach((product) =>
-    product.ingredients.forEach((ingredient) => {
+  products!.forEach((product) =>
+    product.ingredients!.forEach((ingredient) => {
       if (ingredient.isAllergen) {
         allergenNames.push(ingredient.name);
       }
@@ -41,14 +41,14 @@ export const MenuConfig = (product: IMenu) => {
   );
 
   return `
-      <div class='product-text'>
+      <div class='item-text'>
         <p>${description}</p> 
         <h3>Contains:</h3>
         <span>${productNames}</span>
         <h3>Allergens:</h3>
         <span>${allergenNames.join(', ') || 'No allergens'}</span>
       </div>
-      <div class='product-actions'>
+      <div class='item-actions'>
         <div>
           ${price}uah
         </div>
@@ -56,25 +56,25 @@ export const MenuConfig = (product: IMenu) => {
       `;
 };
 
-export const ProductConfig = (product: IProduct) => {
+export const productConfig = (product: IProduct) => {
   const { description, price, ingredients, weight } = product;
 
-  const ingredientNames = ingredients.map((ingredient) => ingredient.name).join(', ');
+  const ingredientNames = ingredients!.map((ingredient) => ingredient.name).join(', ');
   const allergenNames =
-    ingredients
+    ingredients!
       .filter((ingredient) => ingredient.isAllergen)
       .map((ingredient) => ingredient.name)
       .join(', ') || 'No allergens';
 
   return `
-      <div class='product-text'>
+      <div class='item-text'>
         <p>${description}</p> 
         <h3>Ingredients:</h3>
         <span>${ingredientNames}</span>
         <h3>Allergens:</h3>
         <span>${allergenNames}</span>
       </div>
-      <div class='product-actions'>
+      <div class='item-actions'>
         <div>${weight}</div>
         <div>${price}uah</div>
       </div>

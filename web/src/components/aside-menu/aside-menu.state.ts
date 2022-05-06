@@ -4,17 +4,20 @@ import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '@constants/routes';
 import { useAppDispatch, useAppSelector } from '@hooks/redux';
 import { searchTermReceived, selectedPageReceived } from '@store/reducers/main-page';
+import { hideScrollBar } from '@utils/scrollbar';
 import { TInputEvent } from 'typings/api';
 import { TPage } from './aside-menu.typings';
 
 export const useAsideMenu = () => {
   const dispatch = useAppDispatch();
   const { totalItems } = useAppSelector((store) => store.cart);
+  const { isNotificationsExists } = useAppSelector((store) => store.notifications);
   const { searchTerm: storeSearchTerm, selectedPage } = useAppSelector((store) => store.mainPage);
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [searchTerm, setSearchTerm] = useState(storeSearchTerm);
   const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
+  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
 
   const onItemClick = (page: TPage) => {
     dispatch(selectedPageReceived(page));
@@ -22,7 +25,8 @@ export const useAsideMenu = () => {
   };
 
   const onNotificationClick = () => {
-    console.log('onNotificationClick');
+    setIsNotificationsOpen(true);
+    hideScrollBar();
   };
 
   const onCartClick = () => {
@@ -50,11 +54,14 @@ export const useAsideMenu = () => {
     onSearchClick,
     onSearchBlur,
     onChangeSearch,
+    setIsNotificationsOpen,
+    isNotificationsOpen,
     totalItems,
     inputRef,
     selectedPage,
     isSearchActive,
     searchTerm,
     storeSearchTerm,
+    isNotificationsExists,
   };
 };

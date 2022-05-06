@@ -57,7 +57,7 @@ export const useEditProfileForm = (onSave: THandleEditProfileSubmit) => {
         />
       ),
       customClass: {
-        popup: 'upload-container',
+        popup: 'popup-container',
       },
       showConfirmButton: false,
     });

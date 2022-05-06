@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AddressEntity } from 'src/address/entities/address.entity';
 import { MenuEntity } from 'src/menu/entities/menu.entity';
 import { ProductEntity } from 'src/product/entities/product.entity';
 import { UserEntity } from 'src/user/entities/user.entity';
@@ -20,6 +21,7 @@ import { OrderService } from './order.service';
       ProductsOrdersEntity,
       MenuEntity,
       ProductEntity,
+      AddressEntity,
     ]),
   ],
 })

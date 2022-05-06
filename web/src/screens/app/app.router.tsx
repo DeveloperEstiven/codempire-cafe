@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import { AddressesForm } from '@components/addresses/addresses-from';
 import { Animation } from '@components/animation';
 import { Layout } from '@components/layout';
+import { OrderConfirmation } from '@components/order-confirmation';
 import { Page404 } from '@components/page-404';
 import { hideAsideMenuPaths, ROUTES } from '@constants/routes';
 import { Cart } from '@screens/cart';
@@ -71,6 +72,14 @@ export const AppRouter: React.FC = () => {
           element={
             <PrivateRoute>
               <OrderPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path={ROUTES.orderConfirmation}
+          element={
+            <PrivateRoute>
+              <OrderConfirmation />
             </PrivateRoute>
           }
         />

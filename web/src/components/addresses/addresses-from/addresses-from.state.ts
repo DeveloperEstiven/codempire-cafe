@@ -1,20 +1,30 @@
 import { useEffect, useState } from 'react';
 import { trackPromise } from 'react-promise-tracker';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { errorMixin, successMixin } from '@constants/pop-up-messages';
 import { PROMISES_AREA } from '@constants/promises-area';
 import { ROUTES } from '@constants/routes';
 import { useAppSelector } from '@hooks/redux';
 import { useAddAddressesMutation } from '@services/profile-page-api';
-import { IAddress, IResponseError, TInputEvent } from 'typings/api';
+import { IAddAddress, IResponseError, TInputEvent } from 'typings/api';
+import { LocationState } from './addresses-form.typings';
 
 export const useAddressesForm = () => {
   const { addresses: userAddresses } = useAppSelector((store) => store.user.user);
   const [value, setValue] = useState('');
-  const [addresses, setAddresses] = useState<IAddress[]>(userAddresses);
+  const [addresses, setAddresses] = useState<IAddAddress[]>(userAddresses || []);
   const [addAddresses, { error }] = useAddAddressesMutation();
   const navigate = useNavigate();
+  const location = useLocation() as LocationState;
+  const [isExists, setIsExists] = useState(false);
+
+  useEffect(() => {
+    if (isExists) {
+      errorMixin({ title: 'This address already exists' }).fire();
+      setIsExists(false);
+    }
+  }, [isExists]);
 
   const onChange = (e: TInputEvent) => {
     setValue(e.target.value);
@@ -35,10 +45,16 @@ export const useAddressesForm = () => {
   };
 
   const onAddNewAddress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && value) {
       const newAddress = { address: value, isActive: true };
-      setAddresses([...addresses, newAddress]);
-      setValue('');
+      const isAddressExist = addresses.find((address) => address.address === newAddress.address);
+      if (isAddressExist) {
+        return setIsExists(true);
+      } else {
+        setAddresses([...addresses, newAddress]);
+        setValue('');
+        setIsExists(false);
+      }
     }
   };
 
@@ -52,7 +68,8 @@ export const useAddressesForm = () => {
   const onApply = async () => {
     await trackPromise(addAddresses({ addresses }).unwrap(), PROMISES_AREA.addAddresses);
     successMixin({ title: 'Addresses added successfully' }).fire();
-    navigate(ROUTES.profilePage);
+    const { prevPath, prevState } = location.state;
+    navigate(prevPath ? prevPath : ROUTES.profilePage, { state: prevState });
   };
 
   return { handleCheck, value, addresses, onChange, onAddNewAddress, onApply };

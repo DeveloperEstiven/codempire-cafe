@@ -1,5 +1,7 @@
+import { SyntheticEvent } from 'react';
+
 export interface IStarRatingProps {
-  onRatingClick: (rating: number) => void;
-  fractions?: number;
-  value?: number;
+  onRatingClick?: (event: SyntheticEvent<Element, Event>, value: number | null) => void;
+  value?: number | null;
+  isReadonly?: boolean;
 }

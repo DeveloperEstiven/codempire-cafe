@@ -1,7 +1,7 @@
 import InfiniteScroll from 'react-infinite-scroll-component';
 
+import { ItemCard } from '@components/item-card';
 import { Loader } from '@components/loader';
-import { ProductCard } from '@components/product-card';
 import { StyledProductsList as Styled } from '@styles/components/products-list';
 import { useMenusListState } from './menus-list.state';
 
@@ -18,7 +18,7 @@ export const MenusList: React.FC = () => {
     >
       <Styled.List>
         {menus.map((menu) => (
-          <ProductCard key={menu.id} product={menu} />
+          <ItemCard key={menu.id} item={menu} />
         ))}
       </Styled.List>
       {isLoading && (

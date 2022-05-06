@@ -75,6 +75,18 @@ export class OrderController {
     return this.orderService.getOrders(userTokenId);
   }
 
+  @Get(ORDER_ROUTES.getCompleted)
+  @ApiOperation({ summary: ORDER_ROUTES.getCompleted })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: ORDER_ROUTES.getCompleted,
+  })
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(JwtAuthenticationGuard)
+  getCompleted(@User('id') userTokenId: string) {
+    return this.orderService.getCompleted(userTokenId);
+  }
+
   @Get(`${ORDER_ROUTES.getOrders}/:num`)
   @ApiOperation({ summary: ORDER_ROUTES.getOrders })
   @ApiResponse({

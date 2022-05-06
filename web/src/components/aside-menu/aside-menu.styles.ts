@@ -90,7 +90,7 @@ export const StyledAsideMenu = {
     }
   `,
 
-  SearchButton: styled.div<{ isSearchValue: boolean }>`
+  IconButton: styled.div<{ isWithMark: boolean }>`
     &::before {
       content: '';
       position: absolute;
@@ -99,7 +99,8 @@ export const StyledAsideMenu = {
       width: 5px;
       height: 5px;
       border-radius: 50%;
-      display: ${(props) => (props.isSearchValue ? 'block' : 'none')};
+      opacity: ${(props) => (props.isWithMark ? 1 : 0)};
+      display: block;
       background-color: ${(props) => props.theme.colors.textPrimary};
     }
   `,

@@ -4,5 +4,6 @@ export const PROMISES_AREA = {
   editProfile: 'edit-profile',
   changePassword: 'change-password',
   addAddresses: 'add-addresses',
-  makeOrder: 'make-order',
+  addOrder: 'add-order',
+  cancelOrder: 'cancel-order',
 };

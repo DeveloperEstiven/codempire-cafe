@@ -4,7 +4,7 @@ import { DailyOrder } from '@components/daily-order';
 import { Loader } from '@components/loader';
 import { TypeSelector } from '@components/type-selector';
 import { errorMixin } from '@constants/pop-up-messages';
-import { useGetOrdersQuery } from '@services/profile-page-api';
+import { useGetOrdersQuery } from '@services/order-api';
 import { IResponseError } from 'typings/api';
 import { getGroupOrders } from './orders-page.constants';
 import { TSelectedType } from './orders-page.typings';

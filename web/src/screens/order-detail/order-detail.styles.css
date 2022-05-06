@@ -1,0 +1,24 @@
+.actions {
+  display: flex !important;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  padding: 0 20px;
+}
+
+.actions button {
+  width: 50%;
+}
+
+.order-popup-container {
+  width: 310px !important;
+}
+
+.cancel-btn {
+  background-color: #fff !important;
+  color: #ff0000 !important;
+}
+
+.confirm-btn {
+  background-color: #fff !important;
+  color: #6200ee !important;
+}

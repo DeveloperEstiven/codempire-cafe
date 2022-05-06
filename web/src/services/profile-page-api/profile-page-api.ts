@@ -1,10 +1,7 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { baseQueryWithInterceptors } from '@services/base-query-with-interceptors';
 import { transformUserResponse } from '@utils/transform-response';
-import {
-    IAddAddresses, IAddress, IChangePassword, IEditProfile, IUser, IUserDetailOrder,
-    IUserOrderResponse
-} from 'typings/api';
+import { IAddAddresses, IAddress, IChangePassword, IEditProfile, IUser } from 'typings/api';
 
 export const profilePageApi = createApi({
   reducerPath: 'profilePageApi',
@@ -33,19 +30,7 @@ export const profilePageApi = createApi({
         body,
       }),
     }),
-    getOrders: builder.query<IUserOrderResponse[], void>({
-      query: () => ({ url: '/order/get-orders' }),
-    }),
-    getDetailOrder: builder.query<IUserDetailOrder, string>({
-      query: (orderNumber) => ({ url: `/order/get-orders/${orderNumber}` }),
-    }),
   }),
 });
 
-export const {
-  useChangePasswordMutation,
-  useEditProfileMutation,
-  useAddAddressesMutation,
-  useGetOrdersQuery,
-  useGetDetailOrderQuery,
-} = profilePageApi;
+export const { useChangePasswordMutation, useEditProfileMutation, useAddAddressesMutation } = profilePageApi;

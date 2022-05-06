@@ -9,6 +9,7 @@ export const StyledTimePicker = {
     box-shadow: ${(props) => props.theme.boxShadow};
     height: 53px;
     span {
+      text-align: center;
       width: 37px;
       font-weight: 500;
       font-size: 14px;

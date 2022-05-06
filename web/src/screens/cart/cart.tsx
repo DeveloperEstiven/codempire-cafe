@@ -1,57 +1,32 @@
 import { useNavigate } from 'react-router-dom';
-import SimpleBar from 'simplebar-react';
 
+import { CartItem } from '@components/cart-item';
 import { NotFound } from '@components/not-found';
 import { ROUTES } from '@constants/routes';
-import { useAppDispatch, useAppSelector } from '@hooks/redux';
-import { decrement, increment, removeItem } from '@store/reducers/cart';
+import { useAppSelector } from '@hooks/redux';
 import { Button } from '@styles/components/button';
 import { StyledCart as Styled } from './cart.styles';
 
 export const Cart: React.FC = () => {
-  const { cart: products, totalPrice } = useAppSelector((store) => store.cart);
-  const dispatch = useAppDispatch();
+  const { cart, totalPrice } = useAppSelector((store) => store.cart);
+  const isCartWithItems = !!totalPrice;
   const navigate = useNavigate();
-
-  const onDecrementClick = (id: string) => () => dispatch(decrement({ id }));
-  const onIncrementClick = (id: string) => () => dispatch(increment({ id }));
-
-  const onRemove = (id: string) => () => dispatch(removeItem({ id }));
 
   const onMakeOrder = () => {
     navigate(ROUTES.orderPage);
   };
+
   return (
     <Styled.Cart>
-      {!!products.length && (
+      {isCartWithItems && (
         <>
           <Styled.Wrapper>
-            <SimpleBar>
-              {products.map(({ product, count }) => (
-                <Styled.Item key={product.id}>
-                  <Styled.Product>
-                    <Styled.ImageBox>
-                      <img src={product.image} alt="product" />
-                    </Styled.ImageBox>
-                    <Styled.Description>
-                      <h4>{product.name}</h4>
-                      <p>{product.description}</p>
-                    </Styled.Description>
-                    <Styled.Count>
-                      <button onClick={onDecrementClick(product.id)} disabled={count === 1}>
-                        -
-                      </button>
-                      <span>{count}</span>
-                      <button onClick={onIncrementClick(product.id)}>+</button>
-                    </Styled.Count>
-                  </Styled.Product>
-                  <Styled.Actions>
-                    <button onClick={onRemove(product.id)}>remove</button>
-                    <span>{product.price * count}uah</span>
-                  </Styled.Actions>
-                </Styled.Item>
-              ))}
-            </SimpleBar>
+            {cart.products.map(({ product, count }) => (
+              <CartItem key={product.id} item={product} count={count} />
+            ))}
+            {cart.menus.map(({ menu, count }) => (
+              <CartItem key={menu.id} item={menu} count={count} />
+            ))}
           </Styled.Wrapper>
 
           <Styled.Footer>
@@ -66,7 +41,7 @@ export const Cart: React.FC = () => {
         </>
       )}
 
-      {!products.length && <NotFound title="Your cart is currently empty" />}
+      {!isCartWithItems && <NotFound title="Your cart is currently empty" />}
     </Styled.Cart>
   );
 };

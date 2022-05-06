@@ -1,7 +1,8 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import { DatePickerField } from '@components/date-picker-field';
 import { Dropdown } from '@components/dropdown';
+import { IDropdownData } from '@components/dropdown/dropdown.typings';
 import { FormInput } from '@components/form-input';
 import { Loader } from '@components/loader';
 import { RadioButton } from '@components/radio-button';
@@ -14,29 +15,32 @@ import { Button } from '@styles/components/button';
 import { Form } from '@styles/components/form';
 import { PlusButton } from '@styles/components/plus-button';
 import { Space } from '@styles/components/space';
-import { options, radioButtons } from './order-page-form.constants';
+import { radioButtons } from './order-page-form.constants';
 import { StyledOrderPage as Styled } from './order-page-form.styles';
 import { IOrderFormProps } from './order-page-form.typings';
 import { useOrderPage } from './order-page.state';
 
 export const OrderForm: React.FC<IOrderFormProps> = ({ onOrder }) => {
   const {
-    classesTextField,
+    values,
     time,
     maxDate,
-    values,
     errors,
     touched,
     isValid,
-    setTime,
+    selectedRadio,
+    classesTextField,
+    getActiveAddresses,
+    onTimeChange,
     handleSubmit,
     handleBlur,
-    setFieldValue,
     isRadioSelected,
     handleRadioCheck,
-    getFieldProps,
-    selectedRadio,
+    onCommentChange,
+    onDateChange,
+    onAddressChange,
   } = useOrderPage({ onOrder });
+  const { state } = useLocation();
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -45,18 +49,19 @@ export const OrderForm: React.FC<IOrderFormProps> = ({ onOrder }) => {
           <div>
             <h3>Choose address</h3>
             <Dropdown
-              items={options}
+              items={getActiveAddresses() || ([] as IDropdownData[])}
               name="address"
-              selected={values.address.value}
-              setSelected={(option) => setFieldValue('address', option)}
+              placeholder="select address"
+              selected={'value' in values.address ? values.address : ''}
+              setSelected={onAddressChange}
               onBlur={() => {
                 handleBlur({ target: { name: 'address' } });
               }}
             />
-            <Styled.Error>{touched.address && errors.address && <span>{errors.address.value}</span>}</Styled.Error>
+            <Styled.Error>{touched.address && <span>{errors.address?.value}</span>}</Styled.Error>
 
             <Styled.AddAddresses>
-              <Link to={ROUTES.addAddresses}>
+              <Link to={{ pathname: ROUTES.addAddresses }} state={{ prevPath: location.pathname, prevState: state }}>
                 add another
                 <PlusButton />
               </Link>
@@ -83,16 +88,15 @@ export const OrderForm: React.FC<IOrderFormProps> = ({ onOrder }) => {
               <div>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                   <DatePickerField
-                    name="deliveryDate"
                     value={values.deliveryDate}
                     classesTextField={classesTextField}
                     maxDate={maxDate}
-                    onChange={setFieldValue}
+                    onChange={onDateChange}
                   />
                 </LocalizationProvider>
                 <Styled.Error>{errors.deliveryDate && <span>{errors.deliveryDate}</span>}</Styled.Error>
               </div>
-              <TimePicker time={time} setTime={setTime} />
+              <TimePicker time={time} setTime={onTimeChange} />
             </Styled.DateSelect>
           )}
 
@@ -100,10 +104,13 @@ export const OrderForm: React.FC<IOrderFormProps> = ({ onOrder }) => {
             field={{ touched: touched.comment, errorMessage: errors.comment }}
             title="Add a comment"
             isTextArea
-            {...getFieldProps('comment')}
+            name="comment"
+            onBlur={handleBlur}
+            value={values.comment}
+            onChange={onCommentChange}
           />
 
-          <Loader area={PROMISES_AREA.makeOrder}>
+          <Loader area={PROMISES_AREA.addOrder}>
             <Button color="black" type="submit" disabled={!isValid}>
               go on
             </Button>

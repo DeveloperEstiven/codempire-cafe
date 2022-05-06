@@ -1,15 +1,10 @@
-import { IsArray, IsDateString, IsEnum, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsDateString, IsOptional, IsString, IsUUID } from 'class-validator';
 
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { DELIVERY_STATUS } from '../order.constants';
 import { CreateMenusOrdersDto } from './create-menus-orders.dto';
 import { CreateProductsOrdersDto } from './create-products-orders.dto';
 
 export class CreateOrderDto {
-  @ApiProperty({ example: 'on way', description: 'delivery status', enum: DELIVERY_STATUS })
-  @IsEnum(DELIVERY_STATUS)
-  public status: DELIVERY_STATUS = DELIVERY_STATUS.created;
-
   @ApiPropertyOptional({ example: '2022-04-26T07:35:13.414Z', description: 'wanted delivery date' })
   @IsDateString()
   @IsOptional()
@@ -19,6 +14,11 @@ export class CreateOrderDto {
   @IsString()
   @IsOptional()
   public comment: string;
+
+  @ApiProperty({ example: '2118 Thornridge Cir. Syracuse', description: 'order address' })
+  @IsString()
+  @IsUUID()
+  public addressId: string;
 
   @ApiProperty({ type: [CreateProductsOrdersDto], description: 'ordered products' })
   @IsArray()
