@@ -2,6 +2,7 @@ import { Repository } from 'typeorm';
 
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { AddressEntity } from 'src/address/entities/address.entity';
 import { ERRORS } from 'src/constants/errors';
 import { MenuEntity } from 'src/menu/entities/menu.entity';
 import { MenusOrdersEntity } from 'src/order/entities/menus-orders.entity';
@@ -23,7 +24,8 @@ export class OrderService {
     @InjectRepository(MenusOrdersEntity) private readonly menusOrdersRepository: Repository<MenusOrdersEntity>,
     @InjectRepository(MenuEntity) private readonly menuRepository: Repository<MenuEntity>,
     @InjectRepository(ProductEntity) private readonly productRepository: Repository<ProductEntity>,
-    @InjectRepository(ProductsOrdersEntity) private readonly productsOrdersRepository: Repository<ProductsOrdersEntity>
+    @InjectRepository(ProductsOrdersEntity) private readonly productsOrdersRepository: Repository<ProductsOrdersEntity>,
+    @InjectRepository(AddressEntity) private readonly addressRepository: Repository<AddressEntity>
   ) {}
 
   async getOrders(userTokenId: string) {
@@ -34,15 +36,15 @@ export class OrderService {
         orderNumber: 'DESC',
       },
     });
-    console.log('🛑 ~ OrderService ~ orders', orders);
 
     const ordersWithDescriptions = orders.map((order) => {
+      const productsDescription = order.productsOrders.map((productOrder) => productOrder?.product?.description);
+      const menusDescription = order.menusOrders.map((menuOrder) => menuOrder?.menu?.description);
+      const description = [...menusDescription, ...productsDescription].join(', ');
+
       const newOrder = {
         ...order,
-        description:
-          order.productsOrders.map((productOrder) => productOrder?.product?.description).join(', ') +
-          ', ' +
-          order.menusOrders.map((menuOrder) => menuOrder?.menu?.description).join(', '),
+        description,
       };
       delete newOrder.productsOrders;
       delete newOrder.menusOrders;
@@ -52,10 +54,21 @@ export class OrderService {
     return ordersWithDescriptions;
   }
 
+  async getCompleted(userTokenId: string) {
+    const orders = await this.orderRepository.find({
+      where: { user: userTokenId, status: 'delivered' },
+      order: {
+        orderNumber: 'DESC',
+      },
+    });
+
+    return orders;
+  }
+
   async getDetailOrder(userTokenId: string, orderNumber: number) {
     return this.orderRepository.findOne({
       where: { user: userTokenId, orderNumber },
-      relations: ['productsOrders', 'menusOrders'],
+      relations: ['productsOrders', 'menusOrders', 'address', 'user'],
     });
   }
 
@@ -87,6 +100,11 @@ export class OrderService {
 
   async addOrder(body: CreateOrderDto, userTokenId: string) {
     const user = await this.userRepository.findOne({ id: userTokenId });
+    const address = await this.addressRepository.findOne({ id: body.addressId, user });
+
+    if (!address) {
+      throw new HttpException(ORDER_ERRORS.addressNotFound, HttpStatus.NOT_FOUND);
+    }
 
     const productsOrders = await this.getProductsWithCount(body.productsOrders);
     const menusOrders = await this.getMenusWithCount(body.menusOrders);
@@ -96,10 +114,11 @@ export class OrderService {
 
     return this.orderRepository.save({
       ...body,
-      user,
+      address,
       price: menusTotalPrice + productsTotalPrice,
       menusOrders,
       productsOrders,
+      user,
     });
   }
 

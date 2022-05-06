@@ -13,6 +13,7 @@ export const ROUTES = {
   addAddresses: '/add-addresses',
   cart: '/cart',
   orderPage: '/order-page',
+  orderConfirmation: '/order-confirmation',
   default: '*',
 } as const;
 

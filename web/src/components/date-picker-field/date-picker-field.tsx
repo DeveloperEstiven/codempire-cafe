@@ -4,7 +4,6 @@ import './date-picker-field.styles.css';
 import { IDatePickerFieldProps } from './date-picker-field.typings';
 
 export const DatePickerField: React.FC<IDatePickerFieldProps> = ({
-  name,
   value,
   onChange,
   maxDate,
@@ -17,9 +16,7 @@ export const DatePickerField: React.FC<IDatePickerFieldProps> = ({
       inputFormat="dd/MM/yyyy"
       disablePast
       showToolbar={false}
-      onChange={(val) => {
-        onChange(name, val);
-      }}
+      onChange={onChange}
       DialogProps={{
         classes: classesCalendar,
       }}

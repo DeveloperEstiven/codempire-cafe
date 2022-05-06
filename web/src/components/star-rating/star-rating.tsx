@@ -1,14 +1,13 @@
-import Rating from 'react-rating';
-
 import { Icon } from '@components/icon';
+import { Rating } from '@mui/material';
 import { IStarRatingProps } from './star-rating.types';
 
-export const StarRating: React.FC<IStarRatingProps> = ({ onRatingClick, fractions, value }) => (
+export const StarRating: React.FC<IStarRatingProps> = ({ onRatingClick, value, isReadonly }) => (
   <Rating
-    initialRating={value}
-    emptySymbol={<Icon type="borderedStar" />}
-    fullSymbol={<Icon type="filledStar" />}
-    fractions={fractions || 2}
+    value={value}
+    readOnly={isReadonly}
     onChange={onRatingClick}
+    emptyIcon={<Icon type="borderedStar" />}
+    icon={<Icon type="filledStar" />}
   />
 );

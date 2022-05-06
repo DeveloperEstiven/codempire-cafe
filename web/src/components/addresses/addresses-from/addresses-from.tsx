@@ -16,7 +16,7 @@ export const AddressesForm: React.FC = () => {
 
       <Space direction="vertical" gapSize={22}>
         <Styled.AddressesList>
-          {addresses.map(({ address, isActive }) => (
+          {addresses?.map(({ address, isActive }) => (
             <li key={address}>
               <Checkbox id={address} value={address} checkHandler={handleCheck} isChecked={isActive} />
             </li>
@@ -24,7 +24,7 @@ export const AddressesForm: React.FC = () => {
         </Styled.AddressesList>
 
         <Loader area={PROMISES_AREA.addAddresses}>
-          <Button onClick={onApply} color="black">
+          <Button onClick={onApply} color="black" disabled={!addresses?.length}>
             apply
           </Button>
         </Loader>

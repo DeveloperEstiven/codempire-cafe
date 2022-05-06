@@ -1,8 +1,6 @@
 import { Checkbox } from '@components/checkbox';
-
-import { IFilterGroupProps } from './filter-group.typings';
-
 import { StyledFilterGroup as Styled } from './filter-group.styles';
+import { IFilterGroupProps } from './filter-group.typings';
 
 export const FilterGroup: React.FC<IFilterGroupProps> = ({ name, data, handleCheck, checkedState }) => {
   return (

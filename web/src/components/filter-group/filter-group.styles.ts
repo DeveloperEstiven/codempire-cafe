@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const StyledFilterGroup = {
-  Group: styled.div`
+  Group: styled.section`
     margin-top: 24px;
     h3 {
       font-weight: 500;

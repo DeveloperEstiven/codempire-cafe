@@ -102,3 +102,12 @@ input:-internal-autofill-selected {
 .swal2-popup {
   margin-left: 70px;
 }
+.swal2-actions {
+  width: 100%;
+}
+.swal2-popup .swal2-styled:focus {
+  box-shadow: none !important;
+}
+.popup-container {
+  width: auto;
+}

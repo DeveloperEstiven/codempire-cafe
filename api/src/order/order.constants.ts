@@ -11,8 +11,10 @@ export const ORDER_ROUTES = {
   updateOrder: 'update-order',
   cancelOrder: 'cancel-order',
   getOrders: 'get-orders',
+  getCompleted: 'get-completed',
 };
 
 export const ORDER_ERRORS = {
   notFound: 'This order was not found',
+  addressNotFound: 'This user does not have this address',
 };

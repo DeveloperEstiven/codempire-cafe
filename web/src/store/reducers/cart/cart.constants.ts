@@ -1,7 +1,10 @@
 import { ICartInitialState } from './cart.typings';
 
 export const cartInitialState: ICartInitialState = {
-  cart: [],
+  cart: {
+    products: [],
+    menus: [],
+  },
   totalItems: 0,
   totalPrice: 0,
 };

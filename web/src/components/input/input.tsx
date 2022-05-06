@@ -18,6 +18,7 @@ export const Input: React.FC<IInputProps> = (props) => {
     isAutoFocus,
     onBlur,
     onKeyDown,
+    isDisabled,
   } = props;
   const { isFocus, handleFocus, onPhoneChange, isPassword, toggleIsPassword } = useInput({
     type,
@@ -35,10 +36,18 @@ export const Input: React.FC<IInputProps> = (props) => {
       <Styled.Wrapper>
         <Styled.Block>
           {isTextArea && (
-            <Styled.TextArea value={value} onChange={onChange} name={name} onBlur={handleBlur} onFocus={handleFocus} />
+            <Styled.TextArea
+              disabled={isDisabled}
+              value={value}
+              onChange={onChange}
+              name={name}
+              onBlur={handleBlur}
+              onFocus={handleFocus}
+            />
           )}
           {isPhoneNumber && (
             <PhoneInput
+              disabled={isDisabled}
               inputProps={{
                 name,
               }}
@@ -53,6 +62,7 @@ export const Input: React.FC<IInputProps> = (props) => {
           )}
           {!isTextArea && !isPhoneNumber && (
             <Styled.Input
+              disabled={isDisabled}
               onKeyDown={onKeyDown}
               autoFocus={isAutoFocus}
               onBlur={handleBlur}

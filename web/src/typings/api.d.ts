@@ -1,5 +1,6 @@
 import { IDropdownData } from '@components/dropdown/dropdown.typings';
 import { TIcon } from '@components/icon';
+import { radioButtons } from '@screens/order-page/order-page-form/order-page-form.constants';
 import { IUserPublic } from '@services/user-api/user-api.typings';
 
 export interface IEditProfile extends IUserPublic {
@@ -7,7 +8,7 @@ export interface IEditProfile extends IUserPublic {
 }
 
 export interface IAddAddresses {
-  addresses: IAddress[];
+  addresses: IAddAddress[];
 }
 
 export interface IUser extends IEditProfile {
@@ -17,10 +18,15 @@ export interface IUser extends IEditProfile {
   addresses: IAddress[];
 }
 
-interface IAddress {
+interface IAddAddress {
   address: string;
   isActive: boolean;
 }
+
+interface IAddress extends IAddAddress {
+  id: string;
+}
+
 export interface IError {
   message?: string;
   code?: number;
@@ -57,14 +63,14 @@ interface IMenuProductCommon {
 }
 
 export interface IMenu extends IMenuProductCommon {
-  products: IProduct[];
+  products?: IProduct[];
 }
 
 export interface IProduct extends IMenuProductCommon {
   category: string;
   subcategory: string;
   weight: string;
-  ingredients: IIngredient[];
+  ingredients?: IIngredient[];
 }
 export interface IIngredient {
   id: string;
@@ -107,24 +113,51 @@ export interface IOrder {
 export interface IProductOrder extends IOrder {
   product: Omit<IProduct, 'ingredients'>;
 }
+
 export interface IMenuOrder extends IOrder {
   menu: IMenuProductCommon;
 }
 
 export type TDeliveryStatus = 'created' | 'ready' | 'on way' | 'delivered';
+
 export interface IUserOrderResponse {
   id: string;
+  address: IAddress;
   orderNumber: number;
   date: string;
   wantedDeliveryDate: string;
   status: TDeliveryStatus;
   price: number;
-  comment: string | null;
+  comment: string;
   description: string;
+  user: IUser;
+  rating: number | null;
+  customerFeedback: string;
 }
-export interface IUserDetailOrder extends IUserOrderResponse {
-  productsOrders?: IProductOrder[];
-  menusOrders?: IMenuOrder[];
+
+export type TUpdateOrderResponse = Omit<IUserOrderResponse, 'user' | 'address'>;
+
+export interface IUserOrder {
+  address: IAddress;
+  wantedDeliveryDate: string;
+  price: number;
+  comment: string;
+  user: IUser;
+  productsOrders?: IOrderedProduct[];
+  menusOrders?: IOrderedMenu[];
+}
+
+export interface IAddOrder {
+  comment: string;
+  addressId: string;
+  wantedDeliveryDate: Date | string;
+  productsOrders: { productId: string; count: number }[];
+  menusOrders: { menuId: string; count: number }[];
+}
+
+export interface IUserDetailOrderResponse extends IUserOrderResponse {
+  productsOrders: IProductOrder[];
+  menusOrders: IMenuOrder[];
 }
 
 export interface IGroupOrders {
@@ -136,6 +169,19 @@ export interface IOrderGroup {
   date: string;
   orders: IUserOrderResponse[];
 }
+
+export interface ITime {
+  hours: string;
+  minutes: string;
+}
+
+export interface IOrderFeedback {
+  id: string;
+  customerFeedback: string;
+  rating: number;
+}
+
+export type TRadioValues = typeof radioButtons[number]['value'];
 
 export type TProductResponse = IResponse<IProduct>;
 export type TMenuResponse = IResponse<IMenu>;

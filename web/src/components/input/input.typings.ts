@@ -5,6 +5,7 @@ export type TInputType = 'text' | 'password';
 export interface IInputProps {
   type?: TInputType;
   name?: string;
+  isDisabled?: boolean;
   isPhoneNumber?: boolean;
   isTextArea?: boolean;
   isAutoFocus?: boolean;

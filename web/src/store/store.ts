@@ -1,30 +1,40 @@
-import { getPersistConfig } from 'redux-deep-persist';
 import { persistReducer } from 'redux-persist';
 
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/dist/query';
 import { userApi } from '@services/user-api';
 import storage from 'redux-persist/lib/storage';
-import { mainPageApi } from '../services/main-page-api/main-page-api';
-import { profilePageApi } from '../services/profile-page-api/profile-page-api';
+import sessionStorage from 'redux-persist/lib/storage/session';
+import { mainPageApi } from '../services/main-page-api';
+import { orderApi } from '../services/order-api';
+import { profilePageApi } from '../services/profile-page-api';
 import { cartReducer } from './reducers/cart';
 import { mainPageReducer } from './reducers/main-page';
+import { notificationsReducer } from './reducers/notifications';
+import { orderReducer } from './reducers/order';
 import { userReducer } from './reducers/user';
+
+const config = {
+  key: 'root',
+  storage,
+  blacklist: ['userApi', 'mainPageApi', 'profilePageApi', 'orderApi', 'order'],
+};
+
+const sessionConfig = {
+  key: 'order',
+  storage: sessionStorage,
+};
 
 const reducers = combineReducers({
   user: userReducer,
   mainPage: mainPageReducer,
   cart: cartReducer,
+  order: persistReducer(sessionConfig, orderReducer),
+  notifications: notificationsReducer,
   [userApi.reducerPath]: userApi.reducer,
   [mainPageApi.reducerPath]: mainPageApi.reducer,
   [profilePageApi.reducerPath]: profilePageApi.reducer,
-});
-
-const config = getPersistConfig({
-  key: 'root',
-  storage,
-  blacklist: ['userApi', 'mainPageApi', 'profilePageApi'],
-  rootReducer: reducers,
+  [orderApi.reducerPath]: orderApi.reducer,
 });
 
 const persistedReducer = persistReducer(config, reducers);
@@ -34,7 +44,7 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
-    }).concat(userApi.middleware, mainPageApi.middleware, profilePageApi.middleware),
+    }).concat(userApi.middleware, mainPageApi.middleware, profilePageApi.middleware, orderApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

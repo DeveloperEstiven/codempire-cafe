@@ -4,6 +4,7 @@ import {
 } from 'typeorm';
 
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { AddressEntity } from 'src/address/entities/address.entity';
 import { UserEntity } from 'src/user/entities/user.entity';
 import { DELIVERY_STATUS, ORDER_ROUTES } from '../order.constants';
 import { MenusOrdersEntity } from './menus-orders.entity';
@@ -27,8 +28,13 @@ export class OrderEntity {
   @CreateDateColumn({ type: 'timestamptz' })
   public wantedDeliveryDate: Date;
 
-  @ApiProperty({ example: 'on way', description: 'delivery status', enum: DELIVERY_STATUS })
-  @Column({ enum: DELIVERY_STATUS })
+  @ApiProperty({
+    example: 'on way',
+    description: 'delivery status',
+    enum: DELIVERY_STATUS,
+    default: DELIVERY_STATUS.created,
+  })
+  @Column({ type: 'enum', enum: DELIVERY_STATUS, default: DELIVERY_STATUS.created })
   public status: DELIVERY_STATUS;
 
   @ApiProperty({ example: 1200, description: 'order price' })
@@ -37,8 +43,19 @@ export class OrderEntity {
   public price: number;
 
   @ApiPropertyOptional({ example: 'without sugar', description: 'order comment' })
-  @Column({ nullable: true, default: null })
+  @Column({ default: '' })
   public comment: string;
+
+  @ApiPropertyOptional({ example: 'tasty food', description: "user's feedback" })
+  @Column({ default: '' })
+  public customerFeedback: string;
+
+  @ApiPropertyOptional({ example: 3.5, description: 'order rating' })
+  @Column({ nullable: true, default: null })
+  public rating: number;
+
+  @ManyToOne(() => AddressEntity, (address) => address.orders)
+  public address: AddressEntity;
 
   @ManyToOne(() => UserEntity, (user) => user.orders)
   public user: UserEntity;
