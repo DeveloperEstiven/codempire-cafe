@@ -1,20 +1,33 @@
-import { IsArray, IsOptional, IsString } from 'class-validator';
+import { Transform, Type } from 'class-transformer';
+import { IsArray, IsEnum, IsOptional, IsString } from 'class-validator';
 
-import { ApiProperty } from '@nestjs/swagger';
-import { SortByDto } from './sort-by.dto';
+import { ApiPropertyOptional } from '@nestjs/swagger';
+import { ORDER, SORT } from 'src/constants/enums';
+import { PageOptionsDto } from './page-options.dto';
 
-export class FilterDto {
-  @ApiProperty({ isArray: true })
+export class FilterDto extends PageOptionsDto {
+  @ApiPropertyOptional({ isArray: true })
   @IsArray()
   @IsOptional()
+  @IsString({ each: true })
+  @Type(() => String)
+  @Transform(({ value }) => value.split(','))
   readonly subcategories: string[] = [];
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   @IsOptional()
   @IsString()
   readonly term: string = '';
 
-  @ApiProperty()
+  @ApiPropertyOptional()
+  @IsEnum(SORT)
   @IsOptional()
-  readonly sort?: SortByDto;
+  @IsString()
+  readonly field?: SORT;
+
+  @IsEnum(ORDER)
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  readonly order?: ORDER = ORDER.ASC;
 }

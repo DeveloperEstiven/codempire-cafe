@@ -54,6 +54,14 @@ export class OrderEntity {
   @Column({ nullable: true, default: null })
   public rating: number;
 
+  @ApiPropertyOptional({ example: true, description: 'if order is viewed by user in notifications' })
+  @Column({ default: false, type: Boolean })
+  public isViewedByUser: boolean;
+
+  @ApiPropertyOptional({ example: true, description: 'if order is viewed by manager in notifications' })
+  @Column({ default: false, type: Boolean })
+  public isViewedByManager: boolean;
+
   @ManyToOne(() => AddressEntity, (address) => address.orders)
   public address: AddressEntity;
 

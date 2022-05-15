@@ -1,7 +1,6 @@
 import { FilterGroup } from '@components/filter-group';
 import { Icon } from '@components/icon';
 import { Loader } from '@components/loader';
-import { useGetProductCategoriesQuery } from '@services/main-page-api';
 import { Button } from '@styles/components/button';
 import { Drawer } from '@styles/components/drawer';
 import { capitalize } from '@utils/capitalize';
@@ -10,19 +9,10 @@ import { useFiltersDrawerState } from './filters-drawer.state';
 import { StyledFiltersDrawer as Styled } from './filters-drawer.styles';
 import { IFiltersDrawerProps } from './filters-drawer.typings';
 
-export const FiltersDrawer: React.FC<IFiltersDrawerProps> = ({
-  isActive,
-  setIsActive,
-  checkedState,
-  setCheckedState,
-}) => {
-  const { handleCheck, onCloseDrawer, onFiltersApply } = useFiltersDrawerState({
+export const FiltersDrawer: React.FC<IFiltersDrawerProps> = ({ isActive, setIsActive }) => {
+  const { handleCheck, onCloseDrawer, onFiltersApply, categories, checkedState } = useFiltersDrawerState({
     setIsActive,
-    checkedState,
-    setCheckedState,
   });
-
-  const { data: categories } = useGetProductCategoriesQuery();
 
   return (
     <Drawer.Item open={isActive} duration={200} onClose={onCloseDrawer} direction="right">

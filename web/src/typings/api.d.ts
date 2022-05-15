@@ -72,10 +72,29 @@ export interface IProduct extends IMenuProductCommon {
   weight: string;
   ingredients?: IIngredient[];
 }
-export interface IIngredient {
+
+export interface IUpdateProduct extends IMenuProductCommon {
+  weight: string;
+  ingredientIds: string[];
+  category: string;
+  subcategory: string;
+}
+
+export interface IUpdateMenu extends IMenuProductCommon {
+  productIds: string[];
+}
+
+export type TAddProduct = Omit<IUpdateProduct, 'id'>;
+
+export type TAddMenu = Omit<IUpdateMenu, 'id'>;
+
+export interface IIngredient extends ICreateIngredient {
   id: string;
+}
+
+export interface ICreateIngredient {
   name: string;
-  isAllergen: string;
+  isAllergen: boolean;
 }
 
 export interface IPaginateBody {
@@ -125,6 +144,8 @@ export interface IUserOrderResponse {
   address: IAddress;
   orderNumber: number;
   date: string;
+  isViewedByUser: boolean;
+  isViewedByManager: boolean;
   wantedDeliveryDate: string;
   status: TDeliveryStatus;
   price: number;

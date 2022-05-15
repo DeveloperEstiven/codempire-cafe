@@ -99,7 +99,7 @@ input:-internal-autofill-selected {
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
-.swal2-popup {
+.swal-space {
   margin-left: 70px;
 }
 .swal2-actions {
@@ -110,4 +110,7 @@ input:-internal-autofill-selected {
 }
 .popup-container {
   width: auto;
+}
+.swal2-container {
+  z-index: 1301;
 }

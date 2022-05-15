@@ -4,12 +4,21 @@ import { Addresses } from '@components/addresses';
 import { IMAGES } from '@constants/images';
 import { ROUTES } from '@constants/routes';
 import { Button } from '@styles/components/button';
-import { settings } from './profile-page.constants';
 import { useProfilePage } from './profile-page.state';
 import { SectionHeader, StyledProfilePage as Styled } from './profile-page.styles';
 
 export const ProfilePage: React.FC = () => {
-  const { isAuthorized, userName, phoneNumber, role, logo, onLogOutClick, onLogInClick } = useProfilePage();
+  const {
+    isAuthorized,
+    userName,
+    phoneNumber,
+    role,
+    logo,
+    isManager,
+    currentSectionsList,
+    onLogOutClick,
+    onLogInClick,
+  } = useProfilePage();
 
   return (
     <Styled.Page>
@@ -28,22 +37,28 @@ export const ProfilePage: React.FC = () => {
 
       {isAuthorized && (
         <>
-          <Styled.Section>
-            <Addresses />
-          </Styled.Section>
+          {!isManager && (
+            <Styled.Section>
+              <Addresses />
+            </Styled.Section>
+          )}
 
-          <Styled.Section>
-            <SectionHeader>
-              <h4>Settings</h4>
-            </SectionHeader>
-            <Styled.SettingsList>
-              {settings.map(({ route, title }) => (
-                <li key={route}>
-                  <Link to={route}>{title}</Link>
-                </li>
-              ))}
-            </Styled.SettingsList>
-          </Styled.Section>
+          {currentSectionsList.map((list) => (
+            <Styled.Section key={list.listTitle}>
+              <SectionHeader>
+                <h4>{list.listTitle}</h4>
+              </SectionHeader>
+              <Styled.SectionList>
+                {list.listItems.map(({ route, title, state }) => (
+                  <li key={route + title}>
+                    <Link to={route} state={state}>
+                      {title}
+                    </Link>
+                  </li>
+                ))}
+              </Styled.SectionList>
+            </Styled.Section>
+          ))}
 
           <Styled.Section>
             <Styled.Actions>
@@ -53,6 +68,7 @@ export const ProfilePage: React.FC = () => {
           </Styled.Section>
         </>
       )}
+
       {!isAuthorized && (
         <Styled.UnauthorizedActions>
           <Button color="black" onClick={onLogInClick}>

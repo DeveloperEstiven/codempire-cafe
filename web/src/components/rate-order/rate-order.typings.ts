@@ -1,7 +1,7 @@
-import { ICompletedOrder } from '@store/reducers/notifications/notifications.typings';
+import { IUserOrderResponse } from 'typings/api';
 
 export interface IRateOrderProps {
-  order: ICompletedOrder;
+  order: IUserOrderResponse;
   isRatingModalOpen: boolean;
   setIsRatingModalOpen: (isRatingModalOpen: boolean) => void;
 }

@@ -1,11 +1,10 @@
 import {
-    Body, Controller, Delete, HttpCode, HttpStatus, Param, Post, Put, Query, UseGuards
+    Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query, UseGuards
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import JwtAuthenticationGuard from 'src/guards/auth.guard';
 import { FilterDto } from '../dto/filter.dto';
 import { MessageSuccessDto } from '../dto/message-success.dto';
-import { PageOptionsDto } from '../dto/page-options.dto';
 import { RoleGuard } from '../guards/role.guard';
 import { USER_ROLES } from '../user/user.constants';
 import { CreateMenuDto } from './dto/create-menu.dto';
@@ -70,7 +69,7 @@ export class MenuController {
     return this.menuService.removeMenu(menuId);
   }
 
-  @Post(MENU_ROUTES.getMenus)
+  @Get(MENU_ROUTES.getMenus)
   @ApiOperation({ summary: MENU_ROUTES.getMenus })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -78,7 +77,23 @@ export class MenuController {
     type: [MenuEntity],
   })
   @HttpCode(HttpStatus.OK)
-  async getMenus(@Body() filter: FilterDto, @Query() pageOptionsDto: PageOptionsDto) {
-    return this.menuService.getMenus(pageOptionsDto, filter);
+  async getMenus(@Query() filter: FilterDto) {
+    return this.menuService.getMenus(filter);
+  }
+
+  @Get(MENU_ROUTES.getMenu + '/:id')
+  @ApiOperation({ summary: MENU_ROUTES.getMenu })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: MENU_ROUTES.getMenu,
+    type: MenuEntity,
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: MENU_ERRORS.notFound,
+  })
+  @HttpCode(HttpStatus.OK)
+  async getMenu(@Param('id') id: string) {
+    return this.menuService.getMenuByIdOrFail(id, ['products']);
   }
 }

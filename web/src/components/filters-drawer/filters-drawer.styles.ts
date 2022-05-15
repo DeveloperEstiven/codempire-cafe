@@ -19,7 +19,6 @@ export const StyledFiltersDrawer = {
     overflow-y: auto;
     padding: 16px;
     height: 81%;
-    justify-content: space-between;
     flex-direction: column;
 
     section:first-child {

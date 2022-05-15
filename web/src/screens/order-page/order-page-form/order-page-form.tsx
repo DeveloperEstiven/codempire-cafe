@@ -69,6 +69,7 @@ export const OrderForm: React.FC<IOrderFormProps> = ({ onOrder }) => {
           </div>
 
           <Styled.ChooseDate>
+            <h3>Choose date and time of delivery</h3>
             <Space direction="vertical" gapSize={10}>
               {radioButtons.map(({ value, label }) => (
                 <RadioButton

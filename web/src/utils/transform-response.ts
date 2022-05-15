@@ -1,6 +1,6 @@
-import { IUser, TMenuResponse, TProductResponse } from 'typings/api';
+import { IMenu, IProduct, IUser, TMenuResponse, TProductResponse } from 'typings/api';
 
-export const transformProductsResponse = <T extends TProductResponse | TMenuResponse>(response: T): T => ({
+export const transformItemsResponse = <T extends TProductResponse | TMenuResponse>(response: T): T => ({
   ...response,
   items: response.items.map((item) => ({
     ...item,
@@ -13,4 +13,9 @@ export const transformUserResponse = (user: IUser) => ({
   logo: transformToHTMLImage(user.logo),
 });
 
-const transformToHTMLImage = (b64image: string) => (b64image ? `data:image/png;base64,${b64image}` : '');
+export const transformItemResponse = <T extends IMenu | IProduct>(item: T): T => ({
+  ...item,
+  image: transformToHTMLImage(item.image),
+});
+
+export const transformToHTMLImage = (b64image: string) => (b64image ? `data:image/png;base64,${b64image}` : '');

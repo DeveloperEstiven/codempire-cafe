@@ -11,7 +11,7 @@ import { IAddAddress, IResponseError, TInputEvent } from 'typings/api';
 import { LocationState } from './addresses-form.typings';
 
 export const useAddressesForm = () => {
-  const { addresses: userAddresses } = useAppSelector((store) => store.user.user);
+  const { addresses: userAddresses, role } = useAppSelector((store) => store.user.user);
   const [value, setValue] = useState('');
   const [addresses, setAddresses] = useState<IAddAddress[]>(userAddresses || []);
   const [addAddresses, { error }] = useAddAddressesMutation();
@@ -25,6 +25,11 @@ export const useAddressesForm = () => {
       setIsExists(false);
     }
   }, [isExists]);
+  const isManager = role === 'manager';
+
+  useEffect(() => {
+    isManager && navigate(ROUTES.mainPage);
+  }, []);
 
   const onChange = (e: TInputEvent) => {
     setValue(e.target.value);
@@ -72,5 +77,5 @@ export const useAddressesForm = () => {
     navigate(prevPath ? prevPath : ROUTES.profilePage, { state: prevState });
   };
 
-  return { handleCheck, value, addresses, onChange, onAddNewAddress, onApply };
+  return { handleCheck, value, addresses, onChange, onAddNewAddress, onApply, isManager };
 };

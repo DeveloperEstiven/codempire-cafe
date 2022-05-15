@@ -7,6 +7,11 @@ export const ChipBox = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  cursor: pointer;
+  &:hover div svg {
+    fill: rgba(255, 0, 0, 0.6) !important;
+  }
+
   span {
     letter-spacing: 0.25px;
     font-size: 14px;
@@ -15,16 +20,12 @@ export const ChipBox = styled.div`
     line-height: 20px;
   }
   div {
-    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     svg {
       transition: fill 0.2s linear;
-      fill: black;
-    }
-    &:hover svg {
-      fill: red;
+      fill: rgba(0, 0, 0, 0.6);
     }
   }
 `;

@@ -12,9 +12,9 @@ export const Chip: React.FC<IChipProps> = ({ value, selected, setSelected }) => 
 
   const handleDelete = (value: string) => () => removeItem(value);
   return (
-    <ChipBox>
+    <ChipBox onClick={handleDelete(value)}>
       <span>{value}</span>
-      <div onClick={handleDelete(value)}>
+      <div>
         <Icon type="removeItem" />
       </div>
     </ChipBox>

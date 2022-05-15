@@ -65,4 +65,16 @@ export class IngredientController {
   async getAllIngredients() {
     return this.ingredientRepository.find();
   }
+
+  @Get(INGREDIENT_ROUTES.checkIngredientContains + '/:id')
+  @ApiOperation({ summary: INGREDIENT_ROUTES.checkIngredientContains })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: INGREDIENT_ROUTES.checkIngredientContains,
+    type: [IngredientEntity],
+  })
+  @HttpCode(HttpStatus.OK)
+  async checkIngredientContains(@Param('id') id: string) {
+    return this.ingredientService.checkIngredientContains(id);
+  }
 }

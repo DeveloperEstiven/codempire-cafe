@@ -8,8 +8,11 @@ export const PRODUCT_ROUTES = {
   addProduct: 'add-product',
   getProductCategories: 'get-product-categories',
   getProducts: 'get-products',
+  getAllProducts: 'get-all-products',
+  getProduct: 'get-product',
   updateProduct: 'update-product',
   removeProduct: 'remove-product',
+  checkProductContains: 'check-product-contains',
 };
 
 export const PRODUCT_ERRORS = {

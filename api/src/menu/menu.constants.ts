@@ -2,6 +2,7 @@ export const MENU_ROUTES = {
   main: 'menu',
   addMenu: 'add-menu',
   getMenus: 'get-menus',
+  getMenu: 'get-menu',
   getMenuCategories: 'get-menu-categories',
   updateMenu: 'update-menu',
   removeMenu: 'remove-menu',

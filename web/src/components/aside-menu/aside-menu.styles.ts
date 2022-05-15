@@ -45,7 +45,7 @@ export const StyledAsideMenu = {
     }
   `,
 
-  Cart: styled.div<{ count: number }>`
+  IconCount: styled.div<{ count: number }>`
     position: relative;
 
     &::after {
@@ -90,7 +90,17 @@ export const StyledAsideMenu = {
     }
   `,
 
-  IconButton: styled.div<{ isWithMark: boolean }>`
+  IconButton: styled.button<{ isWithMark: boolean }>`
+    &:disabled {
+      cursor: no-drop;
+      &:hover {
+        svg {
+          fill: rgba(255, 255, 255, 0.74);
+        }
+      }
+    }
+    background-color: ${(props) => props.theme.colors.bg};
+
     &::before {
       content: '';
       position: absolute;

@@ -7,42 +7,38 @@ import { StyledRateOrder as Styled } from './rate-order.styles';
 import { IRateOrderProps } from './rate-order.typings';
 
 export const RateOrder: React.FC<IRateOrderProps> = ({ order, setIsRatingModalOpen, isRatingModalOpen }) => {
-  const { onModalClose, onRatingClick, feedback, onCustomerFeedbackChange, onRateOrder } = useRateOrder({
+  const { onModalClose, onRatingClick, feedback, onCustomerFeedbackChange, onRateOrder, isRated } = useRateOrder(
     order,
-    setIsRatingModalOpen,
-  });
+    setIsRatingModalOpen
+  );
 
   return (
     <Modal open={isRatingModalOpen} onClose={onModalClose}>
       <Styled.Modal>
-        {order.isRated ? (
-          <h3>You have already rated this order</h3>
-        ) : (
-          <h3>Please, rate an order {order.orderNumber}</h3>
-        )}
+        {isRated ? <h3>You have already rated this order</h3> : <h3>Please, rate an order {order.orderNumber}</h3>}
 
         <StarRating
           onRatingClick={onRatingClick}
-          value={order.isRated ? order.rating : feedback.rating}
-          isReadonly={order.isRated}
+          value={isRated ? order.rating : feedback.rating}
+          isReadonly={isRated}
         />
 
         <Styled.FeedbackWrapper>
-          {order.isRated ? (
+          {isRated ? (
             order.customerFeedback && <p>{order.customerFeedback}</p>
           ) : (
             <Input
               isAutoFocus
               onChange={onCustomerFeedbackChange}
               value={feedback.customerFeedback}
-              isDisabled={order.isRated}
+              isDisabled={isRated}
             />
           )}
         </Styled.FeedbackWrapper>
 
         <Styled.ModalButtons>
           <Button onClick={onModalClose}>Close</Button>
-          {!order.isRated && <Button onClick={onRateOrder}>Save</Button>}
+          {!isRated && <Button onClick={onRateOrder}>Save</Button>}
         </Styled.ModalButtons>
       </Styled.Modal>
     </Modal>

@@ -4,13 +4,13 @@ export const CheckboxWrapper = styled.div`
   display: flex;
 `;
 
-export const StyledCheckbox = styled.input`
+export const StyledCheckbox = styled.input<{ isReadOnly?: boolean }>`
   -webkit-appearance: none;
   -moz-appearance: none;
   height: 18px;
   width: 18px;
   position: relative;
-  cursor: pointer;
+  cursor: ${(props) => (props.isReadOnly ? 'default' : 'pointer')};
   border: 2px solid #131316;
   transition: background 0.3s, border-color 0.3s, box-shadow 0.2s;
   border-radius: 2px;
@@ -53,7 +53,7 @@ export const StyledCheckbox = styled.input`
     display: inline-block;
     letter-spacing: 0.25px;
     vertical-align: top;
-    cursor: pointer;
+    cursor: ${(props) => (props.isReadOnly ? 'default' : 'pointer')};
     padding-left: 20px;
   }
 `;

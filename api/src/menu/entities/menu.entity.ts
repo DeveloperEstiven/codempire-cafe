@@ -33,7 +33,7 @@ export class MenuEntity {
   @OneToMany(() => MenusOrdersEntity, (menusOrders) => menusOrders.menu)
   public menusOrders: MenusOrdersEntity[];
 
-  @ManyToMany(() => ProductEntity, (product) => product.menus)
+  @ManyToMany(() => ProductEntity, (product) => product.menus, { onDelete: 'CASCADE' })
   @JoinTable()
   public products: ProductEntity[];
 }

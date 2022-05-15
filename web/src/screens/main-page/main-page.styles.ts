@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+
+
 export const StyledMainPage = {
   MainPage: styled.div`
     font-size: 14px;

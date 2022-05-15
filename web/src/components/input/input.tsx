@@ -1,3 +1,4 @@
+import NumberFormat from 'react-number-format';
 import PhoneInput from 'react-phone-input-2';
 
 import { Icon } from '@components/icon';
@@ -15,7 +16,9 @@ export const Input: React.FC<IInputProps> = (props) => {
     placeholder,
     isPhoneNumber,
     isTextArea,
+    isMasked,
     isAutoFocus,
+    suffix,
     onBlur,
     onKeyDown,
     isDisabled,
@@ -31,7 +34,7 @@ export const Input: React.FC<IInputProps> = (props) => {
   };
 
   return (
-    <>
+    <div>
       {title && <Styled.Title>{title}</Styled.Title>}
       <Styled.Wrapper>
         <Styled.Block>
@@ -60,7 +63,22 @@ export const Input: React.FC<IInputProps> = (props) => {
               value={value}
             />
           )}
-          {!isTextArea && !isPhoneNumber && (
+          {isMasked && (
+            <NumberFormat
+              name={name}
+              thousandSeparator=" "
+              thousandsGroupStyle="thousand"
+              onBlur={handleBlur}
+              value={value}
+              displayType="input"
+              type="text"
+              onFocus={handleFocus}
+              onChange={onChange}
+              allowNegative={false}
+              suffix={suffix}
+            />
+          )}
+          {!isTextArea && !isPhoneNumber && !isMasked && (
             <Styled.Input
               disabled={isDisabled}
               onKeyDown={onKeyDown}
@@ -85,6 +103,6 @@ export const Input: React.FC<IInputProps> = (props) => {
           </Styled.Icon>
         )}
       </Styled.Wrapper>
-    </>
+    </div>
   );
 };

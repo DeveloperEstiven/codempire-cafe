@@ -14,7 +14,7 @@ export class ProductsOrdersEntity {
   @Column()
   public count: number;
 
-  @ManyToOne(() => ProductEntity, (product) => product.productsOrders, { eager: true })
+  @ManyToOne(() => ProductEntity, (product) => product.productsOrders, { eager: true, onDelete: 'CASCADE' })
   public product: ProductEntity;
 
   @ManyToOne(() => OrderEntity, (order: OrderEntity) => order.productsOrders, {

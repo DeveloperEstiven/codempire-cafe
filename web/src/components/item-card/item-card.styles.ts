@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 
+import { Button } from '@styles/components/button';
 import { media } from '@styles/media';
 
 export const StyledCard = {
@@ -38,12 +39,13 @@ export const StyledCard = {
       color: ${(props) => props.theme.colors.textPrimary};
     }
     img {
-      object-fit: cover;
+      object-fit: contain;
       width: 150px;
       height: 150px;
       max-width: 100%;
     }
   `,
+
   Description: styled.div`
     font-size: 14px;
     line-height: 140%;
@@ -86,6 +88,7 @@ export const StyledCard = {
       }
     }
   `,
+
   Footer: styled.div`
     text-align: center;
     span {
@@ -98,6 +101,7 @@ export const StyledCard = {
       margin-top: 10px;
     }
   `,
+
   FooterBox: styled.div`
     display: flex;
     align-items: center;
@@ -106,6 +110,27 @@ export const StyledCard = {
     span {
       display: block;
       width: 50%;
+    }
+  `,
+
+  ButtonsWrapper: styled.div`
+    display: flex;
+    gap: 10px;
+  `,
+
+  DeleteButton: styled(Button)`
+    color: ${(props) => props.theme.colors.textDanger};
+    &:hover {
+      color: ${(props) => props.theme.colors.textDanger} !important;
+      background-color: #eee !important;
+    }
+  `,
+
+  EditButton: styled(Button)`
+    color: ${(props) => props.theme.colors.textPrimary};
+    &:hover {
+      color: ${(props) => props.theme.colors.textPrimary} !important;
+      background-color: #eee !important;
     }
   `,
 };

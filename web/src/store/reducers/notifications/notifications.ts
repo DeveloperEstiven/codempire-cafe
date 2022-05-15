@@ -1,26 +1,21 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { checkIsNotificationsExists, notificationsInitialState } from './notifications.constants';
-import { ICompletedOrder, IReceivedRatedOrder } from './notifications.typings';
+import { IUserOrderResponse } from 'typings/api';
+import { notificationsInitialState } from './notifications.constants';
 
 export const notificationsSlice = createSlice({
   name: 'notifications',
   initialState: notificationsInitialState,
   reducers: {
-    completedOrderReceived(state, action: PayloadAction<ICompletedOrder>) {
-      state.completedOrders.unshift(action.payload);
-      checkIsNotificationsExists(state);
+    notificationOrdersReceived(state, action: PayloadAction<IUserOrderResponse[]>) {
+      state.notificationsOrders = action.payload;
     },
 
-    ratedOrderReceived(state, action: PayloadAction<IReceivedRatedOrder>) {
-      const orderIndex = state.completedOrders.findIndex((order) => order.id === action.payload.id)!;
-      if (orderIndex !== -1) {
-        state.completedOrders[orderIndex] = { ...state.completedOrders[orderIndex], isRated: true, ...action.payload };
-      }
-      checkIsNotificationsExists(state);
+    countReceived(state, action: PayloadAction<number>) {
+      state.count = action.payload;
     },
   },
 });
 
 const { actions, reducer } = notificationsSlice;
-export const { completedOrderReceived, ratedOrderReceived } = actions;
+export const { countReceived, notificationOrdersReceived } = actions;
 export { reducer as notificationsReducer };

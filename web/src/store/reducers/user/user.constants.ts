@@ -31,5 +31,5 @@ export const handleAuthDataFulfilled = (builder: TBuilder, api: TUserActionsName
 export const handleAuthError = (builder: TBuilder, api: TUserActionsNames) =>
   builder.addMatcher(userApi.endpoints[api].matchRejected, (state, { payload }) => {
     const error = payload?.data as IError;
-    handleError(error);
+    handleError(error, false);
   });

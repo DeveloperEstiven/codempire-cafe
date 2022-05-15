@@ -3,7 +3,6 @@ import { NotificationsDrawer } from '@components/notifications-drawer';
 import { pages } from './aside-menu.constants';
 import { useAsideMenu } from './aside-menu.state';
 import { StyledAsideMenu as Styled } from './aside-menu.styles';
-import { TPage } from './aside-menu.typings';
 
 export const AsideMenu: React.FC = () => {
   const {
@@ -14,7 +13,6 @@ export const AsideMenu: React.FC = () => {
     onSearchBlur,
     onChangeSearch,
     isNotificationsOpen,
-    isNotificationsExists,
     setIsNotificationsOpen,
     selectedPage,
     isSearchActive,
@@ -22,9 +20,10 @@ export const AsideMenu: React.FC = () => {
     searchTerm,
     totalItems,
     storeSearchTerm,
+    isManager,
+    notificationsCount,
+    onPageItemClick,
   } = useAsideMenu();
-
-  const onPageItemClick = (page: TPage) => () => onItemClick(page);
 
   return (
     <>
@@ -41,21 +40,26 @@ export const AsideMenu: React.FC = () => {
 
         <Styled.Group>
           <Styled.Item onClick={onNotificationClick}>
-            <Styled.IconButton isWithMark={isNotificationsExists}>
+            <Styled.IconCount count={notificationsCount}>
               <Icon type="notification" />
-            </Styled.IconButton>
+            </Styled.IconCount>
           </Styled.Item>
-
-          <Styled.Item onClick={onCartClick}>
-            <Styled.Cart count={totalItems}>
-              <Icon type="cart" />
-            </Styled.Cart>
-          </Styled.Item>
-
+          {!isManager && (
+            <Styled.Item onClick={onCartClick}>
+              <Styled.IconCount count={totalItems}>
+                <Icon type="cart" />
+              </Styled.IconCount>
+            </Styled.Item>
+          )}
           <Styled.Item>
-            <Styled.IconButton onClick={onSearchClick} isWithMark={!!storeSearchTerm}>
+            <Styled.IconButton
+              onClick={onSearchClick}
+              isWithMark={!!storeSearchTerm}
+              disabled={location.pathname !== '/main-page'}
+            >
               <Icon type="search" />
             </Styled.IconButton>
+
             <Styled.Search isActive={isSearchActive}>
               {<input ref={inputRef} onBlur={onSearchBlur} value={searchTerm} onChange={onChangeSearch} />}
             </Styled.Search>

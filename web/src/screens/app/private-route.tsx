@@ -15,3 +15,13 @@ export const PrivateRoute: FC<IPrivateRouteProps> = (props) => {
 
   return isToken ? children : <Navigate to={redirectPath || ROUTES.logIn} />;
 };
+
+export const ManagerRoute: FC<IPrivateRouteProps> = (props) => {
+  const { children, redirectPath } = props;
+  const {
+    token: isToken,
+    user: { role },
+  } = useAppSelector((store) => store.user);
+
+  return isToken && role === 'manager' ? children : <Navigate to={redirectPath || ROUTES.mainPage} />;
+};

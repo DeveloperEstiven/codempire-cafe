@@ -12,12 +12,14 @@ import { sortingStyles, StyledDataOrganizer as Styled } from './data-organizer.s
 import { IDataOrganizerProps } from './data-organizer.typings';
 
 export const DataOrganizer: React.FC<IDataOrganizerProps> = ({ onFilterClick }) => {
-  const { isFilterApplied } = useAppSelector((store) => store.mainPage);
-  const [selectedSort, setSelectedSort] = useState<ISort>();
+  const { isFilterApplied, sort } = useAppSelector((store) => store.mainPage);
+  const [selectedSort, setSelectedSort] = useState<ISort>(sort);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(setSort(selectedSort as ISort));
+    if (selectedSort) {
+      dispatch(setSort(selectedSort));
+    }
   }, [selectedSort]);
 
   return (

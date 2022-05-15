@@ -5,6 +5,8 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from 'src/decorators/user';
 import { IdDto } from 'src/dto/id.dto';
 import JwtAuthenticationGuard from 'src/guards/auth.guard';
+import { RoleGuard } from 'src/guards/role.guard';
+import { USER_ROLES } from 'src/user/user.constants';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { OrderEntity } from './entities/order.entity';
@@ -75,6 +77,18 @@ export class OrderController {
     return this.orderService.getOrders(userTokenId);
   }
 
+  @Get(ORDER_ROUTES.getAllOrders)
+  @ApiOperation({ summary: ORDER_ROUTES.getAllOrders })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: ORDER_ROUTES.getAllOrders,
+  })
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(JwtAuthenticationGuard, new RoleGuard([USER_ROLES.manager]))
+  getAllOrders() {
+    return this.orderService.getAllOrders();
+  }
+
   @Get(ORDER_ROUTES.getCompleted)
   @ApiOperation({ summary: ORDER_ROUTES.getCompleted })
   @ApiResponse({
@@ -98,5 +112,18 @@ export class OrderController {
   @UseGuards(JwtAuthenticationGuard)
   getDetailOrder(@User('id') userTokenId: string, @Param('num') orderNumber: string) {
     return this.orderService.getDetailOrder(userTokenId, +orderNumber);
+  }
+
+  @Get(`${ORDER_ROUTES.getManagerDetailOrder}/:num`)
+  @ApiOperation({ summary: ORDER_ROUTES.getManagerDetailOrder })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: ORDER_ROUTES.getManagerDetailOrder,
+    type: OrderEntity,
+  })
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(JwtAuthenticationGuard, new RoleGuard([USER_ROLES.manager]))
+  getManagerDetailOrder(@Param('num') orderNumber: string) {
+    return this.orderService.getManagerDetailOrder(+orderNumber);
   }
 }
