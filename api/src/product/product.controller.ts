@@ -8,7 +8,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import JwtAuthenticationGuard from 'src/guards/auth.guard';
 import { FilterDto } from '../dto/filter.dto';
 import { MessageSuccessDto } from '../dto/message-success.dto';
-import { PageOptionsDto } from '../dto/page-options.dto';
 import { RoleGuard } from '../guards/role.guard';
 import { USER_ROLES } from '../user/user.constants';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -74,7 +73,7 @@ export class ProductController {
     return this.productService.removeProduct(id);
   }
 
-  @Post(PRODUCT_ROUTES.getProducts)
+  @Get(PRODUCT_ROUTES.getProducts)
   @ApiOperation({ summary: PRODUCT_ROUTES.getProducts })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -82,8 +81,20 @@ export class ProductController {
     type: [ProductEntity],
   })
   @HttpCode(HttpStatus.OK)
-  async getProducts(@Body() filter: FilterDto, @Query() pageOptionsDto: PageOptionsDto) {
-    return this.productService.getProducts(pageOptionsDto, filter);
+  async getProducts(@Query() filter: FilterDto) {
+    return this.productService.getProducts(filter);
+  }
+
+  @Get(PRODUCT_ROUTES.checkProductContains + '/:id')
+  @ApiOperation({ summary: PRODUCT_ROUTES.checkProductContains })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: PRODUCT_ROUTES.checkProductContains,
+    type: [ProductEntity],
+  })
+  @HttpCode(HttpStatus.OK)
+  async checkProductContains(@Param('id') id: string) {
+    return this.productService.checkProductContains(id);
   }
 
   @Get(PRODUCT_ROUTES.getProductCategories)
@@ -95,5 +106,33 @@ export class ProductController {
   @HttpCode(HttpStatus.OK)
   async getProductCategories() {
     return this.productService.getProductCategories();
+  }
+
+  @Get(PRODUCT_ROUTES.getProduct + '/:id')
+  @ApiOperation({ summary: PRODUCT_ROUTES.getProduct })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: PRODUCT_ROUTES.getProduct,
+    type: ProductEntity,
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: PRODUCT_ERRORS.notFound,
+  })
+  @HttpCode(HttpStatus.OK)
+  async getProduct(@Param('id') id: string) {
+    return this.productService.getProductByIdOrFail(id, ['ingredients']);
+  }
+
+  @Get(PRODUCT_ROUTES.getAllProducts)
+  @ApiOperation({ summary: PRODUCT_ROUTES.getAllProducts })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: PRODUCT_ROUTES.getAllProducts,
+    type: [ProductEntity],
+  })
+  @HttpCode(HttpStatus.OK)
+  async getAllProducts() {
+    return this.productRepository.find();
   }
 }

@@ -6,4 +6,12 @@ export const PROMISES_AREA = {
   addAddresses: 'add-addresses',
   addOrder: 'add-order',
   cancelOrder: 'cancel-order',
+  acceptOrder: 'accept-order',
+  closeOrder: 'close-order',
+  updateProduct: 'update-product',
+  updateMenu: 'update-menu',
+  removeProduct: 'remove-product',
+  removeMenu: 'remove-menu',
+  addIngredient: 'add-ingredient',
+  removeIngredient: 'remove-ingredient',
 };

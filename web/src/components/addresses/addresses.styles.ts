@@ -59,5 +59,9 @@ export const StyledAddresses = {
         max-width: 150px;
       }
     }
+
+    li {
+      line-height: 1.2;
+    }
   `,
 };

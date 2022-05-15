@@ -24,7 +24,7 @@ export const StyledOrderDetail = {
     }
 
     button {
-      margin: 30px 0 0;
+      margin: 15px 0 0;
     }
   `,
 
@@ -49,9 +49,15 @@ export const StyledOrderDetail = {
     }
   `,
 
-  Wrapper: styled.div`
+  WaitingWrapper: styled.div<{ isManager: boolean; isOrderAccepted: boolean }>`
     margin-top: 10px;
-    height: 71vh;
+    height: ${(props) => (props.isManager && props.isOrderAccepted ? '77vh' : props.isManager ? '84vh' : '73vh')};
+    overflow-y: scroll;
+  `,
+
+  CompletedWrapper: styled.div<{ isManager: boolean }>`
+    margin-top: 10px;
+    height: ${(props) => (props.isManager ? '84vh' : '76vh')};
     overflow-y: scroll;
   `,
 

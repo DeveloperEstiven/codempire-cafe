@@ -11,6 +11,8 @@ export const ORDER_ROUTES = {
   updateOrder: 'update-order',
   cancelOrder: 'cancel-order',
   getOrders: 'get-orders',
+  getAllOrders: 'get-all-orders',
+  getManagerDetailOrder: 'get-manager-detail-order',
   getCompleted: 'get-completed',
 };
 

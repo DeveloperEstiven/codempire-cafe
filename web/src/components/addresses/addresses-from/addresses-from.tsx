@@ -8,27 +8,31 @@ import { useAddressesForm } from './addresses-from.state';
 import { StyledAddressesForm as Styled } from './addresses-from.styles';
 
 export const AddressesForm: React.FC = () => {
-  const { handleCheck, value, addresses, onChange, onAddNewAddress, onApply } = useAddressesForm();
+  const { handleCheck, value, addresses, onChange, onAddNewAddress, onApply, isManager } = useAddressesForm();
 
   return (
     <Styled.Wrapper>
-      <Input value={value} onChange={onChange} title="Add a new address" onKeyDown={onAddNewAddress} />
+      {!isManager && (
+        <>
+          <Input value={value} onChange={onChange} title="Add a new address" onKeyDown={onAddNewAddress} />
 
-      <Space direction="vertical" gapSize={22}>
-        <Styled.AddressesList>
-          {addresses?.map(({ address, isActive }) => (
-            <li key={address}>
-              <Checkbox id={address} value={address} checkHandler={handleCheck} isChecked={isActive} />
-            </li>
-          ))}
-        </Styled.AddressesList>
+          <Space direction="vertical" gapSize={22}>
+            <Styled.AddressesList>
+              {addresses?.map(({ address, isActive }) => (
+                <li key={address}>
+                  <Checkbox id={address} value={address} checkHandler={handleCheck} isChecked={isActive} />
+                </li>
+              ))}
+            </Styled.AddressesList>
 
-        <Loader area={PROMISES_AREA.addAddresses}>
-          <Button onClick={onApply} color="black" disabled={!addresses?.length}>
-            apply
-          </Button>
-        </Loader>
-      </Space>
+            <Loader area={PROMISES_AREA.addAddresses}>
+              <Button onClick={onApply} color="black" disabled={!addresses?.length}>
+                apply
+              </Button>
+            </Loader>
+          </Space>
+        </>
+      )}
     </Styled.Wrapper>
   );
 };

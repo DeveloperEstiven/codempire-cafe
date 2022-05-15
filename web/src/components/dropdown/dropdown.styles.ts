@@ -44,11 +44,12 @@ export const dropdownStyles = (
   }),
   control: (base, state) => {
     const borderStyle = isMulti ? (state.menuIsOpen ? '1px solid #000' : '1px solid #E0E0E0') : '0';
-
+    //TODO manager can't go to http://localhost:3000/order-page
     return {
       ...base,
       border: borderStyle,
       boxShadow: isMulti ? 'none' : theme.boxShadow,
+      lineHeight: '24px',
       paddingLeft: isMulti ? '8px' : '4px',
       '&:hover': {
         border: borderStyle,

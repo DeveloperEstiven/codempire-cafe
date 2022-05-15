@@ -16,7 +16,7 @@ export const StyledNotificationsDrawer = {
     }
   `,
 
-  NotificationItem: styled(Group.Item)<{ isRated: boolean }>`
+  NotificationItem: styled(Group.Item)<{ isChecked: boolean }>`
     p {
       white-space: nowrap;
       font-weight: 400;
@@ -39,7 +39,7 @@ export const StyledNotificationsDrawer = {
       width: 8px;
       height: 8px;
       display: block;
-      opacity: ${(props) => (props.isRated ? 0 : 1)};
+      opacity: ${(props) => (props.isChecked ? 0 : 1)};
       border-radius: 50%;
       background-color: ${(props) => props.theme.colors.textPrimary};
       position: absolute;

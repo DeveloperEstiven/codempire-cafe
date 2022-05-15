@@ -2,10 +2,9 @@ import { Brackets, In, Repository } from 'typeorm';
 
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FilterDto } from '../dto/filter.dto';
-import { PageMetaDto } from '../dto/page-meta.dto';
-import { PageOptionsDto } from '../dto/page-options.dto';
-import { PageDto } from '../dto/page.dto';
+import { FilterDto } from 'src/dto/filter.dto';
+import { PageMetaDto } from 'src/dto/page-meta.dto';
+import { PageDto } from 'src/dto/page.dto';
 import { ProductEntity } from '../product/entities/product.entity';
 import { CreateMenuDto } from './dto/create-menu.dto';
 import { UpdateMenuDto } from './dto/update-menu.dto';
@@ -16,6 +15,14 @@ import { MENU_ERRORS } from './menu.constants';
 export class MenuService {
   @InjectRepository(MenuEntity) private readonly menuRepository: Repository<MenuEntity>;
   @InjectRepository(ProductEntity) private readonly productRepository: Repository<ProductEntity>;
+
+  async getMenuByIdOrFail(id: string, relations?: string[]) {
+    const menu = await this.menuRepository.findOne({ where: { id }, relations });
+    if (!menu) {
+      throw new HttpException(MENU_ERRORS.notFound, HttpStatus.NOT_FOUND);
+    }
+    return menu;
+  }
 
   async addMenu(createMenuDto: CreateMenuDto) {
     const products = await this.productRepository.findByIds(createMenuDto.productIds);
@@ -41,12 +48,16 @@ export class MenuService {
       .where('LOWER(name) = LOWER(:name)', { name: updateMenuDto.name })
       .getOne();
 
-    if (menuByName) {
+    if (menuByName && menuByName.id !== menu.id) {
       throw new HttpException(MENU_ERRORS.alreadyExist, HttpStatus.CONFLICT);
     }
+
+    const products = await this.productRepository.findByIds(updateMenuDto.productIds);
+
     const updatedMenu = {
       ...menu,
       ...updateMenuDto,
+      products,
     };
     return this.menuRepository.save(updatedMenu);
   }
@@ -57,14 +68,11 @@ export class MenuService {
       throw new HttpException(MENU_ERRORS.notFound, HttpStatus.NOT_FOUND);
     }
     await this.menuRepository.delete({ id });
-    return {
-      message: 'success',
-    };
+    return { id };
   }
 
-  async getMenus(pageOptionsDto: PageOptionsDto, filter: FilterDto) {
-    const { term, sort } = filter;
-    const subcategories = filter.subcategories.map((sub) => sub.toLowerCase());
+  async getMenus(filter: FilterDto) {
+    const { term, field, order, subcategories, skip, limit, page } = filter;
     const menuIds = [];
     if (subcategories.length) {
       const products = await this.productRepository.find({
@@ -89,20 +97,20 @@ export class MenuService {
       )
       .leftJoinAndSelect('menu.products', 'product')
       .leftJoinAndSelect('product.ingredients', 'ingredient')
-      .skip(pageOptionsDto.skip)
-      .take(pageOptionsDto.limit);
+      .skip(skip)
+      .take(limit);
 
     if (menuSetIds.length) {
       queryBuilder.andWhere('menu.id IN (:...menuIds)', { menuIds: menuSetIds });
     }
 
-    if (sort?.field && sort?.order && sort?.field !== 'default') {
-      queryBuilder.orderBy(`menu.${sort.field}`, sort.order);
+    if (field && order && field !== 'default') {
+      queryBuilder.orderBy(`menu.${field}`, order);
     }
 
     const itemCount = await queryBuilder.getCount();
     const { entities } = await queryBuilder.getRawAndEntities();
-    const pageMetaDto = new PageMetaDto({ itemCount, pageOptionsDto });
+    const pageMetaDto = new PageMetaDto({ itemCount, pageOptionsDto: { limit, page, skip } });
     return new PageDto(entities, pageMetaDto);
   }
 }

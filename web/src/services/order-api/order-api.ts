@@ -1,7 +1,7 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { baseQueryWithInterceptors } from '@services/base-query-with-interceptors';
 import {
-    IAddOrder, IOrderFeedback, IUserDetailOrderResponse, IUserOrderResponse, TUpdateOrderResponse
+    IAddOrder, IUserDetailOrderResponse, IUserOrderResponse, TUpdateOrderResponse
 } from 'typings/api';
 
 export const orderApi = createApi({
@@ -25,29 +25,39 @@ export const orderApi = createApi({
         method: 'POST',
         body: body,
       }),
-      invalidatesTags: ['order'],
+      invalidatesTags: ['order', 'order-detail'],
     }),
 
-    addOrderFeedback: builder.mutation<TUpdateOrderResponse, IOrderFeedback>({
+    updateOrder: builder.mutation<TUpdateOrderResponse, Partial<TUpdateOrderResponse>>({
       query: (body) => ({
         url: `/order/update-order`,
         method: 'PUT',
         body: body,
       }),
-      invalidatesTags: ['order-detail'],
+      invalidatesTags: ['order', 'order-detail'],
     }),
 
-    getOrders: builder.query<IUserOrderResponse[], void>({
+    getOrders: builder.query<IUserOrderResponse[], string>({
       query: () => ({ url: '/order/get-orders' }),
+      providesTags: ['order'],
+    }),
+
+    getAllOrders: builder.query<IUserOrderResponse[], string>({
+      query: () => ({ url: '/order/get-all-orders' }),
       providesTags: ['order'],
     }),
 
     getDetailOrder: builder.query<IUserDetailOrderResponse, string>({
       query: (orderNumber) => ({ url: `/order/get-orders/${orderNumber}` }),
-      providesTags: ['order-detail'],
+      providesTags: ['order', 'order-detail'],
     }),
 
-    getCompletedOrders: builder.query<IUserOrderResponse[], void>({
+    getManagerDetailOrder: builder.query<IUserDetailOrderResponse, string>({
+      query: (orderNumber) => ({ url: `/order/get-manager-detail-order/${orderNumber}` }),
+      providesTags: ['order', 'order-detail'],
+    }),
+
+    getCompletedOrders: builder.query<IUserOrderResponse[], string>({
       query: () => ({ url: 'order/get-completed' }),
       providesTags: ['order'],
     }),
@@ -57,8 +67,10 @@ export const orderApi = createApi({
 export const {
   useAddOrderMutation,
   useGetOrdersQuery,
+  useGetAllOrdersQuery,
   useGetDetailOrderQuery,
+  useGetManagerDetailOrderQuery,
   useCancelOrderMutation,
-  useAddOrderFeedbackMutation,
-  useLazyGetCompletedOrdersQuery,
+  useUpdateOrderMutation,
+  useGetCompletedOrdersQuery,
 } = orderApi;

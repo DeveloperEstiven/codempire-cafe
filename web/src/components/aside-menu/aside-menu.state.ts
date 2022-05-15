@@ -11,13 +11,14 @@ import { TPage } from './aside-menu.typings';
 export const useAsideMenu = () => {
   const dispatch = useAppDispatch();
   const { totalItems } = useAppSelector((store) => store.cart);
-  const { isNotificationsExists } = useAppSelector((store) => store.notifications);
   const { searchTerm: storeSearchTerm, selectedPage } = useAppSelector((store) => store.mainPage);
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [searchTerm, setSearchTerm] = useState(storeSearchTerm);
   const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+  const isManager = useAppSelector((store) => store.user.user.role) === 'manager';
+  const notificationsCount = useAppSelector((store) => store.notifications.count);
 
   const onItemClick = (page: TPage) => {
     dispatch(selectedPageReceived(page));
@@ -47,7 +48,10 @@ export const useAsideMenu = () => {
     dispatch(searchTermReceived(e.target.value));
   };
 
+  const onPageItemClick = (page: TPage) => () => onItemClick(page);
+
   return {
+    isManager,
     onItemClick,
     onNotificationClick,
     onCartClick,
@@ -62,6 +66,7 @@ export const useAsideMenu = () => {
     isSearchActive,
     searchTerm,
     storeSearchTerm,
-    isNotificationsExists,
+    notificationsCount,
+    onPageItemClick,
   };
 };

@@ -14,7 +14,9 @@ export interface IInputProps {
   onChange: (e: TInputEvent) => void;
   onBlur?: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   value: string;
+  suffix?: string;
   title?: string;
+  isMasked?: boolean;
 }
 export interface IUseInputProps {
   type: TInputType;

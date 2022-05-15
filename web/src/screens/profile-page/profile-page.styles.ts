@@ -80,9 +80,9 @@ export const StyledProfilePage = {
     }
   `,
 
-  //?=============!__Settings__!=============
+  //?=============!__SectionList__!=============
 
-  SettingsList: styled(List)`
+  SectionList: styled(List)`
     li {
       position: relative;
       display: block;

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '@constants/routes';
 import { useAppSelector } from '@hooks/redux';
 import { useLogOutMutation } from '@services/user-api';
+import { managerRoutes, userRoutes } from './profile-page.constants';
 
 export const useProfilePage = () => {
   const {
@@ -13,7 +14,8 @@ export const useProfilePage = () => {
 
   const navigate = useNavigate();
   const [logOut] = useLogOutMutation();
-
+  const isManager = role === 'manager';
+  const currentSectionsList = isManager ? managerRoutes : userRoutes;
   const isAuthorized = !!token;
 
   useEffect(() => {
@@ -37,6 +39,8 @@ export const useProfilePage = () => {
     phoneNumber,
     role,
     logo,
+    isManager,
+    currentSectionsList,
     onLogOutClick,
     onLogInClick,
   };

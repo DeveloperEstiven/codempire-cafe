@@ -10,7 +10,7 @@ export class MenusOrdersEntity {
   @PrimaryGeneratedColumn('uuid')
   public id: string;
 
-  @ManyToOne(() => MenuEntity, (menu) => menu.menusOrders, { eager: true })
+  @ManyToOne(() => MenuEntity, (menu) => menu.menusOrders, { eager: true, onDelete: 'CASCADE' })
   public menu: MenuEntity;
 
   @ApiProperty({ example: 4, description: 'menus count' })

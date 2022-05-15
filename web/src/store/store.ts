@@ -9,19 +9,26 @@ import { mainPageApi } from '../services/main-page-api';
 import { orderApi } from '../services/order-api';
 import { profilePageApi } from '../services/profile-page-api';
 import { cartReducer } from './reducers/cart';
+import { editItemReducer } from './reducers/edit-item';
 import { mainPageReducer } from './reducers/main-page';
 import { notificationsReducer } from './reducers/notifications';
 import { orderReducer } from './reducers/order';
 import { userReducer } from './reducers/user';
+import { userOrdersReducer } from './reducers/user-orders';
 
 const config = {
   key: 'root',
   storage,
-  blacklist: ['userApi', 'mainPageApi', 'profilePageApi', 'orderApi', 'order'],
+  blacklist: ['userApi', 'mainPageApi', 'profilePageApi', 'orderApi', 'order', 'edit-item'],
 };
 
 const sessionConfig = {
   key: 'order',
+  storage: sessionStorage,
+};
+
+const sessionEditItemConfig = {
+  key: 'edit-item',
   storage: sessionStorage,
 };
 
@@ -30,7 +37,9 @@ const reducers = combineReducers({
   mainPage: mainPageReducer,
   cart: cartReducer,
   order: persistReducer(sessionConfig, orderReducer),
+  userOrders: userOrdersReducer,
   notifications: notificationsReducer,
+  editItem: persistReducer(sessionEditItemConfig, editItemReducer),
   [userApi.reducerPath]: userApi.reducer,
   [mainPageApi.reducerPath]: mainPageApi.reducer,
   [profilePageApi.reducerPath]: profilePageApi.reducer,

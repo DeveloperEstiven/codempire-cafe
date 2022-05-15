@@ -10,6 +10,7 @@ export interface IDropdownSelected {
 }
 
 export interface IDropdownProps extends IDropdownSelected {
+  maxMenuHeight?: number;
   name?: string;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
   items: IDropdownData[] | ISort[];

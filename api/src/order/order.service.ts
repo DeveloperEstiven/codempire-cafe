@@ -28,16 +28,8 @@ export class OrderService {
     @InjectRepository(AddressEntity) private readonly addressRepository: Repository<AddressEntity>
   ) {}
 
-  async getOrders(userTokenId: string) {
-    const orders = await this.orderRepository.find({
-      where: { user: userTokenId },
-      relations: ['productsOrders', 'menusOrders'],
-      order: {
-        orderNumber: 'DESC',
-      },
-    });
-
-    const ordersWithDescriptions = orders.map((order) => {
+  getOrdersWithDescription(orders: OrderEntity[]) {
+    return orders.map((order) => {
       const productsDescription = order.productsOrders.map((productOrder) => productOrder?.product?.description);
       const menusDescription = order.menusOrders.map((menuOrder) => menuOrder?.menu?.description);
       const description = [...menusDescription, ...productsDescription].join(', ');
@@ -50,8 +42,29 @@ export class OrderService {
       delete newOrder.menusOrders;
       return newOrder;
     });
+  }
 
-    return ordersWithDescriptions;
+  async getOrders(userTokenId: string) {
+    const orders = await this.orderRepository.find({
+      where: { user: userTokenId },
+      relations: ['productsOrders', 'menusOrders'],
+      order: {
+        orderNumber: 'DESC',
+      },
+    });
+
+    return this.getOrdersWithDescription(orders);
+  }
+
+  async getAllOrders() {
+    const orders = await this.orderRepository.find({
+      relations: ['productsOrders', 'menusOrders'],
+      order: {
+        orderNumber: 'DESC',
+      },
+    });
+
+    return this.getOrdersWithDescription(orders);
   }
 
   async getCompleted(userTokenId: string) {
@@ -66,10 +79,25 @@ export class OrderService {
   }
 
   async getDetailOrder(userTokenId: string, orderNumber: number) {
-    return this.orderRepository.findOne({
+    const order = await this.orderRepository.findOne({
       where: { user: userTokenId, orderNumber },
       relations: ['productsOrders', 'menusOrders', 'address', 'user'],
     });
+    if (!order) {
+      throw new HttpException(ORDER_ERRORS.notFound, HttpStatus.NOT_FOUND);
+    }
+    return order;
+  }
+
+  async getManagerDetailOrder(orderNumber: number) {
+    const order = await this.orderRepository.findOne({
+      where: { orderNumber },
+      relations: ['productsOrders', 'menusOrders', 'address', 'user'],
+    });
+    if (!order) {
+      throw new HttpException(ORDER_ERRORS.notFound, HttpStatus.NOT_FOUND);
+    }
+    return order;
   }
 
   async updateOrder(updateOrderDto: UpdateOrderDto) {

@@ -14,6 +14,11 @@ export const ROUTES = {
   cart: '/cart',
   orderPage: '/order-page',
   orderConfirmation: '/order-confirmation',
+  productCompositions: '/product-compositions',
+  editProduct: '/edit-product',
+  editMenu: '/edit-menu',
+  addProduct: '/add-product',
+  addMenu: '/add-menu',
   default: '*',
 } as const;
 

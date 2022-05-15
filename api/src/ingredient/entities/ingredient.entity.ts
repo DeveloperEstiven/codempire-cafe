@@ -18,6 +18,6 @@ export class IngredientEntity {
   @Column({ default: false })
   public isAllergen: boolean;
 
-  @ManyToMany(() => ProductEntity, (product) => product.ingredients)
+  @ManyToMany(() => ProductEntity, (product) => product.ingredients, { onDelete: 'CASCADE' })
   public products: ProductEntity[];
 }

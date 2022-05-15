@@ -9,7 +9,7 @@ export const StyledCart = {
   Wrapper: styled.div`
     overflow-y: scroll;
     margin-top: 30px;
-    height: 79vh;
+    height: 76vh;
   `,
 
   Footer: styled.div`

@@ -17,6 +17,7 @@ export const Dropdown: FC<IDropdownProps> = (props) => {
     selected,
     setSelected,
     isSearchable,
+    maxMenuHeight,
     stylesConfig: stylesObject,
   } = props;
 
@@ -57,6 +58,7 @@ export const Dropdown: FC<IDropdownProps> = (props) => {
           IndicatorSeparator: () => null,
         }}
         theme={dropdownTheme}
+        maxMenuHeight={maxMenuHeight}
         placeholder={placeholder}
         controlShouldRenderValue={!isMulti}
         closeMenuOnSelect={!isMulti}

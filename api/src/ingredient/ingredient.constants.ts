@@ -3,6 +3,7 @@ export const INGREDIENT_ROUTES = {
   addIngredient: 'add-ingredient',
   removeIngredient: 'remove-ingredient',
   getAllIngredients: 'get-all-ingredients',
+  checkIngredientContains: 'check-ingredient-contains',
 };
 
 export const INGREDIENT_ERRORS = {

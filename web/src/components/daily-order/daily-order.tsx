@@ -1,12 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 
-import { NotFound } from '@components/not-found';
 import { Group } from '@styles/components/group';
 import { getTime } from '@utils/date';
 import { StyledDailyOrder as Styled } from './daily-order.styles';
 import { IDailyOrderProps } from './daily-order.typings';
 
-export const DailyOrder: React.FC<IDailyOrderProps> = ({ selectedType, orderGroup }) => {
+export const DailyOrder: React.FC<IDailyOrderProps> = ({ orderGroup }) => {
   const navigate = useNavigate();
 
   const onOrderClick = (orderNumber: number) => () => navigate(`${orderNumber}`);
@@ -31,9 +30,6 @@ export const DailyOrder: React.FC<IDailyOrderProps> = ({ selectedType, orderGrou
           </ul>
         </Group.Card>
       ))}
-      {!orderGroup?.length && (
-        <NotFound title={`You don't have any ${selectedType === 'complete' ? 'completed' : 'pending'} orders yet`} />
-      )}
     </>
   );
 };

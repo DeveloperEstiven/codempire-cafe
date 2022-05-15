@@ -51,6 +51,8 @@ export class ProductEntity {
   @JoinTable()
   public ingredients: IngredientEntity[];
 
-  @ManyToMany(() => MenuEntity, (menu) => menu.products)
+  @ManyToMany(() => MenuEntity, (menu) => menu.products, {
+    onDelete: 'CASCADE',
+  })
   public menus: MenuEntity[];
 }

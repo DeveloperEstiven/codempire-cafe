@@ -12,6 +12,7 @@ export const StyledCartItem = {
     justify-content: space-between;
     margin-bottom: 16px;
   `,
+
   ImageBox: styled.div`
     margin-right: 20px;
     img {
@@ -21,6 +22,7 @@ export const StyledCartItem = {
       width: 70px;
     }
   `,
+
   Description: styled.div`
     h4 {
       font-weight: 500;
@@ -45,6 +47,7 @@ export const StyledCartItem = {
 
   Count: styled.div`
     margin-left: 10px;
+    width: 100px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -69,6 +72,9 @@ export const StyledCartItem = {
     }
 
     span {
+      text-align: center;
+      display: block;
+      min-width: 20px;
       font-weight: 500;
       font-size: 18px;
       line-height: 16px;

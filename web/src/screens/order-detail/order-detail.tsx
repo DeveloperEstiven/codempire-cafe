@@ -9,47 +9,89 @@ import { useOrderDetail } from './order-detail.state';
 import { StyledOrderDetail as Styled } from './order-detail.styles';
 
 export const OrderDetail: React.FC = () => {
-  const { order, isLoading, isDelivered, onCancelClick, onOrderAgain } = useOrderDetail();
+  const {
+    isOrderAccepted,
+    currentOrder,
+    onAcceptOrder,
+    isManager,
+    isLoading,
+    isDelivered,
+    isManagerOrderLoading,
+    onCancelClick,
+    onOrderAgain,
+    onCloseOrder,
+  } = useOrderDetail();
 
-  if (isLoading) {
+  if (!currentOrder || isLoading || isManagerOrderLoading) {
     return <Loader isWithoutArea />;
   }
 
   return (
     <Styled.Page>
       <Loader area={PROMISES_AREA.cancelOrder}>
-        <Styled.Wrapper>
-          <OrderInformation order={order} />
-        </Styled.Wrapper>
+        {isDelivered ? (
+          <Styled.CompletedWrapper isManager={isManager}>
+            <OrderInformation order={currentOrder} />
+          </Styled.CompletedWrapper>
+        ) : (
+          <Styled.WaitingWrapper isManager={isManager} isOrderAccepted={isOrderAccepted}>
+            <OrderInformation order={currentOrder} />
+          </Styled.WaitingWrapper>
+        )}
         {isDelivered ? (
           <Styled.Footer>
             <Styled.Delivered>
               <div>
-                <span>Your mark:</span>
-                <StarRating value={order?.rating} isReadonly />
+                <span>{isManager ? 'User' : 'Your'} mark:</span>
+                <StarRating value={currentOrder?.rating} isReadonly />
               </div>
               <div>
                 <span>Status:</span>
                 <h4>Delivered</h4>
               </div>
             </Styled.Delivered>
-            <Button color="black" onClick={onOrderAgain}>
-              order again
-            </Button>
+            {!isManager && (
+              <Button color="black" onClick={onOrderAgain}>
+                order again
+              </Button>
+            )}
           </Styled.Footer>
         ) : (
           <>
             <Styled.Footer>
-              <Styled.Status>
-                <div>
-                  <span>Delivery expected on:</span>
-                  <h4>{getTime(order!.wantedDeliveryDate)}</h4>
-                </div>
-                <Range status={order!.status} />
-              </Styled.Status>
-              <Button color="black" onClick={onCancelClick(order!.id)}>
-                cancel
-              </Button>
+              {!isManager && (
+                <>
+                  <Styled.Status>
+                    <div>
+                      <span>Delivery expected on:</span>
+                      <h4>{getTime(currentOrder?.wantedDeliveryDate || '')}</h4>
+                    </div>
+                    <Range status={currentOrder?.status} />
+                  </Styled.Status>
+                  <Loader area={PROMISES_AREA.cancelOrder}>
+                    <Button color="black" onClick={onCancelClick(currentOrder!.id)}>
+                      cancel
+                    </Button>
+                  </Loader>
+                </>
+              )}
+              {isManager && (
+                <>
+                  <Loader area={PROMISES_AREA.acceptOrder}>
+                    <Button color="black" onClick={onAcceptOrder(currentOrder!.id)} disabled={isOrderAccepted}>
+                      {isOrderAccepted ? 'accepted' : 'accept order'}
+                    </Button>
+                  </Loader>
+
+                  {isOrderAccepted && (
+                    <Loader area={PROMISES_AREA.closeOrder}>
+                      <Button color="black" onClick={onCloseOrder(currentOrder!.id)}>
+                        close order
+                      </Button>
+                    </Loader>
+                  )}
+                </>
+              )}
             </Styled.Footer>
           </>
         )}
